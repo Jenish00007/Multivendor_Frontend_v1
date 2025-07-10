@@ -266,232 +266,230 @@ const AllModules = () => {
   ];
 
   return (
-    <div className="w-full p-8 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen">
-      <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
-          <div className="relative">
-            <div className="flex items-center gap-6">
-              <div className="relative">
-                <div className="p-4 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl shadow-2xl">
-                  <AiOutlineAppstore className="text-4xl text-white filter drop-shadow-lg" />
+    <div className="flex items-start w-full p-0 m-0">
+      <div className="w-full bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen p-0">
+        <div className="w-full max-w-[1920px] mx-auto px-2 sm:px-4 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-2 sm:gap-4">
+            <div className="relative">
+              <div className="flex items-center gap-2 sm:gap-6">
+                <div className="relative">
+                  <div className="p-2 sm:p-4 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl sm:rounded-3xl shadow-2xl">
+                    <AiOutlineAppstore className="text-2xl sm:text-4xl text-white filter drop-shadow-lg" />
+                  </div>
+                  <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 w-4 sm:w-6 h-4 sm:h-6 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full shadow-lg"></div>
                 </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full shadow-lg"></div>
-              </div>
-              <div>
-                <div className="font-black text-4xl font-Poppins bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent leading-tight">
-                  All Modules
-                </div>
-                <div className="text-gray-600 text-lg mt-2 font-medium">
-                  Manage and monitor all modules
-                </div>
-                <div className="text-sm text-gray-500 mt-1">
-                  {filteredModules?.length || 0} total modules
-                  {(searchTerm || startDate) && (
-                    <span className="ml-2 text-blue-600 font-medium">
-                      (Filtered from {rows?.length || 0} total)
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="absolute -top-4 -left-4 w-24 h-24 bg-gradient-to-br from-indigo-200 to-purple-200 rounded-full opacity-30 blur-2xl animate-pulse"></div>
-          </div>
-        </div>
-
-        <div className="w-full min-h-[70vh] relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-indigo-100/30 to-purple-100/30 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-pink-100/30 to-blue-100/30 rounded-full blur-3xl"></div>
-          
-          <div className="w-full relative z-10">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-              <div className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <div className="relative flex-1 sm:flex-none">
-                  <input
-                    type="text"
-                    placeholder="Search modules..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full sm:w-[300px] pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300"
-                  />
-                  <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-                </div>
-                <div className="relative w-full sm:w-auto">
-                  <input
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300"
-                  />
-                </div>
-              </div>
-              <button
-                onClick={() => {
-                  setSelectedModule(null);
-                  setFormData({ name: "", description: "", image: null });
-                  setOpen(true);
-                }}
-                className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                <AiOutlinePlus size={18} />
-                <span className="text-sm font-medium">Add New Module</span>
-              </button>
-            </div>
-
-            {loading ? (
-              <Loader />
-            ) : filteredModules.length === 0 ? (
-              <div className="w-full h-[400px] flex items-center justify-center bg-white rounded-xl shadow-lg">
-                <div className="text-center">
-                  <AiOutlineAppstore className="mx-auto text-gray-400" size={48} />
-                  <p className="mt-4 text-gray-600">No modules found</p>
-                </div>
-              </div>
-            ) : (
-              <div className="w-full overflow-x-auto bg-white rounded-xl shadow-lg p-4">
-                <DataGrid
-                  rows={filteredModules}
-                  columns={columns}
-                  pageSize={12}
-                  disableSelectionOnClick
-                  autoHeight
-                  className="!border-none"
-                  getRowHeight={() => 'auto'}
-                  rowHeight={90}
-                  componentsProps={{
-                    footer: {
-                      sx: {
-                        position: 'relative',
-                        overflow: 'visible'
-                      }
-                    },
-                    panel: {
-                      sx: {
-                        overflow: 'visible'
-                      }
-                    }
-                  }}
-                  sx={{
-                    '& .MuiDataGrid-cell': {
-                      overflow: 'visible'
-                    },
-                    '& .MuiDataGrid-row': {
-                      overflow: 'visible'
-                    },
-                    '& .MuiDataGrid-virtualScroller': {
-                      overflow: 'visible !important'
-                    },
-                    '& .MuiDataGrid-virtualScrollerContent': {
-                      overflow: 'visible !important'
-                    },
-                    '& .MuiDataGrid-virtualScrollerRenderZone': {
-                      overflow: 'visible !important'
-                    }
-                  }}
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {open && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-2xl">
-            <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent">
-              {selectedModule ? "Edit Module" : "Add New Module"}
-            </h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Description
-                </label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300"
-                  rows="3"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Image
-                </label>
-                <div className="flex flex-col items-center justify-center w-full">
-                  <div className="w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                    {imagePreview ? (
-                      <div className="relative w-full h-full">
-                        <img
-                          src={imagePreview}
-                          alt="Module preview"
-                          className="w-full h-full object-contain"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setImagePreview(null);
-                            setFormData({ ...formData, image: null });
-                          }}
-                          className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors duration-200"
-                        >
-                          <AiOutlineDelete size={20} />
-                        </button>
-                      </div>
-                    ) : (
-                      <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer">
-                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                          <AiOutlinePlus size={30} className="text-gray-400" />
-                          <p className="mb-2 text-sm text-gray-500">
-                            <span className="font-semibold">Click to upload</span> or drag and drop
-                          </p>
-                          <p className="text-xs text-gray-500">PNG, JPG or JPEG (MAX. 2MB)</p>
-                        </div>
-                        <input
-                          type="file"
-                          className="hidden"
-                          onChange={handleImageChange}
-                          accept="image/*"
-                        />
-                      </label>
+                <div>
+                  <div className="font-black text-2xl sm:text-4xl font-Poppins bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent leading-tight">
+                    All Modules
+                  </div>
+                  <div className="text-gray-600 text-base sm:text-lg mt-1 sm:mt-2 font-medium">
+                    Manage and monitor all modules
+                  </div>
+                  <div className="text-xs sm:text-sm text-gray-500 mt-1">
+                    {filteredModules?.length || 0} total modules
+                    {(searchTerm || startDate) && (
+                      <span className="ml-1 sm:ml-2 text-blue-600 font-medium">
+                        (Filtered from {rows?.length || 0} total)
+                      </span>
                     )}
                   </div>
                 </div>
               </div>
-              <div className="flex justify-end gap-3">
+            </div>
+          </div>
+
+          <div className="w-full relative overflow-hidden p-0">
+            <div className="w-full relative z-10">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 mb-4 sm:mb-6">
+                <div className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
+                  <div className="relative flex-1 sm:flex-none">
+                    <input
+                      type="text"
+                      placeholder="Search modules..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full sm:w-[300px] pl-10 pr-2 sm:pr-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300 text-sm sm:text-base"
+                    />
+                    <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                  </div>
+                  <div className="relative w-full sm:w-auto">
+                    <input
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className="w-full sm:w-auto px-2 sm:px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300 text-sm sm:text-base"
+                    />
+                  </div>
+                </div>
                 <button
-                  type="button"
-                  onClick={() => setOpen(false)}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors duration-300"
+                  onClick={() => {
+                    setSelectedModule(null);
+                    setFormData({ name: "", description: "", image: null });
+                    setOpen(true);
+                  }}
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl text-sm font-medium"
                 >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl"
-                >
-                  {selectedModule ? "Update" : "Create"}
+                  <AiOutlinePlus size={18} />
+                  <span>Add New Module</span>
                 </button>
               </div>
-            </form>
+
+              {loading ? (
+                <Loader />
+              ) : filteredModules.length === 0 ? (
+                <div className="w-full flex items-center justify-center bg-white rounded-xl shadow-lg p-4">
+                  <div className="text-center w-full">
+                    <AiOutlineAppstore className="mx-auto text-gray-400" size={48} />
+                    <p className="mt-4 text-gray-600 text-base sm:text-lg">No modules found</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="w-full overflow-x-auto bg-white rounded-xl shadow-lg p-0 sm:p-4">
+                  <DataGrid
+                    rows={filteredModules}
+                    columns={columns}
+                    pageSize={12}
+                    disableSelectionOnClick
+                    autoHeight
+                    className="!border-none"
+                    getRowHeight={() => (window.innerWidth < 640 ? 60 : 'auto')}
+                    rowHeight={window.innerWidth < 640 ? 60 : 90}
+                    componentsProps={{
+                      footer: {
+                        sx: {
+                          position: 'relative',
+                          overflow: 'visible'
+                        }
+                      },
+                      panel: {
+                        sx: {
+                          overflow: 'visible'
+                        }
+                      }
+                    }}
+                    sx={{
+                      '& .MuiDataGrid-cell': {
+                        overflow: 'visible'
+                      },
+                      '& .MuiDataGrid-row': {
+                        overflow: 'visible'
+                      },
+                      '& .MuiDataGrid-virtualScroller': {
+                        overflow: 'visible !important'
+                      },
+                      '& .MuiDataGrid-virtualScrollerContent': {
+                        overflow: 'visible !important'
+                      },
+                      '& .MuiDataGrid-virtualScrollerRenderZone': {
+                        overflow: 'visible !important'
+                      }
+                    }}
+                  />
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      )}
+
+        {open && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-2 sm:px-0">
+            <div className="bg-white rounded-xl p-4 sm:p-6 w-full max-w-md shadow-2xl">
+              <h2 className="text-lg sm:text-2xl font-bold mb-4 bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent">
+                {selectedModule ? "Edit Module" : "Add New Module"}
+              </h2>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Description
+                  </label>
+                  <textarea
+                    value={formData.description}
+                    onChange={(e) =>
+                      setFormData({ ...formData, description: e.target.value })
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300"
+                    rows="3"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Image
+                  </label>
+                  <div className="flex flex-col items-center justify-center w-full">
+                    <div className="w-full h-48 sm:h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                      {imagePreview ? (
+                        <div className="relative w-full h-full">
+                          <img
+                            src={imagePreview}
+                            alt="Module preview"
+                            className="w-full h-full object-contain"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setImagePreview(null);
+                              setFormData({ ...formData, image: null });
+                            }}
+                            className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors duration-200"
+                          >
+                            <AiOutlineDelete size={20} />
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="flex flex-col items-center justify-center w-full h-full cursor-pointer">
+                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                            <AiOutlinePlus size={30} className="text-gray-400" />
+                            <p className="mb-2 text-sm text-gray-500">
+                              <span className="font-semibold">Click to upload</span> or drag and drop
+                            </p>
+                            <p className="text-xs text-gray-500">PNG, JPG or JPEG (MAX. 2MB)</p>
+                          </div>
+                          <input
+                            type="file"
+                            className="hidden"
+                            onChange={handleImageChange}
+                            accept="image/*"
+                          />
+                        </label>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-end gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors duration-300"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+                  >
+                    {selectedModule ? "Update" : "Create"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

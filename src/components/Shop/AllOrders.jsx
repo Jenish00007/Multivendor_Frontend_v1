@@ -73,22 +73,32 @@ const AllOrders = () => {
         return `${formattedDate} ${formattedTime}`;
     };
 
-    const filteredOrders = orders.filter((order) => {
-        const customerName = order.user?.name?.toLowerCase() || "";
-        const orderId = order._id?.toLowerCase() || "";
-        const status = order.status?.toLowerCase() || "";
-        const search = searchTerm.toLowerCase();
+    // Defensive: always use an array
+    const safeOrders = Array.isArray(orders) ? orders : [];
+    console.log('Redux orders:', safeOrders);
 
-        const matchesSearch = customerName.includes(search) || orderId.includes(search) || status.includes(search);
+    // Show all orders, sorted by most recent
+    const filteredOrders = safeOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    console.log('Filtered orders:', filteredOrders);
 
-        const orderDate = new Date(order.createdAt);
-        const start = startDate ? new Date(startDate) : null;
-        const end = endDate ? new Date(endDate) : null;
-
-        const matchesDate = (!start || orderDate >= start) && (!end || orderDate <= new Date(end.setDate(end.getDate() + 1))); // Add one day to end date to include the whole day
-
-        return matchesSearch && matchesDate;
+    const row = [];
+    filteredOrders.forEach((item) => {
+        const { _id, ...itemWithoutId } = item;
+        row.push({
+            id: _id || '',
+            customerName: item.user?.name || "N/A",
+            status: item.status || 'N/A',
+            itemsQty: Array.isArray(item.cart) ? item.cart.length : 0,
+            total: item.totalPrice ? formatIndianCurrency(item.totalPrice) : 'N/A',
+            createdAt: new Date(item.createdAt).toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            }),
+            ...itemWithoutId
+        });
     });
+    console.log('Rows for DataGrid:', row);
 
     const columns = [
         {
@@ -247,26 +257,6 @@ const AllOrders = () => {
         },
     ];
 
-    const row = [];
-
-    filteredOrders &&
-        filteredOrders.forEach((item) => {
-            const { _id, ...itemWithoutId } = item;
-            row.push({
-                id: _id || '',
-                customerName: item.user?.name || "N/A",
-                status: item.status || 'N/A',
-                itemsQty: Array.isArray(item.cart) ? item.cart.length : 0,
-                total: item.totalPrice ? formatIndianCurrency(item.totalPrice) : 'N/A',
-                createdAt: new Date(item.createdAt).toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: 'numeric'
-                }),
-                ...itemWithoutId
-            });
-        });
-
     return (
         <div className="w-full p-8 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen">
             {/* Header Section */}
@@ -306,19 +296,11 @@ const AllOrders = () => {
                         <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     </div>
                     <div className="flex gap-4 w-full sm:w-auto">
-                        <div className="relative w-1/2 sm:w-auto">
+                        <div className="relative w-full sm:w-auto">
                             <input
                                 type="date"
                                 value={startDate}
                                 onChange={(e) => setStartDate(e.target.value)}
-                                className="px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full shadow-sm"
-                            />
-                        </div>
-                        <div className="relative w-1/2 sm:w-auto">
-                            <input
-                                type="date"
-                                value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
                                 className="px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full shadow-sm"
                             />
                         </div>

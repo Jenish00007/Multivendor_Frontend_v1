@@ -245,27 +245,27 @@ const AllSellers = () => {
   }
 
   return (
-    <div className="w-full p-8 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen">
+    <div className="w-full p-0 m-0 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen">
       {/* Delete Confirmation Modal */}
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-xl p-8 max-w-md w-full mx-4 transform transition-all">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-gray-900">Delete Seller</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-2 sm:px-0">
+          <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-8 max-w-md w-full mx-2 sm:mx-4 transform transition-all">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900">Delete Seller</h3>
               <button
                 onClick={() => setOpen(false)}
                 className="text-gray-400 hover:text-gray-500 transition-colors"
               >
-                <RxCross1 size={24} />
+                <RxCross1 size={20} />
               </button>
             </div>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">
               Are you sure you want to delete this seller? This action cannot be undone.
             </p>
-            <div className="flex justify-end gap-4">
+            <div className="flex justify-end gap-2 sm:gap-4">
               <button
                 onClick={() => setOpen(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                className="px-3 sm:px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors text-sm sm:text-base"
                 disabled={isDeleting}
               >
                 Cancel
@@ -273,7 +273,7 @@ const AllSellers = () => {
               <button
                 onClick={() => handleDelete(userId)}
                 disabled={isDeleting}
-                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-3 sm:px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
               >
                 {isDeleting ? "Deleting..." : "Delete"}
               </button>
@@ -283,206 +283,204 @@ const AllSellers = () => {
       )}
 
       {/* Header Section */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
-        <div className="relative">
-          <div className="flex items-center gap-6">
-            <div className="relative">
-              <div className="p-4 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl shadow-2xl">
-                <span className="text-5xl filter drop-shadow-lg">🏬</span>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-2 sm:gap-4 p-0 m-0">
+        <div className="relative p-0 m-0">
+          <div className="flex items-center gap-2 sm:gap-6 p-0 m-0">
+            <div className="relative p-0 m-0">
+              <div className="p-2 sm:p-4 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl sm:rounded-3xl shadow-2xl">
+                <span className="text-2xl sm:text-5xl filter drop-shadow-lg">🏬</span>
               </div>
-              <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full shadow-lg"></div>
+              <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 w-4 sm:w-6 h-4 sm:h-6 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full shadow-lg"></div>
             </div>
-            <div>
-              <div className="font-black text-4xl font-Poppins bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent leading-tight">
-              All Sellers
-          </div>
-              <div className="text-gray-600 text-lg mt-2 font-medium">
+            <div className="p-0 m-0">
+              <div className="font-black text-2xl sm:text-4xl font-Poppins bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent leading-tight">
+                All Sellers
+              </div>
+              <div className="text-gray-600 text-base sm:text-lg mt-1 sm:mt-2 font-medium">
                 Manage and monitor all registered sellers
-          </div>
-              <div className="text-sm text-gray-500 mt-1">
+              </div>
+              <div className="text-xs sm:text-sm text-gray-500 mt-1">
                 {filteredSellers?.length || 0} sellers in your platform
                 {(searchTerm || startDate) && (
-                  <span className="ml-2 text-blue-600 font-medium">
+                  <span className="ml-1 sm:ml-2 text-blue-600 font-medium">
                     (Filtered from {rows?.length || 0} total)
                   </span>
                 )}
               </div>
             </div>
           </div>
-          <div className="absolute -top-4 -left-4 w-24 h-24 bg-gradient-to-br from-indigo-200 to-purple-200 rounded-full opacity-30 blur-2xl animate-pulse"></div>
-              </div>
-              {/* Search and Filter Section */}
-              <div className="w-full sm:w-auto mt-4 sm:mt-0 flex flex-col sm:flex-row items-center gap-4">
-                  <div className="relative w-full sm:w-72">
-                      <input
-                          type="text"
-                          placeholder="Search by Shop Name, Email, Phone, or Shop ID..."
-                          value={searchTerm}
-                          onChange={(e) => setSearchTerm(e.target.value)}
-                          className="px-4 py-2 pl-10 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full shadow-sm"
-                      />
-                      <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                  </div>
-                  <div className="flex gap-4 w-full sm:w-auto">
-                      <div className="relative w-full sm:w-auto">
-                          <input
-                              type="date"
-                              value={startDate}
-                              onChange={(e) => setStartDate(e.target.value)}
-                              placeholder="Filter by registration date"
-                              className="px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full shadow-sm"
-                          />
-                      </div>
-                  </div>
-              </div>
+        </div>
+        {/* Search and Filter Section */}
+        <div className="w-full sm:w-auto mt-3 sm:mt-0 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 p-0 m-0">
+          <div className="relative w-full sm:w-72 p-0 m-0">
+            <input
+              type="text"
+              placeholder="Search by Shop Name, Email, Phone, or Shop ID..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="px-3 sm:px-4 py-2 pl-9 sm:pl-10 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full shadow-sm text-sm sm:text-base"
+            />
+            <FiSearch className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+          </div>
+          <div className="flex gap-2 sm:gap-4 w-full sm:w-auto p-0 m-0">
+            <div className="relative w-full sm:w-auto p-0 m-0">
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                placeholder="Filter by registration date"
+                className="px-3 sm:px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full shadow-sm text-sm sm:text-base"
+              />
             </div>
+          </div>
+        </div>
+      </div>
       {/* Main Content */}
-      <div className="w-full min-h-[70vh] relative overflow-hidden">
-        {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-indigo-100/30 to-purple-100/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-pink-100/30 to-blue-100/30 rounded-full blur-3xl"></div>
-
-        <div className="w-full relative z-10">
-              <DataGrid
-                rows={filteredSellers}
-                columns={columns}
-            pageSize={10}
-                disableSelectionOnClick
-                autoHeight
-            className="!border-none"
-            getRowHeight={() => 'auto'}
-            rowHeight={90}
-                componentsProps={{
-              footer: {
-                sx: {
-                  position: 'relative',
-                  overflow: 'visible'
+      <div className="w-full relative overflow-hidden p-0 m-0">
+        {/* Background decoration removed */}
+        <div className="w-full relative z-10 overflow-x-auto p-0 m-0">
+          <div className="w-full min-w-0 sm:min-w-full p-0 m-0">
+            <DataGrid
+              rows={filteredSellers}
+              columns={columns}
+              pageSize={10}
+              disableSelectionOnClick
+              autoHeight
+              className="!border-none"
+              getRowHeight={() => (window.innerWidth < 640 ? 60 : 'auto')}
+              rowHeight={window.innerWidth < 640 ? 60 : 90}
+              componentsProps={{
+                footer: {
+                  sx: {
+                    position: 'relative',
+                    overflow: 'visible'
+                  }
+                },
+                panel: {
+                  sx: {
+                    overflow: 'visible'
+                  }
                 }
-              },
-              panel: {
-                sx: {
-                  overflow: 'visible'
+              }}
+              sx={{
+                '& .MuiDataGrid-root': {
+                  border: 'none !important',
+                  background: 'transparent !important',
+                  borderRadius: '20px !important',
+                  overflow: 'hidden !important'
+                },
+                '& .MuiDataGrid-main': {
+                  overflow: 'visible !important'
+                },
+                '& .MuiDataGrid-virtualScroller': {
+                  marginTop: '8px !important',
+                  overflow: 'visible !important'
+                },
+                '& .MuiDataGrid-virtualScrollerContent': {
+                  padding: '0 12px !important',
+                  overflow: 'visible !important'
+                },
+                '& .MuiDataGrid-virtualScrollerRenderZone': {
+                  transform: 'none !important',
+                  position: 'relative !important',
+                  overflow: 'visible !important'
+                },
+                '& .MuiDataGrid-footerContainer': {
+                  position: 'relative !important',
+                  overflow: 'visible !important',
+                  marginTop: '20px !important',
+                  background: 'transparent !important',
+                  borderTop: '1px solid rgba(226, 232, 240, 0.5) !important'
+                },
+                '& .MuiDataGrid-panel': {
+                  overflow: 'visible !important'
+                },
+                '& .MuiDataGrid-panelContent': {
+                  overflow: 'visible !important'
+                },
+                '& .MuiDataGrid-cell': {
+                  display: 'flex !important',
+                  alignItems: 'center !important',
+                  justifyContent: 'flex-start !important',
+                  padding: window.innerWidth < 640 ? '10px 8px !important' : '20px 24px !important',
+                  height: '100% !important',
+                  minHeight: window.innerWidth < 640 ? '60px !important' : '90px !important',
+                  borderBottom: '1px solid rgba(226, 232, 240, 0.3) !important',
+                  overflow: 'visible !important',
+                  background: 'transparent !important',
+                  transition: 'all 0.3s ease !important'
+                },
+                '& .MuiDataGrid-cell:hover': {
+                  background: 'rgba(255, 255, 255, 0.1) !important',
+                  transform: 'translateY(-1px) !important'
+                },
+                '& .MuiDataGrid-columnHeader': {
+                  padding: window.innerWidth < 640 ? '10px !important' : '24px !important',
+                  height: 'auto !important',
+                  minHeight: window.innerWidth < 640 ? '40px !important' : '80px !important',
+                  alignItems: 'center !important',
+                  whiteSpace: 'normal !important',
+                  background: 'transparent !important',
+                  borderBottom: '2px solid rgba(79, 70, 229, 0.2) !important',
+                  overflow: 'visible !important'
+                },
+                '& .MuiDataGrid-columnHeaderTitle': {
+                  fontWeight: '800 !important',
+                  color: '#1e293b !important',
+                  whiteSpace: 'normal !important',
+                  lineHeight: '1.3 !important',
+                  display: 'flex !important',
+                  alignItems: 'center !important',
+                  textTransform: 'uppercase !important',
+                  fontSize: window.innerWidth < 640 ? '0.75rem !important' : '0.85rem !important',
+                  letterSpacing: '0.1em !important',
+                  height: 'auto !important',
+                  minHeight: '40px !important',
+                  overflow: 'visible !important',
+                  textOverflow: 'unset !important'
+                },
+                '& .MuiDataGrid-columnHeaders': {
+                  background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%) !important',
+                  borderBottom: '2px solid rgba(79, 70, 229, 0.2) !important',
+                  overflow: 'visible !important',
+                  backdropFilter: 'blur(10px) !important'
+                },
+                '& .MuiDataGrid-row': {
+                  minHeight: window.innerWidth < 640 ? '60px !important' : '90px !important',
+                  marginBottom: '4px !important',
+                  overflow: 'visible !important',
+                  borderRadius: '12px !important',
+                  transition: 'all 0.3s ease !important'
+                },
+                '& .MuiDataGrid-row:hover': {
+                  background: 'rgba(255, 255, 255, 0.9) !important',
+                  transform: 'translateY(-2px) !important',
+                  boxShadow: '0 8px 25px rgba(0, 0, 0, 0.1) !important'
+                },
+                '& .MuiDataGrid-virtualScrollerContent': {
+                  overflow: 'visible !important'
+                },
+                '& .MuiDataGrid-virtualScrollerRenderZone': {
+                  overflow: 'visible !important'
+                },
+                '& .MuiTablePagination-root': {
+                  color: '#64748b !important',
+                  fontWeight: '600 !important'
+                },
+                '& .MuiTablePagination-selectIcon': {
+                  color: '#6366f1 !important'
+                },
+                '& .MuiIconButton-root': {
+                  color: '#6366f1 !important',
+                  transition: 'all 0.3s ease !important'
+                },
+                '& .MuiIconButton-root:hover': {
+                  background: 'rgba(99, 102, 241, 0.1) !important',
+                  transform: 'scale(1.1) !important'
                 }
-              }
-            }}
-            sx={{
-              '& .MuiDataGrid-root': {
-                border: 'none !important',
-                background: 'transparent !important',
-                borderRadius: '20px !important',
-                overflow: 'hidden !important'
-              },
-              '& .MuiDataGrid-main': {
-                overflow: 'visible !important'
-              },
-              '& .MuiDataGrid-virtualScroller': {
-                marginTop: '8px !important',
-                overflow: 'visible !important'
-              },
-              '& .MuiDataGrid-virtualScrollerContent': {
-                padding: '0 12px !important',
-                overflow: 'visible !important'
-              },
-              '& .MuiDataGrid-virtualScrollerRenderZone': {
-                transform: 'none !important',
-                position: 'relative !important',
-                overflow: 'visible !important'
-              },
-              '& .MuiDataGrid-footerContainer': {
-                position: 'relative !important',
-                overflow: 'visible !important',
-                marginTop: '20px !important',
-                background: 'transparent !important',
-                borderTop: '1px solid rgba(226, 232, 240, 0.5) !important'
-              },
-              '& .MuiDataGrid-panel': {
-                overflow: 'visible !important'
-              },
-              '& .MuiDataGrid-panelContent': {
-                overflow: 'visible !important'
-              },
-              '& .MuiDataGrid-cell': {
-                display: 'flex !important',
-                alignItems: 'center !important',
-                justifyContent: 'flex-start !important',
-                padding: '20px 24px !important',
-                height: '100% !important',
-                minHeight: '90px !important',
-                borderBottom: '1px solid rgba(226, 232, 240, 0.3) !important',
-                overflow: 'visible !important',
-                background: 'transparent !important',
-                transition: 'all 0.3s ease !important'
-              },
-              '& .MuiDataGrid-cell:hover': {
-                background: 'rgba(255, 255, 255, 0.1) !important',
-                transform: 'translateY(-1px) !important'
-              },
-              '& .MuiDataGrid-columnHeader': {
-                padding: '24px !important',
-                height: 'auto !important',
-                minHeight: '80px !important',
-                alignItems: 'center !important',
-                whiteSpace: 'normal !important',
-                background: 'transparent !important',
-                borderBottom: '2px solid rgba(79, 70, 229, 0.2) !important',
-                overflow: 'visible !important'
-              },
-              '& .MuiDataGrid-columnHeaderTitle': {
-                fontWeight: '800 !important',
-                color: '#1e293b !important',
-                whiteSpace: 'normal !important',
-                lineHeight: '1.3 !important',
-                display: 'flex !important',
-                alignItems: 'center !important',
-                textTransform: 'uppercase !important',
-                fontSize: '0.85rem !important',
-                letterSpacing: '0.1em !important',
-                height: 'auto !important',
-                minHeight: '40px !important',
-                overflow: 'visible !important',
-                textOverflow: 'unset !important'
-              },
-              '& .MuiDataGrid-columnHeaders': {
-                background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%) !important',
-                borderBottom: '2px solid rgba(79, 70, 229, 0.2) !important',
-                overflow: 'visible !important',
-                backdropFilter: 'blur(10px) !important'
-              },
-              '& .MuiDataGrid-row': {
-                minHeight: '90px !important',
-                marginBottom: '4px !important',
-                overflow: 'visible !important',
-                borderRadius: '12px !important',
-                transition: 'all 0.3s ease !important'
-              },
-              '& .MuiDataGrid-row:hover': {
-                background: 'rgba(255, 255, 255, 0.9) !important',
-                transform: 'translateY(-2px) !important',
-                boxShadow: '0 8px 25px rgba(0, 0, 0, 0.1) !important'
-              },
-              '& .MuiDataGrid-virtualScrollerContent': {
-                overflow: 'visible !important'
-              },
-              '& .MuiDataGrid-virtualScrollerRenderZone': {
-                overflow: 'visible !important'
-              },
-              '& .MuiTablePagination-root': {
-                color: '#64748b !important',
-                fontWeight: '600 !important'
-              },
-              '& .MuiTablePagination-selectIcon': {
-                color: '#6366f1 !important'
-              },
-              '& .MuiIconButton-root': {
-                color: '#6366f1 !important',
-                transition: 'all 0.3s ease !important'
-              },
-              '& .MuiIconButton-root:hover': {
-                background: 'rgba(99, 102, 241, 0.1) !important',
-                transform: 'scale(1.1) !important'
-              }
-            }}
-          />
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>
