@@ -178,6 +178,21 @@ const AllProducts = () => {
       ),
     },
     {
+      field: "unit",
+      headerName: "Unit",
+      minWidth: 120,
+      flex: 1,
+      headerClassName: 'custom-header',
+      cellClassName: 'custom-cell',
+      renderCell: (params) => (
+        <div className="flex items-center">
+          <div className="bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 px-3 py-1.5 rounded-lg font-semibold text-sm shadow-sm border border-purple-200">
+            {params.value}
+          </div>
+        </div>
+      ),
+    },
+    {
       field: "sold",
       headerName: "Sold",
       minWidth: 130,
@@ -237,6 +252,7 @@ const AllProducts = () => {
       name: item.name,
       price: item.discountPrice,
       stock: item.stock,
+      unit: item.unitCount && item.unit ? `${item.unitCount} ${item.unit}` : 'N/A',
       sold: item.sold_out,
       images: item.images,
       description: item.description,

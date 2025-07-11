@@ -4,6 +4,7 @@ import {
     AiOutlineHeart,
     AiOutlineMessage,
     AiOutlineShoppingCart,
+    AiOutlineTag,
 } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
@@ -129,6 +130,16 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                                             {data.name}
                                         </h1>
                                         <p>{data.description}</p>
+
+                                        {/* Unit Information */}
+                                        {data?.unitCount && data?.unit && (
+                                            <div className='flex items-center mt-3 mb-2'>
+                                                <AiOutlineTag className="text-gray-400 mr-2" size={16} />
+                                                <span className="text-gray-700 text-sm font-medium">
+                                                    Unit: {data.unitCount} {data.unit}
+                                                </span>
+                                            </div>
+                                        )}
 
                                         <div className='flex  pt-3 '>
                                             <h4 className={`${styles.productDiscountPrice}`}>

@@ -78,7 +78,7 @@ const AllOrders = () => {
     console.log('Redux orders:', safeOrders);
 
     // Show all orders, sorted by most recent
-    const filteredOrders = safeOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    const filteredOrders = Array.from(safeOrders).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     console.log('Filtered orders:', filteredOrders);
 
     const row = [];

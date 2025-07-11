@@ -23,6 +23,7 @@ const EditProduct = () => {
     discountPrice: "",
     stock: "",
     unit: "",
+    unitCount: "",
     maxPurchaseQuantity: ""
   });
   const [categories, setCategories] = useState([]);
@@ -58,6 +59,7 @@ const EditProduct = () => {
         discountPrice: product.discountPrice,
         stock: product.stock,
         unit: product.unit,
+        unitCount: product.unitCount,
         maxPurchaseQuantity: product.maxPurchaseQuantity
       });
       setImages(product.images);
@@ -139,7 +141,7 @@ const EditProduct = () => {
     e.preventDefault();
     if (!formData.name || !formData.description || !formData.category || !formData.subcategory || 
         !formData.originalPrice || !formData.discountPrice || !formData.stock || !formData.unit || 
-        !formData.maxPurchaseQuantity || images.length === 0) {
+        !formData.unitCount || !formData.maxPurchaseQuantity || images.length === 0) {
       toast.error("Please fill in all required fields");
       return;
     }

@@ -148,6 +148,16 @@ const ProductCard = ({ data, isEvent }) => {
                     <span className="text-gray-500 text-sm ml-2">({data?.ratings})</span>
                 </div>
 
+                {/* Unit Information */}
+                {data?.unitCount && data?.unit && (
+                    <div className='flex items-center mb-2'>
+                        <AiOutlineTag className="text-gray-400 mr-1" size={14} />
+                        <span className="text-gray-600 text-sm font-medium">
+                            {data.unitCount} {data.unit}
+                        </span>
+                    </div>
+                )}
+
                 <div className='py-2 flex items-center justify-between flex-wrap gap-2'>
                     <div className='flex items-center'>
                         <h5 className={`${styles.productDiscountPrice} text-red-500 font-bold`}>
