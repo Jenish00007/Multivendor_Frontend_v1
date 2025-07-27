@@ -354,10 +354,25 @@ const EditProduct = () => {
                     >
                       <option value="">Select unit</option>
                       <option value="kg">Kilogram (kg)</option>
+                      <option value="g">Gram (g)</option>
                       <option value="pcs">Pieces (pcs)</option>
-                      <option value="lr">Liter (lr)</option>
-                      <option value="Pack">Pack</option>
+                      <option value="ltr">Liter (ltr)</option>
+                      <option value="ml">Milliliter (ml)</option>
+                      <option value="pack">Pack</option>
                     </select>
+                  </div>
+                  <div className="flex flex-col">
+                    <label className="mb-2 text-sm font-medium text-gray-700">Unit Count *</label>
+                    <input
+                      type="number"
+                      name="unitCount"
+                      value={formData.unitCount}
+                      onChange={handleNumberInputChange}
+                      required
+                      placeholder="1"
+                      min="1"
+                      className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:bg-white transition-all duration-300 outline-none text-gray-800 hover:border-gray-300"
+                    />
                   </div>
                   <div className="flex flex-col">
                     <label className="mb-2 text-sm font-medium text-gray-700">Max Purchase Quantity *</label>
@@ -450,9 +465,9 @@ const EditProduct = () => {
                 <div className="flex flex-col sm:flex-row gap-4 items-center">
                   <button
                     type="submit"
-                    disabled={loading || !formData.name || !formData.description || !formData.category || !formData.subcategory || !formData.originalPrice || !formData.discountPrice || !formData.stock || !formData.unit || !formData.maxPurchaseQuantity || images.length === 0}
+                    disabled={loading || !formData.name || !formData.description || !formData.category || !formData.subcategory || !formData.originalPrice || !formData.discountPrice || !formData.stock || !formData.unit || !formData.unitCount || !formData.maxPurchaseQuantity || images.length === 0}
                     className={`flex-1 py-3 px-6 rounded-xl font-bold text-white transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-lg ${
-                      loading || !formData.name || !formData.description || !formData.category || !formData.subcategory || !formData.originalPrice || !formData.discountPrice || !formData.stock || !formData.unit || !formData.maxPurchaseQuantity || images.length === 0
+                      loading || !formData.name || !formData.description || !formData.category || !formData.subcategory || !formData.originalPrice || !formData.discountPrice || !formData.stock || !formData.unit || !formData.unitCount || !formData.maxPurchaseQuantity || images.length === 0
                         ? 'bg-gray-400 cursor-not-allowed'
                         : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-blue-500/25 hover:shadow-xl'
                     }`}
@@ -473,7 +488,7 @@ const EditProduct = () => {
                   {/* Form validation hints */}
                   <div className="text-center sm:text-right">
                     <p className="text-sm text-gray-500">
-                      {!formData.name || !formData.description || !formData.category || !formData.subcategory || !formData.originalPrice || !formData.discountPrice || !formData.stock || !formData.unit || !formData.maxPurchaseQuantity || images.length === 0
+                      {!formData.name || !formData.description || !formData.category || !formData.subcategory || !formData.originalPrice || !formData.discountPrice || !formData.stock || !formData.unit || !formData.unitCount || !formData.maxPurchaseQuantity || images.length === 0
                         ? 'Fill all required fields'
                         : 'Ready to update!'
                       }
