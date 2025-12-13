@@ -309,19 +309,19 @@ const AllCategories = () => {
   ];
 
   return (
-    <div className="w-full p-8 min-h-screen" style={{ background: 'linear-gradient(135deg, #f5f4f9 0%, #e8e6f2 50%, #f5f4f9 100%)' }}>
+    <div className="w-full p-8 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
         <div className="relative">
           <div className="flex items-center gap-6">
             <div className="relative">
-              <div className="p-4 rounded-3xl shadow-2xl" style={{ background: '#645faa' }}>
+              <div className="p-4 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl shadow-2xl">
                 <AiOutlineAppstore className="text-4xl text-white filter drop-shadow-lg" />
               </div>
               <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full shadow-lg"></div>
             </div>
             <div>
-              <div className="font-black text-4xl font-Poppins leading-tight" style={{ color: '#645faa' }}>
+              <div className="font-black text-4xl font-Poppins bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent leading-tight">
                 All Categories
               </div>
               <div className="text-gray-600 text-lg mt-2 font-medium">
@@ -376,10 +376,7 @@ const AllCategories = () => {
                 setImagePreview(null);
                 setOpen(true);
               }}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 text-white rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
-              style={{ background: '#645faa' }}
-              onMouseEnter={(e) => e.target.style.background = '#5a5599'}
-              onMouseLeave={(e) => e.target.style.background = '#645faa'}
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               <AiOutlinePlus size={18} />
               <span className="text-sm font-medium">Add New Category</span>

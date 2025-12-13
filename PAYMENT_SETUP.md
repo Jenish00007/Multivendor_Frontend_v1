@@ -98,9 +98,9 @@ Content-Type: application/json
 
 {
   "amount": 1000,
-  "email": "qauds.info@gmail.com",
+  "email": "user@example.com",
   "name": "User Name",
-  "contact": "9591727966"
+  "contact": "9876543210"
 }
 ```
 

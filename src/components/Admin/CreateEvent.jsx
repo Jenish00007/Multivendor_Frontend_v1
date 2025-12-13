@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiGift, FiCalendar, FiPackage, FiTag, FiX } from "react-icons/fi";
-import { BsCurrencyRupee } from "react-icons/bs";
+import { FiGift, FiCalendar, FiDollarSign, FiPackage, FiTag, FiX } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { createAdminEvent } from "../../redux/actions/event";
 import { getAllCategories } from "../../redux/actions/category";
@@ -196,7 +195,7 @@ const CreateEvent = () => {
                             {/* Original Price */}
                             <div>
                                 <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
-                                    <BsCurrencyRupee className="mr-2 text-green-500" />
+                                    <FiDollarSign className="mr-2 text-green-500" />
                                     Original Price <span className="text-red-500 ml-1">*</span>
                                 </label>
                                 <input
@@ -212,7 +211,7 @@ const CreateEvent = () => {
                             {/* Discount Price */}
                             <div>
                                 <label className="flex items-center text-sm font-semibold text-gray-700 mb-2">
-                                    <BsCurrencyRupee className="mr-2 text-red-500" />
+                                    <FiDollarSign className="mr-2 text-red-500" />
                                     Discount Price <span className="text-red-500 ml-1">*</span>
                                 </label>
                                 <input

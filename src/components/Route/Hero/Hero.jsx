@@ -76,7 +76,7 @@ const Hero = () => {
                 >
                     <h1 className="text-[28px] leading-[1.2] sm:text-[40px] md:text-[50px] lg:text-[60px] 800px:text-[70px] font-[700] capitalize text-white drop-shadow-lg">
                         <Typewriter 
-                            text="Buy and Sell"
+                            text="Fresh Groceries"
                             speed={150}
                             delay={500}
                             onComplete={handleFirstLineComplete}
@@ -91,7 +91,7 @@ const Hero = () => {
                                 transition={{ duration: 0.5 }}
                             >
                                 <Typewriter 
-                                    text="Anything, Anywhere"
+                                    text="Delivered to Your Door"
                                     speed={100}
                                     delay={0}
                                     restart={restartAnimation}
@@ -106,8 +106,8 @@ const Hero = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 2.5 }}
                     >
-                        Find great deals on cars, electronics, furniture, property, and more in your local area. 
-                        Post free classified ads and connect with buyers and sellers in your neighborhood.
+                        Discover our wide selection of fresh fruits, vegetables, dairy products, and pantry essentials. 
+                        Shop from the comfort of your home and get your groceries delivered right to your doorstep.
                     </motion.p>
 
                     <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8">
@@ -122,9 +122,9 @@ const Hero = () => {
                                         <AiOutlineShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
                                     </span>
                                     <span className="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform group-hover:translate-x-full ease">
-                                        Browse Ads
+                                        Shop Now
                                     </span>
-                                    <span className="relative invisible">Browse Ads</span>
+                                    <span className="relative invisible">Shop Now</span>
                                 </button>
                             </motion.div>
                         </Link>
@@ -148,10 +148,10 @@ const Hero = () => {
                     {/* Features section */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-8 sm:mt-12">
                         {[
-                            { text: "Free Ads", icon: "📢" },
-                            { text: "Local Deals", icon: "📍" },
-                            { text: "Safe Trading", icon: "🛡️" },
-                            { text: "Easy Contact", icon: "💬" }
+                            { text: "Free Delivery", icon: "🚚" },
+                            { text: "24/7 Support", icon: "💬" },
+                            { text: "Fresh Products", icon: "✨" },
+                            { text: "Secure Payment", icon: "🔒" }
                         ].map((feature, index) => (
                             <motion.div
                                 key={index}

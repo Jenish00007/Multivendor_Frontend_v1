@@ -29,28 +29,28 @@ const Faq = () => {
 
     const faqData = [
         {
-            question: "How do I post a free ad?",
-            answer: "To post a free ad, simply create an account, click on 'Post Ad', fill in your item details with photos, set your price, and publish. It's that easy! Your ad will be live immediately."
+            question: "What is your return policy?",
+            answer: "If you're not satisfied with your purchase, we accept returns within 30 days of delivery. To initiate a return, please email us at support@myecommercestore.com with your order number and a brief explanation of why you're returning the item."
         },
         {
-            question: "How do I contact a seller?",
-            answer: "Once you find an ad you're interested in, click on it to view details. You'll see a 'Contact Seller' button which allows you to send a message directly to the seller. They'll receive a notification and can respond to you."
+            question: "How do I track my order?",
+            answer: "You can track your order by clicking the tracking link in your shipping confirmation email, or by logging into your account on our website and viewing the order details."
         },
         {
             question: "How do I contact customer support?",
-            answer: "You can contact our customer support team by emailing us at qauds.info@gmail.com, or by calling us at (555) 123-4567 between the hours of 9am and 5pm EST, Monday through Friday."
+            answer: "You can contact our customer support team by emailing us at support@myecommercestore.com, or by calling us at (555) 123-4567 between the hours of 9am and 5pm EST, Monday through Friday."
         },
         {
-            question: "How do I edit or delete my ad?",
-            answer: "To edit your ad, go to 'My Ads' in your profile, find the ad you want to edit, and click 'Edit'. To delete an ad, click 'Delete' from the same section. Changes take effect immediately."
+            question: "Can I change or cancel my order?",
+            answer: "Unfortunately, once an order has been placed, we are not able to make changes or cancellations. If you no longer want the items you've ordered, you can return them for a refund within 30 days of delivery."
         },
         {
-            question: "Is it safe to buy and sell on OLX?",
-            answer: "Yes! We provide safety tips and guidelines for all users. Always meet in public places, inspect items before paying, and trust your instincts. Report any suspicious activity to our support team immediately."
+            question: "Do you offer international shipping?",
+            answer: "Currently, we only offer shipping within the United States."
         },
         {
-            question: "Are there any fees for posting ads?",
-            answer: "No! Posting ads is completely free. You can post as many ads as you want at no cost. We only charge for premium features like featured listings or ad promotions, which are optional."
+            question: "What payment methods do you accept?",
+            answer: "We accept visa, mastercard, paypal payment method also we have cash on delivery system."
         }
     ];
 
@@ -64,7 +64,7 @@ const Faq = () => {
                     Frequently Asked Questions
                 </h2>
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                    Find answers to common questions about posting ads, buying, selling, safety tips, and more.
+                    Find answers to common questions about our products, shipping, returns, and more.
                 </p>
             </div>
 

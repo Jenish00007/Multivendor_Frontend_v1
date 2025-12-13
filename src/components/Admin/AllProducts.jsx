@@ -183,7 +183,7 @@ const AllProduct = () => {
       cellClassName: 'custom-cell',
       renderCell: (params) => (
         <div className="flex items-center">
-          <div className="px-3 py-1.5 rounded-lg font-semibold text-sm shadow-sm border" style={{ background: 'rgba(100, 95, 170, 0.1)', color: '#645faa', borderColor: 'rgba(100, 95, 170, 0.2)' }}>
+          <div className="bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 px-3 py-1.5 rounded-lg font-semibold text-sm shadow-sm border border-purple-200">
             {params.value}
           </div>
         </div>
@@ -198,7 +198,7 @@ const AllProduct = () => {
       cellClassName: 'custom-cell',
       renderCell: (params) => (
         <div className="flex items-center">
-          <div className="px-3 py-1.5 rounded-lg font-semibold text-sm shadow-sm border" style={{ background: 'rgba(100, 95, 170, 0.1)', color: '#645faa', borderColor: 'rgba(100, 95, 170, 0.2)' }}>
+          <div className="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 px-3 py-1.5 rounded-lg font-semibold text-sm shadow-sm border border-blue-200">
             {params.value} sold
           </div>
         </div>
@@ -215,10 +215,7 @@ const AllProduct = () => {
         return (
           <div className="flex items-center justify-start gap-2 w-full">
             <button 
-              className="group flex items-center justify-center w-10 h-10 rounded-xl text-white transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
-              style={{ background: '#645faa' }}
-              onMouseEnter={(e) => e.target.style.background = '#5a5599'}
-              onMouseLeave={(e) => e.target.style.background = '#645faa'}
+              className="group flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
               onClick={() => openModal(params.row)}
               title="Preview Product"
             >
@@ -267,19 +264,19 @@ const AllProduct = () => {
   });
 
   return (
-    <div className="w-full p-0 m-0 min-h-screen" style={{ background: 'linear-gradient(135deg, #f5f4f9 0%, #e8e6f2 50%, #f5f4f9 100%)' }}>
+    <div className="w-full p-0 m-0 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-2 sm:gap-4 p-0 m-0">
         <div className="relative p-0 m-0">
           <div className="flex items-center gap-2 sm:gap-6 p-0 m-0">
             <div className="relative p-0 m-0">
-              <div className="p-2 sm:p-4 rounded-2xl sm:rounded-3xl shadow-2xl" style={{ background: '#645faa' }}>
+              <div className="p-2 sm:p-4 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl sm:rounded-3xl shadow-2xl">
                 <span className="text-2xl sm:text-5xl filter drop-shadow-lg">📦</span>
               </div>
-              <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 w-4 sm:w-6 h-4 sm:h-6 rounded-full shadow-lg" style={{ background: '#8b87c4' }}></div>
+              <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 w-4 sm:w-6 h-4 sm:h-6 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full shadow-lg"></div>
             </div>
             <div className="p-0 m-0">
-              <div className="font-black text-2xl sm:text-4xl font-Poppins leading-tight" style={{ color: '#645faa' }}>
+              <div className="font-black text-2xl sm:text-4xl font-Poppins bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent leading-tight">
                 All Products
               </div>
               <div className="text-gray-600 text-base sm:text-lg mt-1 sm:mt-2 font-medium">
@@ -288,7 +285,7 @@ const AllProduct = () => {
               <div className="text-xs sm:text-sm text-gray-500 mt-1">
                 {filteredProducts.length} products total
                 {(searchTerm || startDate) && (
-                  <span className="ml-1 sm:ml-2 font-medium" style={{ color: '#645faa' }}>
+                  <span className="ml-1 sm:ml-2 text-blue-600 font-medium">
                     (Filtered from {allProducts?.length || 0} total)
                   </span>
                 )}
@@ -307,10 +304,7 @@ const AllProduct = () => {
               placeholder="Search by name, ID, category, subcategory..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full sm:w-[300px] pl-10 pr-2 sm:pr-4 py-2 rounded-xl border transition-all duration-300 text-sm sm:text-base"
-              style={{ borderColor: 'rgba(100, 95, 170, 0.3)' }}
-              onFocus={(e) => e.target.style.borderColor = '#645faa'}
-              onBlur={(e) => e.target.style.borderColor = 'rgba(100, 95, 170, 0.3)'}
+              className="w-full sm:w-[300px] pl-10 pr-2 sm:pr-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300 text-sm sm:text-base"
             />
             <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
               <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
@@ -321,10 +315,7 @@ const AllProduct = () => {
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full sm:w-auto px-2 sm:px-4 py-2 rounded-xl border transition-all duration-300 text-sm sm:text-base"
-              style={{ borderColor: 'rgba(100, 95, 170, 0.3)' }}
-              onFocus={(e) => e.target.style.borderColor = '#645faa'}
-              onBlur={(e) => e.target.style.borderColor = 'rgba(100, 95, 170, 0.3)'}
+              className="w-full sm:w-auto px-2 sm:px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300 text-sm sm:text-base"
             />
           </div>
         </div>
@@ -414,7 +405,7 @@ const AllProduct = () => {
 
             <div className="inline-block align-bottom bg-white rounded-2xl sm:rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full border border-white/20 w-full max-w-lg sm:max-w-5xl">
               {/* Modal Header */}
-              <div className="px-3 sm:px-6 py-3 sm:py-4" style={{ background: '#645faa' }}>
+              <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-3 sm:px-6 py-3 sm:py-4">
                 <div className="flex justify-between items-center">
                   <h3 className="text-lg sm:text-2xl font-bold text-white flex items-center gap-2 sm:gap-3">
                     <div className="p-1 sm:p-2 bg-white/20 rounded-xl backdrop-blur-sm">
@@ -466,7 +457,7 @@ const AllProduct = () => {
                   <div className="space-y-4 sm:space-y-6">
                     <div className="space-y-2 sm:space-y-3">
                       <h4 className="text-xl sm:text-3xl font-bold text-gray-900 leading-tight">{selectedProduct.name || "Product Name"}</h4>
-                      <div className="inline-block px-2 sm:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm shadow-sm" style={{ background: 'rgba(100, 95, 170, 0.1)', color: '#645faa' }}>
+                      <div className="inline-block px-2 sm:px-4 py-1 sm:py-2 bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm shadow-sm">
                         {selectedProduct.category ? (typeof selectedProduct.category === 'object' ? selectedProduct.category.name : selectedProduct.category) : 'No Category'}
                       </div>
                     </div>

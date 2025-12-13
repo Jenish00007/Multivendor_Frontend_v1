@@ -1,6 +1,6 @@
 {
-  "short_name": "OLX",
-  "name": "OLX - Buy and Sell Anything",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",

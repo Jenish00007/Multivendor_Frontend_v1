@@ -13,12 +13,10 @@ const Signup = () => {
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
     const [visible, setVisible] = useState(false);
     const [avatar, setAvatar] = useState(null);
-    const [loading, setLoading] = useState(false);
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate()
 
     // fule upload
     const handleFileInputChange = (e) => {
@@ -28,27 +26,6 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
-        // Basic validation
-        if (!name || !email || !password || !phoneNumber || !avatar) {
-            toast.error("Please fill all required fields and upload an avatar");
-            return;
-        }
-
-        // Phone number validation (10 digits)
-        const phoneRegex = /^\d{10}$/;
-        if (!phoneRegex.test(phoneNumber)) {
-            toast.error("Please enter a valid 10-digit phone number");
-            return;
-        }
-
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            toast.error("Please enter a valid email address");
-            return;
-        }
-
         const config = { headers: { "Content-Type": "multipart/form-data" } };
         // meaning of uper line is that we are creating a new object with the name of config and the value of config is {headers:{'Content-Type':'multipart/form-data'}}  
 
@@ -58,28 +35,19 @@ const Signup = () => {
         // meanin of newForm.append("file",avatar) is that we are sending a file to the backend with the name of file and the value of the file is avatar
         newForm.append("name", name);
         newForm.append("email", email);
-        newForm.append("password", password);
-        newForm.append("phoneNumber", phoneNumber);
+        newForm.append("password", password)
 
-        setLoading(true);
 
         axios
             .post(`${server}/user/create-user`, newForm, config)
             .then((res) => {
-                toast.success(res.data.message || "Registration successful!");
+                toast.success(res.data.message);
                 setName("");
                 setEmail("");
                 setPassword("");
-                setPhoneNumber("");
-                setAvatar(null);
-                setLoading(false);
-                // Navigate to login page after successful registration
-                setTimeout(() => {
-                    navigate("/login");
-                }, 2000);
+                setAvatar();
             }).catch((error) => {
-                toast.error(error.response?.data?.message || "Registration failed");
-                setLoading(false);
+                toast.error(error.response.data.message);
             })
     }
 
@@ -95,15 +63,15 @@ const Signup = () => {
                     <form className='space-y-6' onSubmit={handleSubmit} >
                         {/* Full Name start */}
                         <div>
-                            <label htmlFor="name"
+                            <label htmlFor="email"
                                 className='block text-sm font-medium text-gray-700'
                             >
                                 Full Name
                             </label>
                             <div className='mt-1'>
                                 <input type="text"
-                                    name='name'
-                                    autoComplete='name'
+                                    name='text'
+                                    autoComplete='text'
                                     required
                                     placeholder='john doe'
                                     value={name}
@@ -135,29 +103,6 @@ const Signup = () => {
                             </div>
                         </div>
                         {/* Email address end */}
-
-                        {/* Phone Number */}
-                        <div>
-                            <label htmlFor="phoneNumber"
-                                className='block text-sm font-medium text-gray-700'
-                            >
-                                Phone Number
-                            </label>
-                            <div className='mt-1 relative'>
-                                <input
-                                    type="tel"
-                                    name='phoneNumber'
-                                    autoComplete='tel'
-                                    required
-                                    placeholder='Enter 10-digit phone number'
-                                    value={phoneNumber}
-                                    onChange={(e) => setPhoneNumber(e.target.value)}
-                                    className='appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm'
-                                />
-                            </div>
-                        </div>
-                        {/* Phone Number end */}
-
                         {/* Password start */}
                         <div>
                             <label htmlFor="password"
@@ -168,7 +113,7 @@ const Signup = () => {
                             <div className='mt-1 relative'>
                                 <input type={visible ? "text" : "password"}
                                     name='password'
-                                    autoComplete='new-password'
+                                    autoComplete='password'
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -232,12 +177,9 @@ const Signup = () => {
                         <div>
                             <button
                                 type='submit'
-                                disabled={loading}
-                                className={`group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                                    loading ? 'opacity-50 cursor-not-allowed' : ''
-                                }`}
+                                className=' className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"'
                             >
-                                {loading ? 'Registering...' : 'Submit'}
+                                Submit
                             </button>
                         </div>
 

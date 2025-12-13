@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaUserShield } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
@@ -164,6 +164,12 @@ const AdminLogin = () => {
                                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900 cursor-pointer">
                                     Remember me
                                 </label>
+                            </div>
+
+                            <div className="text-sm">
+                                <Link to="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out">
+                                    Forgot your password?
+                                </Link>
                             </div>
                         </div>
 

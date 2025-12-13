@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styles from "../../../styles/styles";
@@ -7,8 +7,6 @@ import ProductCard from "../ProductCard/ProductCard";
 const BestDeals = () => {
   const [data, setData] = useState([]);
   const { allProducts } = useSelector((state) => state.products);
-  const scrollContainerRef = useRef(null);
-
   useEffect(() => {
     const allProductsData = allProducts ? [...allProducts] : [];
     const sortedData = allProductsData?.sort((a, b) => b.sold_out - a.sold_out);
@@ -16,23 +14,11 @@ const BestDeals = () => {
     setData(firstSix);
   }, [allProducts]);
 
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -400, behavior: 'smooth' });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 400, behavior: 'smooth' });
-    }
-  };
-
   return (
     <div>
       <div className={`${styles.section}`}>
         <div className={`${styles.heading} flex items-center justify-between`}>
-          <h1>Popular Ads</h1>
+          <h1>Best Deals</h1>
           {data && data.length > 0 && (
             <Link
               to="/view-all/best-deals"
@@ -54,69 +40,14 @@ const BestDeals = () => {
             </Link>
           )}
         </div>
-        
-        {data && data.length > 0 ? (
-          <div className="relative">
-            {/* Scroll Navigation Buttons */}
-            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10">
-              <button
-                onClick={scrollLeft}
-                className="w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-200 backdrop-blur-sm border border-gray-200"
-                title="Scroll Left"
-              >
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-            </div>
-            
-            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10">
-              <button
-                onClick={scrollRight}
-                className="w-10 h-10 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-200 backdrop-blur-sm border border-gray-200"
-                title="Scroll Right"
-              >
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Horizontal Scroll Container */}
-            <div 
-              ref={scrollContainerRef}
-              className="flex overflow-x-auto gap-6 pb-4 scrollbar-hide horizontal-scroll custom-scrollbar px-12"
-            >
+        <div className="grid grid-cols-2 gap-[15px] sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-[20px] md:gap-[25px] lg:gap-[25px] xl:gap-[30px] mb-12 border-0">
+          {data && data.length !== 0 && (
+            <>
               {data &&
-                data.map((i, index) => (
-                  <div key={index} className="flex-shrink-0 w-72 md:w-80 lg:w-96">
-                    <ProductCard data={i} />
-                  </div>
-                ))}
-            </div>
-            
-            {/* Enhanced Scroll Indicator */}
-            <div className="flex justify-center mt-6">
-              <div className="flex items-center gap-2">
-                <div className="w-32 h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div className="w-1/3 h-full bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full transition-all duration-300"></div>
-                </div>
-                <span className="text-sm text-gray-500 font-medium">
-                  {data.length > 6 ? `1-6 of ${data.length}` : `${data.length} ads`}
-                </span>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-              <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
-            </div>
-            <p className="text-gray-500 text-lg">No popular ads available</p>
-          </div>
-        )}
+                data.map((i, index) => <ProductCard data={i} key={index} />)}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

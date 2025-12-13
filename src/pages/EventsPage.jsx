@@ -52,8 +52,8 @@ const EventsPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             {/* Header Section */}
             <div className="text-center mb-12">
-              <h1 className="text-4xl font-bold text-gray-900 mb-4">All Offers</h1>
-              <p className="text-lg text-gray-600">Discover amazing deals and exclusive promotions</p>
+              <h1 className="text-4xl font-bold text-gray-900 mb-4">All Events</h1>
+              <p className="text-lg text-gray-600">Discover amazing deals and exclusive offers</p>
             </div>
 
             {/* Search and Filter Section */}
@@ -62,7 +62,7 @@ const EventsPage = () => {
                 <div className="flex-1 relative">
                   <input
                     type="text"
-                    placeholder="Search offers..."
+                    placeholder="Search events..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200"
@@ -96,9 +96,9 @@ const EventsPage = () => {
                 <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6">
                   <AiOutlineCalendar size={40} className="text-gray-400" />
                 </div>
-                <h3 className="text-xl font-medium text-gray-900 mb-3">No Offers Found</h3>
+                <h3 className="text-xl font-medium text-gray-900 mb-3">No Events Found</h3>
                 <p className="text-gray-500 text-center max-w-md">
-                  {searchTerm ? "No offers match your search criteria. Try different keywords." : "There are currently no offers to display. Check back later for exciting promotions and deals!"}
+                  {searchTerm ? "No events match your search criteria. Try different keywords." : "There are currently no events to display. Check back later for exciting promotions and offers!"}
                 </p>
               </div>
             )}
