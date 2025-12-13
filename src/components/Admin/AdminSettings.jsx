@@ -110,10 +110,10 @@ const AdminSettings = () => {
   };
 
   return (
-    <div className="w-full p-4 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <div className="w-full p-4 min-h-screen" style={{ background: 'linear-gradient(135deg, #f5f4f9 0%, #e8e6f2 50%, #f5f4f9 100%)' }}>
       <div className="w-full bg-white rounded-xl shadow-xl p-8">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold text-gray-800">Admin Settings</h1>
+          <h1 className="text-2xl font-bold" style={{ color: '#645faa' }}>Admin Settings</h1>
         </div>
 
         <div className="w-full flex flex-col items-center">
@@ -121,13 +121,14 @@ const AdminSettings = () => {
             <img
               src={user?.avatar || "https://avatar.iran.liara.run/public/boy"}
               alt=""
-              className="w-[150px] h-[150px] rounded-full object-cover border-4 border-blue-500"
+              className="w-[150px] h-[150px] rounded-full object-cover border-4"
+              style={{ borderColor: '#645faa' }}
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = "https://avatar.iran.liara.run/public/boy";
               }}
             />
-            <div className="w-[30px] h-[30px] bg-blue-500 rounded-full flex items-center justify-center cursor-pointer absolute bottom-[5px] right-[5px]">
+            <div className="w-[30px] h-[30px] rounded-full flex items-center justify-center cursor-pointer absolute bottom-[5px] right-[5px]" style={{ background: '#645faa' }}>
               <input
                 type="file"
                 id="image"
@@ -155,7 +156,16 @@ const AdminSettings = () => {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 transition-all duration-300"
+                style={{ '--tw-ring-color': '#645faa' }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#645faa';
+                  e.target.style.boxShadow = '0 0 0 1px #645faa';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db';
+                  e.target.style.boxShadow = 'none';
+                }}
                 required
                 disabled={loading}
               />
@@ -169,7 +179,16 @@ const AdminSettings = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 transition-all duration-300"
+                style={{ '--tw-ring-color': '#645faa' }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#645faa';
+                  e.target.style.boxShadow = '0 0 0 1px #645faa';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db';
+                  e.target.style.boxShadow = 'none';
+                }}
                 required
                 disabled={loading}
               />
@@ -183,7 +202,16 @@ const AdminSettings = () => {
                 type="tel"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 transition-all duration-300"
+                style={{ '--tw-ring-color': '#645faa' }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#645faa';
+                  e.target.style.boxShadow = '0 0 0 1px #645faa';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db';
+                  e.target.style.boxShadow = 'none';
+                }}
                 required
                 disabled={loading}
               />
@@ -197,7 +225,16 @@ const AdminSettings = () => {
                 type="text"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 transition-all duration-300"
+                style={{ '--tw-ring-color': '#645faa' }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#645faa';
+                  e.target.style.boxShadow = '0 0 0 1px #645faa';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db';
+                  e.target.style.boxShadow = 'none';
+                }}
                 required
                 disabled={loading}
               />
@@ -205,9 +242,12 @@ const AdminSettings = () => {
 
             <button
               type="submit"
-              className={`w-full bg-blue-500 text-white py-3 rounded-lg transition-colors duration-300 ${
-                loading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
+              className={`w-full text-white py-3 rounded-lg transition-colors duration-300 ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
               }`}
+              style={{ background: loading ? '#645faa' : '#645faa' }}
+              onMouseEnter={(e) => !loading && (e.target.style.background = '#5a5599')}
+              onMouseLeave={(e) => !loading && (e.target.style.background = '#645faa')}
               disabled={loading}
             >
               {loading ? "Updating..." : "Update Profile"}
@@ -215,7 +255,10 @@ const AdminSettings = () => {
           </form>
           <button
             onClick={handleLogout}
-            className="w-full max-w-2xl mt-6 bg-gradient-to-r from-blue-500 to-indigo-500 text-white py-3 rounded-lg font-semibold transition-colors duration-300 hover:from-blue-600 hover:to-indigo-600 shadow-lg"
+            className="w-full max-w-2xl mt-6 text-white py-3 rounded-lg font-semibold transition-colors duration-300 shadow-lg"
+            style={{ background: '#645faa' }}
+            onMouseEnter={(e) => e.target.style.background = '#5a5599'}
+            onMouseLeave={(e) => e.target.style.background = '#645faa'}
           >
             Logout
           </button>

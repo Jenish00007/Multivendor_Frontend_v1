@@ -277,13 +277,13 @@ const AdminBannersPage = () => {
           <div className="relative">
             <div className="flex items-center gap-6">
               <div className="relative">
-                <div className="p-4 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl shadow-2xl">
+                <div className="p-4 rounded-3xl shadow-2xl" style={{ background: '#645faa' }}>
                   <AiOutlineAppstore className="text-4xl text-white filter drop-shadow-lg" />
                 </div>
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full shadow-lg"></div>
               </div>
               <div>
-                <div className="font-black text-4xl font-Poppins bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent leading-tight">
+                <div className="font-black text-4xl font-Poppins leading-tight" style={{ color: '#645faa' }}>
                   All Banners
                 </div>
                 <div className="text-gray-600 text-lg mt-2 font-medium">

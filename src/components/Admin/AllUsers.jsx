@@ -11,7 +11,6 @@ import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
 import { FiSearch } from "react-icons/fi";
-import { BsFilter } from "react-icons/bs";
 import Loader from "../Layout/Loader";
 import { AiOutlineClose } from "react-icons/ai";
 
@@ -106,8 +105,8 @@ const AllUsers = () => {
       flex: 1,
       renderCell: (params) => (
         <div className="flex items-center gap-3 w-full">
-          <div className="p-2.5 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-xl flex-shrink-0 shadow-sm">
-            <AiOutlineUser className="text-indigo-600" size={20} />
+          <div className="p-2.5 rounded-xl flex-shrink-0 shadow-sm" style={{ background: 'rgba(100, 95, 170, 0.1)' }}>
+            <AiOutlineUser style={{ color: '#645faa' }} size={20} />
           </div>
           <div className="flex flex-col justify-center min-w-[100px]">
             <span className="font-semibold text-gray-800 truncate leading-tight">#{params.value.slice(-6)}</span>
@@ -123,7 +122,7 @@ const AllUsers = () => {
       flex: 1,
       renderCell: (params) => (
         <div className="flex items-center">
-          <span className="font-semibold text-gray-800 hover:text-indigo-600 transition-colors duration-200 cursor-pointer">
+          <span className="font-semibold text-gray-800 transition-colors duration-200 cursor-pointer" onMouseEnter={(e) => e.target.style.color = '#645faa'} onMouseLeave={(e) => e.target.style.color = '#1f2937'}>
             {params.value}
           </span>
         </div>
@@ -136,7 +135,7 @@ const AllUsers = () => {
       flex: 1,
       renderCell: (params) => (
         <div className="flex items-center">
-          <div className="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 px-3 py-1.5 rounded-lg font-semibold text-sm shadow-sm border border-blue-200">
+          <div className="px-3 py-1.5 rounded-lg font-semibold text-sm shadow-sm border" style={{ background: 'rgba(100, 95, 170, 0.1)', color: '#645faa', borderColor: 'rgba(100, 95, 170, 0.2)' }}>
             {params.value}
           </div>
         </div>
@@ -162,11 +161,13 @@ const AllUsers = () => {
       flex: 1,
       renderCell: (params) => (
         <div className="flex items-center">
-          <div className={`px-3 py-1.5 rounded-lg font-semibold text-sm shadow-sm ${
+          <div className={`px-3 py-1.5 rounded-lg font-semibold text-sm shadow-sm border ${
             params.value === 'admin' 
-              ? 'bg-gradient-to-r from-purple-100 to-pink-100 text-purple-700 border border-purple-200' 
-              : 'bg-gradient-to-r from-gray-100 to-slate-100 text-gray-700 border border-gray-200'
-          }`}>
+              ? '' 
+              : 'bg-gradient-to-r from-gray-100 to-slate-100 text-gray-700 border-gray-200'
+          }`}
+          style={params.value === 'admin' ? { background: 'rgba(100, 95, 170, 0.2)', color: '#645faa', borderColor: 'rgba(100, 95, 170, 0.3)' } : {}}
+          >
             {params.value}
           </div>
         </div>
@@ -204,7 +205,10 @@ const AllUsers = () => {
         return (
           <div className="flex items-center justify-start gap-2 w-full">
             <button 
-              className="group flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
+              className="group flex items-center justify-center w-10 h-10 rounded-xl text-white transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
+              style={{ background: '#645faa' }}
+              onMouseEnter={(e) => e.target.style.background = '#5a5599'}
+              onMouseLeave={(e) => e.target.style.background = '#645faa'}
               onClick={() => handlePreview(params.row)}
               title="Preview User"
             >
@@ -258,19 +262,19 @@ const AllUsers = () => {
   );
 
   return (
-    <div className="w-full p-4 sm:p-8 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen">
+    <div className="w-full p-4 sm:p-8 min-h-screen" style={{ background: 'linear-gradient(135deg, #f5f4f9 0%, #e8e6f2 50%, #f5f4f9 100%)' }}>
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-10 gap-2 sm:gap-4">
         <div className="relative">
           <div className="flex items-center gap-2 sm:gap-6">
             <div className="relative">
-              <div className="p-2 sm:p-4 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl sm:rounded-3xl shadow-2xl">
+              <div className="p-2 sm:p-4 rounded-2xl sm:rounded-3xl shadow-2xl" style={{ background: '#645faa' }}>
                 <span className="text-2xl sm:text-5xl filter drop-shadow-lg">👥</span>
               </div>
-              <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 w-4 sm:w-6 h-4 sm:h-6 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full shadow-lg"></div>
+              <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 w-4 sm:w-6 h-4 sm:h-6 rounded-full shadow-lg" style={{ background: '#8b87c4' }}></div>
             </div>
             <div>
-              <div className="font-black text-2xl sm:text-4xl font-Poppins bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent leading-tight">
+              <div className="font-black text-2xl sm:text-4xl font-Poppins leading-tight" style={{ color: '#645faa' }}>
                 All Users
               </div>
               <div className="text-gray-600 text-base sm:text-lg mt-1 sm:mt-2 font-medium">
@@ -279,14 +283,14 @@ const AllUsers = () => {
               <div className="text-xs sm:text-sm text-gray-500 mt-1">
                 {filteredUsers?.length || 0} users in your platform
                 {(searchTerm || startDate) && (
-                  <span className="ml-1 sm:ml-2 text-blue-600 font-medium">
+                  <span className="ml-1 sm:ml-2 font-medium" style={{ color: '#645faa' }}>
                     (Filtered from {rows?.length || 0} total)
                   </span>
                 )}
               </div>
             </div>
           </div>
-          <div className="absolute -top-2 sm:-top-4 -left-2 sm:-left-4 w-12 sm:w-24 h-12 sm:h-24 bg-gradient-to-br from-indigo-200 to-purple-200 rounded-full opacity-30 blur-2xl animate-pulse"></div>
+          <div className="absolute -top-2 sm:-top-4 -left-2 sm:-left-4 w-12 sm:w-24 h-12 sm:h-24 rounded-full opacity-30 blur-2xl animate-pulse" style={{ background: '#645faa' }}></div>
         </div>
         <div className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
           <div className="relative flex-1 sm:flex-none">
@@ -295,7 +299,10 @@ const AllUsers = () => {
               placeholder="Search users..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full sm:w-[300px] pl-10 sm:pl-12 pr-3 sm:pr-6 py-2 sm:py-3.5 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all duration-300 bg-white/80 backdrop-blur-sm shadow-lg text-sm sm:text-base"
+              className="w-full sm:w-[300px] pl-10 sm:pl-12 pr-3 sm:pr-6 py-2 sm:py-3.5 rounded-xl border-2 transition-all duration-300 bg-white/80 backdrop-blur-sm shadow-lg text-sm sm:text-base"
+              style={{ borderColor: 'rgba(100, 95, 170, 0.3)' }}
+              onFocus={(e) => e.target.style.borderColor = '#645faa'}
+              onBlur={(e) => e.target.style.borderColor = 'rgba(100, 95, 170, 0.3)'}
             />
             <FiSearch className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
           </div>
@@ -304,21 +311,20 @@ const AllUsers = () => {
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full sm:w-auto px-3 sm:px-4 py-2 sm:py-3.5 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all duration-300 bg-white/80 backdrop-blur-sm shadow-lg text-sm sm:text-base"
+              className="w-full sm:w-auto px-3 sm:px-4 py-2 sm:py-3.5 rounded-xl border-2 transition-all duration-300 bg-white/80 backdrop-blur-sm shadow-lg text-sm sm:text-base"
+              style={{ borderColor: 'rgba(100, 95, 170, 0.3)' }}
+              onFocus={(e) => e.target.style.borderColor = '#645faa'}
+              onBlur={(e) => e.target.style.borderColor = 'rgba(100, 95, 170, 0.3)'}
             />
           </div>
-          <button className="w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3.5 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base">
-            <BsFilter size={16} />
-            <span className="font-semibold">Filter</span>
-          </button>
         </div>
       </div>
 
       {/* Main Content */}
       <div className="w-full min-h-[70vh] relative overflow-hidden">
         {/* Background decoration */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-indigo-100/30 to-purple-100/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-pink-100/30 to-blue-100/30 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl" style={{ background: 'rgba(100, 95, 170, 0.1)' }}></div>
+        <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full blur-3xl" style={{ background: 'rgba(100, 95, 170, 0.1)' }}></div>
         
         {isLoading ? (
           <div className="flex items-center justify-center h-96">
@@ -494,8 +500,8 @@ const AllUsers = () => {
             </div>
             <div className="space-y-3 sm:space-y-4">
               <div className="flex items-center gap-2 sm:gap-4">
-                <div className="p-2 sm:p-3 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg sm:rounded-xl">
-                  <AiOutlineUser className="text-indigo-600" size={20} />
+                <div className="p-2 sm:p-3 rounded-lg sm:rounded-xl" style={{ background: 'rgba(100, 95, 170, 0.1)' }}>
+                  <AiOutlineUser style={{ color: '#645faa' }} size={20} />
                 </div>
                 <div>
                   <p className="text-xs sm:text-sm text-gray-500">Name</p>
@@ -503,8 +509,8 @@ const AllUsers = () => {
                 </div>
               </div>
               <div className="flex items-center gap-2 sm:gap-4">
-                <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg sm:rounded-xl">
-                  <AiOutlineMail className="text-blue-600" size={20} />
+                <div className="p-2 sm:p-3 rounded-lg sm:rounded-xl" style={{ background: 'rgba(100, 95, 170, 0.1)' }}>
+                  <AiOutlineMail style={{ color: '#645faa' }} size={20} />
                 </div>
                 <div>
                   <p className="text-xs sm:text-sm text-gray-500">Email</p>
@@ -521,8 +527,8 @@ const AllUsers = () => {
                 </div>
               </div>
               <div className="flex items-center gap-2 sm:gap-4">
-                <div className="p-2 sm:p-3 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg sm:rounded-xl">
-                  <AiOutlineUser className="text-purple-600" size={20} />
+                <div className="p-2 sm:p-3 rounded-lg sm:rounded-xl" style={{ background: 'rgba(100, 95, 170, 0.1)' }}>
+                  <AiOutlineUser style={{ color: '#645faa' }} size={20} />
                 </div>
                 <div>
                   <p className="text-xs sm:text-sm text-gray-500">Role</p>

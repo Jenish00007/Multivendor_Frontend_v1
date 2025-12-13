@@ -22,6 +22,12 @@ import {
   TrackOrderPage,
   UserInbox,
   Payment,
+  ContactUsPage,
+  AboutUsPage,
+  PrivacyPolicyPage,
+  ShippingPolicyPage,
+  TermsOfServicePage,
+  CancellationRefundPolicyPage,
 } from "./routes/Routes";
 import {
   ShopDashboardPage,
@@ -78,6 +84,10 @@ import AdminCreateEvent from "./pages/AdminCreateEvent";
 import SubcategoriesPage from "./pages/SubcategoriesPage";
 import CategoriesPage from "./pages/CategoriesPage";
 import ViewAllProducts from "./pages/ViewAllProducts";
+import LandingPage from "./components/LandingPage/LandingPage";
+import PrivacyPolicy from "./components/LandingPage/PrivacyPolicy";
+import TermsConditions from "./components/LandingPage/TermsConditions";
+import DeleteAccount from "./components/LandingPage/DeleteAccount";
 
 const App = () => {
   useEffect(() => {
@@ -91,7 +101,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/sign-up" element={<SignupPage />} />
@@ -111,6 +121,15 @@ const App = () => {
         <Route path="/best-selling" element={<BestSellingPage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/faq" element={<FAQPage />} />
+        <Route path="/contact" element={<ContactUsPage />} />
+        <Route path="/about" element={<AboutUsPage />} />
+        <Route path="/privacy" element={<PrivacyPolicyPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/shipping" element={<ShippingPolicyPage />} />
+        <Route path="/terms" element={<TermsOfServicePage />} />
+        <Route path="/terms-conditions" element={<TermsConditions />} />
+        <Route path="/delete-account" element={<DeleteAccount />} />
+        <Route path="/cancellation-refund" element={<CancellationRefundPolicyPage />} />
         <Route
           path="/checkout"
           element={

@@ -267,19 +267,19 @@ const AllModules = () => {
 
   return (
     <div className="flex items-start w-full p-0 m-0">
-      <div className="w-full bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen p-0">
+      <div className="w-full min-h-screen p-0" style={{ background: 'linear-gradient(135deg, #f5f4f9 0%, #e8e6f2 50%, #f5f4f9 100%)' }}>
         <div className="w-full max-w-[1920px] mx-auto px-2 sm:px-4 lg:px-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-2 sm:gap-4">
             <div className="relative">
               <div className="flex items-center gap-2 sm:gap-6">
                 <div className="relative">
-                  <div className="p-2 sm:p-4 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl sm:rounded-3xl shadow-2xl">
+                  <div className="p-2 sm:p-4 rounded-2xl sm:rounded-3xl shadow-2xl" style={{ background: '#645faa' }}>
                     <AiOutlineAppstore className="text-2xl sm:text-4xl text-white filter drop-shadow-lg" />
                   </div>
                   <div className="absolute -top-1 sm:-top-2 -right-1 sm:-right-2 w-4 sm:w-6 h-4 sm:h-6 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full shadow-lg"></div>
                 </div>
                 <div>
-                  <div className="font-black text-2xl sm:text-4xl font-Poppins bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent leading-tight">
+                  <div className="font-black text-2xl sm:text-4xl font-Poppins leading-tight" style={{ color: '#645faa' }}>
                     All Modules
                   </div>
                   <div className="text-gray-600 text-base sm:text-lg mt-1 sm:mt-2 font-medium">
@@ -327,7 +327,10 @@ const AllModules = () => {
                     setFormData({ name: "", description: "", image: null });
                     setOpen(true);
                   }}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl hover:from-indigo-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl text-sm font-medium"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 text-white rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-sm font-medium"
+                  style={{ background: '#645faa' }}
+                  onMouseEnter={(e) => e.target.style.background = '#5a5599'}
+                  onMouseLeave={(e) => e.target.style.background = '#645faa'}
                 >
                   <AiOutlinePlus size={18} />
                   <span>Add New Module</span>

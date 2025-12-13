@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllOrdersOfAdmin } from "../../redux/actions/order";
 import Loader from "../Layout/Loader";
 import { getAllSellers } from "../../redux/actions/sellers";
+import { getAllUsers } from "../../redux/actions/user";
 import { FiSearch } from "react-icons/fi";
 import AdminSideBar from "./Layout/AdminSideBar";
 import OrderPreviewModal from "./OrderPreviewModal";
@@ -21,15 +22,18 @@ const AdminDashboardMain = () => {
   const [latestOrderSearch, setLatestOrderSearch] = useState("");
   const [selectedOrderDate, setSelectedOrderDate] = useState("");
   const [selectedOrderDateISO, setSelectedOrderDateISO] = useState("");
+  const [userSearch, setUserSearch] = useState("");
 
   const { adminOrders, adminOrderLoading } = useSelector(
     (state) => state.order
   );
   const { sellers } = useSelector((state) => state.seller);
+  const { users, usersLoading } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getAllOrdersOfAdmin());
     dispatch(getAllSellers());
+    dispatch(getAllUsers());
   }, []);
 
   const adminEarning =
@@ -324,16 +328,16 @@ const AdminDashboardMain = () => {
       {adminOrderLoading ? (
         <Loader />
       ) : (
-        <div className="w-full p-6 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 min-h-screen">
+        <div className="w-full p-6 bg-gray-50 min-h-screen" style={{ background: 'linear-gradient(135deg, #f5f4f9 0%, #e8e6f2 50%, #f5f4f9 100%)' }}>
           {/* Header Section with Enhanced Styling */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
             <div className="relative">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl shadow-lg">
+                <div className="p-3 rounded-2xl shadow-lg" style={{ background: '#645faa' }}>
                   <span className="text-4xl">🛠️</span>
                 </div>
                 <div>
-                  <div className="font-bold text-[32px] font-Poppins bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
+                  <div className="font-bold text-[32px] font-Poppins" style={{ color: '#645faa' }}>
                     Admin Dashboard
                   </div>
                   <div className="text-gray-600 text-[18px] mt-1 font-medium">
@@ -341,11 +345,11 @@ const AdminDashboardMain = () => {
                   </div>
                 </div>
               </div>
-              <div className="absolute -top-2 -left-2 w-20 h-20 bg-gradient-to-br from-blue-200 to-purple-200 rounded-full opacity-20 blur-xl"></div>
+              <div className="absolute -top-2 -left-2 w-20 h-20 rounded-full opacity-20 blur-xl" style={{ background: '#645faa' }}></div>
             </div>
-            <div className="backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+            <div className="backdrop-blur-sm rounded-2xl p-6 border shadow-md" style={{ background: 'rgba(255, 255, 255, 0.9)', borderColor: 'rgba(100, 95, 170, 0.2)' }}>
               <p className="text-sm text-gray-500 font-medium">Current Date</p>
-              <p className="text-xl font-bold text-gray-800 mt-1">
+              <p className="text-xl font-bold mt-1" style={{ color: '#645faa' }}>
                 {new Date().toLocaleDateString('en-IN', { 
                   weekday: 'long', 
                   year: 'numeric', 
@@ -357,17 +361,17 @@ const AdminDashboardMain = () => {
           </div>
 
           {/* Enhanced Summary Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
-            <div className="group bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-blue-100/50">
-              <div className="p-4 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl mb-4 group-hover:from-blue-200 group-hover:to-blue-300 transition-all duration-300">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
+            <div className="group bg-white rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border-2" style={{ borderColor: 'rgba(100, 95, 170, 0.2)' }}>
+              <div className="p-4 rounded-2xl mb-4 transition-all duration-300" style={{ background: 'rgba(100, 95, 170, 0.1)' }}>
                 <span className="text-4xl">🛒</span>
               </div>
               <span className="text-base font-semibold text-gray-600 mb-2">Items</span>
-              <span className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-2">{totalItemsCount}</span>
+              <span className="text-4xl font-bold mb-2" style={{ color: '#645faa' }}>{totalItemsCount}</span>
               <span className="text-sm text-gray-400">Total Items Sold</span>
             </div>
 
-            <div className="group bg-gradient-to-br from-white to-purple-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-purple-100/50">
+            {/* <div className="group bg-gradient-to-br from-white to-purple-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-purple-100/50">
               <div className="p-4 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl mb-4 group-hover:from-purple-200 group-hover:to-purple-300 transition-all duration-300">
                 <span className="text-4xl">🛍️</span>
               </div>
@@ -376,9 +380,9 @@ const AdminDashboardMain = () => {
                 {adminOrders && adminOrders.length}
               </span>
               <span className="text-sm text-gray-400">Total Orders</span>
-            </div>
+            </div> */}
 
-            <div className="group bg-gradient-to-br from-white to-green-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-green-100/50">
+            {/* <div className="group bg-gradient-to-br from-white to-green-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-green-100/50">
               <div className="p-4 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl mb-4 group-hover:from-green-200 group-hover:to-green-300 transition-all duration-300">
                 <span className="text-4xl">🏪</span>
               </div>
@@ -387,18 +391,18 @@ const AdminDashboardMain = () => {
                 {sellers && sellers.length}
               </span>
               <span className="text-sm text-gray-400">Total Stores</span>
-            </div>
+            </div> */}
 
-            <div className="group bg-gradient-to-br from-white to-orange-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-orange-100/50">
-              <div className="p-4 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl mb-4 group-hover:from-orange-200 group-hover:to-orange-300 transition-all duration-300">
+            <div className="group bg-white rounded-2xl shadow-md hover:shadow-xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border-2" style={{ borderColor: 'rgba(100, 95, 170, 0.2)' }}>
+              <div className="p-4 rounded-2xl mb-4 transition-all duration-300" style={{ background: 'rgba(100, 95, 170, 0.1)' }}>
                 <span className="text-4xl">👥</span>
               </div>
               <span className="text-base font-semibold text-gray-600 mb-2">Customers</span>
-              <span className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent mb-2">{uniqueCustomers}</span>
+              <span className="text-4xl font-bold mb-2" style={{ color: '#645faa' }}>{uniqueCustomers}</span>
               <span className="text-sm text-gray-400">Total Customers</span>
             </div>
 
-            <div className="group bg-gradient-to-br from-white to-emerald-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-emerald-100/50">
+            {/* <div className="group bg-gradient-to-br from-white to-emerald-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-emerald-100/50">
               <div className="p-4 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl mb-4 group-hover:from-emerald-200 group-hover:to-emerald-300 transition-all duration-300">
                 <span className="text-4xl">💰</span>
               </div>
@@ -407,11 +411,11 @@ const AdminDashboardMain = () => {
                 {formatIndianCurrency(adminBalance)}
               </span>
               <span className="text-sm text-gray-400">0 Newly added</span>
-            </div>
+            </div> */}
           </div>
 
           {/* Order Status Summary Cards - Compact */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-10">
+          {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-10">
             {orderStatusSummary.map(status => (
               <div
                 key={status.key}
@@ -437,10 +441,10 @@ const AdminDashboardMain = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* Latest Orders Table */}
-          <div className="mt-10">
+          {/* <div className="mt-10">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8">
               <div className="flex items-center gap-6">
                 <div className="relative">
@@ -561,6 +565,137 @@ const AdminDashboardMain = () => {
                 </table>
               </div>
             </div>
+          </div> */}
+
+          {/* All Users List */}
+          <div className="mt-10">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-8">
+              <div className="flex items-center gap-6">
+                <div className="relative">
+                  <div className="p-4 rounded-3xl shadow-xl" style={{ background: '#645faa' }}>
+                    <MdOutlinePeopleAlt className="text-white" size={28} />
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full shadow-lg" style={{ background: '#8b87c4' }}></div>
+                </div>
+                <div>
+                  <div className="font-black text-4xl font-Poppins leading-tight" style={{ color: '#645faa' }}>
+                    All Users
+                  </div>
+                  <div className="text-gray-600 text-lg mt-2 font-medium">
+                    View and manage all registered users
+                  </div>
+                  <div className="text-sm text-gray-500 mt-1">
+                    {users?.length || 0} total users
+                  </div>
+                </div>
+              </div>
+              <div className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-4 justify-end mr-12">
+                <div className="relative flex-1 sm:flex-none">
+                  <input
+                    type="text"
+                    placeholder="Search by name, email, or phone..."
+                    className="w-full sm:w-[300px] pl-12 pr-6 py-3.5 rounded-xl border-2 transition-all duration-300 bg-white shadow-lg"
+                    style={{ borderColor: 'rgba(100, 95, 170, 0.3)' }}
+                    onFocus={(e) => e.target.style.borderColor = '#645faa'}
+                    onBlur={(e) => e.target.style.borderColor = 'rgba(100, 95, 170, 0.3)'}
+                    value={userSearch}
+                    onChange={e => setUserSearch(e.target.value)}
+                  />
+                  <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2" style={{ color: '#645faa' }} size={20} />
+                </div>
+              </div>
+            </div>
+
+            {usersLoading ? (
+              <Loader />
+            ) : (
+              <div className="bg-white rounded-2xl shadow-xl border overflow-hidden" style={{ borderColor: 'rgba(100, 95, 170, 0.2)' }}>
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr style={{ background: 'rgba(100, 95, 170, 0.1)' }}>
+                        <th className="px-6 py-4 text-left text-sm font-semibold" style={{ color: '#645faa' }}>Name</th>
+                        <th className="px-6 py-4 text-left text-sm font-semibold" style={{ color: '#645faa' }}>Email</th>
+                        <th className="px-6 py-4 text-left text-sm font-semibold" style={{ color: '#645faa' }}>Phone</th>
+                        <th className="px-6 py-4 text-left text-sm font-semibold" style={{ color: '#645faa' }}>Role</th>
+                        <th className="px-6 py-4 text-left text-sm font-semibold" style={{ color: '#645faa' }}>Joined Date</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y" style={{ borderColor: 'rgba(100, 95, 170, 0.1)' }}>
+                      {users && users.length > 0 ? (
+                        users
+                          .filter((user) => {
+                            if (!userSearch) return true;
+                            const search = userSearch.toLowerCase();
+                            const name = (user.name || "").toLowerCase();
+                            const email = (user.email || "").toLowerCase();
+                            const phone = (user.phoneNumber || "").toLowerCase();
+                            return name.includes(search) || email.includes(search) || phone.includes(search);
+                          })
+                          .map((user) => (
+                            <tr key={user._id} className="hover:bg-gray-50 transition-colors duration-200">
+                              <td className="px-6 py-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2.5 rounded-xl flex-shrink-0 shadow-sm" style={{ background: 'rgba(100, 95, 170, 0.1)' }}>
+                                    <MdOutlinePeopleAlt style={{ color: '#645faa' }} size={20} />
+                                  </div>
+                                  <span className="font-medium text-gray-800">{user.name || "N/A"}</span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2.5 rounded-xl flex-shrink-0 shadow-sm" style={{ background: 'rgba(100, 95, 170, 0.1)' }}>
+                                    <AiOutlineMail style={{ color: '#645faa' }} size={20} />
+                                  </div>
+                                  <span className="font-medium text-gray-800">{user.email || "N/A"}</span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2.5 rounded-xl flex-shrink-0 shadow-sm" style={{ background: 'rgba(100, 95, 170, 0.1)' }}>
+                                    <AiOutlinePhone style={{ color: '#645faa' }} size={20} />
+                                  </div>
+                                  <span className="font-medium text-gray-800">{user.phoneNumber || "N/A"}</span>
+                                </div>
+                              </td>
+                              <td className="px-6 py-4">
+                                <span className="px-4 py-2 rounded-full text-sm font-medium" style={{ 
+                                  background: user.role === "Admin" ? 'rgba(100, 95, 170, 0.2)' : 'rgba(100, 95, 170, 0.1)',
+                                  color: '#645faa'
+                                }}>
+                                  {user.role || "User"}
+                                </span>
+                              </td>
+                              <td className="px-6 py-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="p-2.5 rounded-xl flex-shrink-0 shadow-sm" style={{ background: 'rgba(100, 95, 170, 0.1)' }}>
+                                    <MdOutlineTrendingUp style={{ color: '#645faa' }} size={20} />
+                                  </div>
+                                  <span className="font-medium text-gray-800">
+                                    {user.createdAt 
+                                      ? new Date(user.createdAt).toLocaleDateString('en-GB', {
+                                          day: 'numeric',
+                                          month: 'short',
+                                          year: 'numeric'
+                                        })
+                                      : "N/A"}
+                                  </span>
+                                </div>
+                              </td>
+                            </tr>
+                          ))
+                      ) : (
+                        <tr>
+                          <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
+                            No users found
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

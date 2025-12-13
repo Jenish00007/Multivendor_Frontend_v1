@@ -100,7 +100,7 @@ const AllEvents = () => {
   const columns = [
     {
       field: "id",
-      headerName: "Event ID",
+      headerName: "Offer ID",
       minWidth: 150,
       flex: 1,
       renderCell: (params) => (
@@ -110,14 +110,14 @@ const AllEvents = () => {
           </div>
           <div className="flex flex-col justify-center min-w-[100px]">
             <span className="font-semibold text-gray-800 truncate leading-tight">#{params.value.slice(-6)}</span>
-            <span className="text-xs text-gray-500 leading-tight mt-0.5 font-medium">Event ID</span>
+            <span className="text-xs text-gray-500 leading-tight mt-0.5 font-medium">Offer ID</span>
           </div>
         </div>
       ),
     },
     {
       field: "name",
-      headerName: "Event Name",
+      headerName: "Offer Name",
       minWidth: 200,
       flex: 1,
       headerClassName: 'custom-header',
@@ -195,14 +195,14 @@ const AllEvents = () => {
             <button 
               className="group flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
               onClick={() => handlePreview(params.row)}
-              title="Preview Event"
+              title="Preview Offer"
             >
               <AiOutlineEye size={18} className="group-hover:scale-110 transition-transform duration-200" />
             </button>
             <button 
               className="group flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-r from-red-500 to-pink-500 text-white hover:from-red-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
               onClick={() => handleDelete(params.row.id)}
-              title="Delete Event"
+              title="Delete Offer"
             >
               <AiOutlineDelete size={18} className="group-hover:scale-110 transition-transform duration-200" />
             </button>
@@ -246,13 +246,13 @@ const AllEvents = () => {
             </div>
             <div>
               <div className="font-black text-4xl font-Poppins bg-gradient-to-r from-blue-900 via-purple-800 to-blue-800 bg-clip-text text-transparent leading-tight">
-                All Events
+                All Offers
               </div>
               <div className="text-gray-600 text-lg mt-2 font-medium">
-                Manage your promotional events with ease
+                Manage your promotional offers with ease
               </div>
               <div className="text-sm text-gray-500 mt-1">
-                {filteredEvents.length} events in your store
+                {filteredEvents.length} offers in your store
                 {(searchTerm || startDate) && (
                   <span className="ml-2 text-blue-600 font-medium">
                     (Filtered from {events?.length || 0} total)
@@ -269,7 +269,7 @@ const AllEvents = () => {
             className="!bg-gradient-to-r !from-blue-500 !to-purple-600 !text-white hover:!from-blue-600 hover:!to-purple-700 !transition-all !duration-300 !shadow-xl hover:!shadow-2xl !transform hover:!scale-105 !rounded-xl !px-6 !py-3 !font-semibold"
             startIcon={<AiOutlinePlus size={20} />}
           >
-            Create New Event
+            Create New Offer
           </Button>
         </Link>
       </div>
@@ -444,7 +444,7 @@ const AllEvents = () => {
             <div className="text-center">
               <AiOutlineGift className="mx-auto text-gray-400" size={48} />
               <p className="mt-4 text-gray-600">
-                {searchTerm || startDate ? "No events match your filters" : "No events found"}
+                {searchTerm || startDate ? "No offers match your filters" : "No offers found"}
               </p>
             </div>
           </div>
@@ -494,12 +494,12 @@ const AllEvents = () => {
         )}
       </div>
 
-      {/* Event Preview Modal */}
+      {/* Offer Preview Modal */}
       {isModalOpen && selectedEvent && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-semibold text-gray-800">Event Details</h2>
+              <h2 className="text-2xl font-semibold text-gray-800">Offer Details</h2>
               <button
                 onClick={closeModal}
                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -509,11 +509,11 @@ const AllEvents = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Event Information */}
+              {/* Offer Information */}
               <div className="space-y-4">
                 <div>
                   <h3 className="text-lg font-medium text-gray-900">{selectedEvent.name}</h3>
-                  <p className="text-sm text-gray-500">Event ID: {selectedEvent._id}</p>
+                  <p className="text-sm text-gray-500">Offer ID: {selectedEvent._id}</p>
                 </div>
 
                 <div className="space-y-2">
@@ -555,7 +555,7 @@ const AllEvents = () => {
                 )}
               </div>
 
-              {/* Event Image */}
+              {/* Offer Image */}
               {selectedEvent.images && Array.isArray(selectedEvent.images) && selectedEvent.images.length > 0 && selectedEvent.images[0]?.url ? (
                 <div className="relative">
                   <img

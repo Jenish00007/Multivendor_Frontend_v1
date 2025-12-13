@@ -81,7 +81,7 @@ const AllEvents = () => {
   const columns = [
     {
       field: "id",
-      headerName: "Event ID",
+      headerName: "Offer ID",
       minWidth: 150,
       flex: 1,
       renderCell: (params) => (
@@ -91,7 +91,7 @@ const AllEvents = () => {
           </div>
           <div className="flex flex-col justify-center min-w-[100px]">
             <span className="font-semibold text-gray-800 truncate leading-tight">#{params.value.slice(-6)}</span>
-            <span className="text-xs text-gray-500 leading-tight mt-0.5 font-medium">Event ID</span>
+            <span className="text-xs text-gray-500 leading-tight mt-0.5 font-medium">Offer ID</span>
           </div>
         </div>
       ),
@@ -117,7 +117,7 @@ const AllEvents = () => {
           </div>
           <div className="flex flex-col justify-center min-w-[120px]">
             <span className="font-semibold text-gray-800 hover:text-indigo-600 transition-colors duration-200 cursor-pointer truncate leading-tight">{params.value}</span>
-            <span className="text-xs text-gray-500 leading-tight mt-0.5 font-medium">Event Name</span>
+            <span className="text-xs text-gray-500 leading-tight mt-0.5 font-medium">Offer Name</span>
           </div>
         </div>
       ),
@@ -192,7 +192,7 @@ const AllEvents = () => {
             <button 
               onClick={() => handlePreview(params.row)}
               className="group flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
-              title="Preview Event"
+              title="Preview Offer"
             >
               <AiOutlineEye size={18} className="group-hover:scale-110 transition-transform duration-200" />
             </button>
@@ -239,13 +239,13 @@ const AllEvents = () => {
             </div>
             <div>
               <div className="font-black text-2xl sm:text-4xl font-Poppins bg-gradient-to-r from-gray-900 via-indigo-800 to-purple-800 bg-clip-text text-transparent leading-tight">
-                All Events
+                All Offers
               </div>
               <div className="text-gray-600 text-base sm:text-lg mt-1 sm:mt-2 font-medium">
-                Manage and monitor all promotional events
+                Manage and monitor all promotional offers
               </div>
               <div className="text-xs sm:text-sm text-gray-500 mt-1">
-                {allEvents?.length || 0} events in your platform
+                {allEvents?.length || 0} offers in your platform
               </div>
             </div>
           </div>
@@ -257,7 +257,7 @@ const AllEvents = () => {
             className="!bg-gradient-to-r !from-indigo-500 !to-purple-600 !text-white hover:!from-indigo-600 hover:!to-purple-700 !transition-all !duration-300 !shadow-xl hover:!shadow-2xl !transform hover:!scale-105 !rounded-xl !px-4 sm:!px-6 !py-2 sm:!py-3 !font-semibold text-sm sm:text-base"
             startIcon={<AiOutlineGift size={20} />}
           >
-            Create New Event
+            Create New Offer
           </Button>
         </Link>
       </div>
@@ -413,13 +413,13 @@ const AllEvents = () => {
           <div className="w-full flex items-center justify-center">
             <div className="text-center w-full">
               <AiOutlineCalendar className="mx-auto text-gray-400" size={48} />
-              <p className="mt-4 text-gray-600 text-base sm:text-lg">No events found</p>
+              <p className="mt-4 text-gray-600 text-base sm:text-lg">No offers found</p>
             </div>
           </div>
         )}
       </div>
 
-      {/* Event Preview Modal */}
+      {/* Offer Preview Modal */}
       {isModalOpen && selectedEvent && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn px-0 sm:px-0">
           <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-8 w-full sm:max-w-5xl max-h-[90vh] overflow-y-auto transform transition-all duration-300 animate-scaleIn">
@@ -431,7 +431,7 @@ const AllEvents = () => {
                 </div>
                 <div>
                   <h2 className="text-lg sm:text-2xl font-bold text-gray-800">{selectedEvent.name}</h2>
-                  <p className="text-xs sm:text-sm text-gray-500 mt-1">Event ID: {selectedEvent._id}</p>
+                  <p className="text-xs sm:text-sm text-gray-500 mt-1">Offer ID: {selectedEvent._id}</p>
                 </div>
               </div>
               <button
@@ -443,7 +443,7 @@ const AllEvents = () => {
             </div>
 
             <div className="flex flex-col lg:grid lg:grid-cols-2 gap-4 sm:gap-8">
-              {/* Event Image Section */}
+              {/* Offer Image Section */}
               <div className="space-y-3 sm:space-y-6">
                 <div className="relative group">
                   <div className="aspect-w-16 aspect-h-9 rounded-lg sm:rounded-xl overflow-hidden shadow-xl">
@@ -510,7 +510,7 @@ const AllEvents = () => {
                 </div>
               </div>
 
-              {/* Event Details Section */}
+              {/* Offer Details Section */}
               <div className="space-y-3 sm:space-y-6">
                 {/* Description */}
                 {selectedEvent.description && (
@@ -522,7 +522,7 @@ const AllEvents = () => {
 
                 {/* Additional Details */}
                 <div className="bg-white rounded-lg sm:rounded-xl p-3 sm:p-6 border border-gray-100 shadow-sm">
-                  <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 sm:mb-4">Event Details</h3>
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 sm:mb-4">Offer Details</h3>
                   <div className="space-y-2 sm:space-y-4">
                     <div className="flex items-center justify-between py-1 sm:py-2 border-b border-gray-100">
                       <span className="text-xs sm:text-base text-gray-600">Start Date</span>

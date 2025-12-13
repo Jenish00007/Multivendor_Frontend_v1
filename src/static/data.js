@@ -5,15 +5,15 @@ export const navItems = [
     url: "/",
   },
   {
-    title: "Best Selling",
+    title: "Popular Ads",
     url: "/best-selling",
   },
   {
-    title: "Products",
+    title: "All Ads",
     url: "/products",
   },
   {
-    title: "Events",
+    title: "Featured",
     url: "/events",
   },
   {
@@ -361,32 +361,27 @@ export const footerProductLinks = [
     name: "About us",
     link: "/about",
   },
-  {
-    name: "Reviews",
-  },
 ];
 
 export const footercompanyLinks = [
  
-  {
-    name: "Events",
-  },
 ];
 
 export const footerSupportLinks = [
   {
     name: "FAQ",
-  },
-  {
-    name: "Reviews",
+    link: "/faq",
   },
   {
     name: "Contact Us",
+    link: "/contact",
   },
   {
-    name: "Shipping",
+    name: "How It Works",
+    link: "/shipping",
   },
   {
-    name: "Live chat",
+    name: "Cancellation & Refund",
+    link: "/cancellation-refund",
   },
 ];
