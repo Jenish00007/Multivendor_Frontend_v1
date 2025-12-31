@@ -28,7 +28,6 @@ const ProfileSidebar = ({ active, setActive }) => {
         
         localStorage.clear();
         navigate("/login");
-        window.location.reload(true);
       })
       .catch((error) => {
         console.log(error.response.data.message);

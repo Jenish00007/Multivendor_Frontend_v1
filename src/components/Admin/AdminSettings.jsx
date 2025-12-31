@@ -103,7 +103,7 @@ const AdminSettings = () => {
       await axios.get(`${server}/user/logout`, { withCredentials: true });
       dispatch({ type: "LOGOUT_SUCCESS" });
       toast.success("Logged out successfully!");
-      navigate("/login");
+      navigate("/admin-login");
     } catch (error) {
       toast.error(error.response?.data?.message || "Logout failed");
     }

@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
-import { AiOutlinePhone, AiOutlineMail, AiOutlineEnvironment } from "react-icons/ai";
+import { AiOutlinePhone, AiOutlineMail, AiOutlineEnvironment, AiOutlineLogout } from "react-icons/ai";
 import { BsBoxSeam, BsStar, BsShop } from "react-icons/bs";
 import { motion } from "framer-motion";
 import Loader from "../Layout/Loader";
+import { useDispatch } from "react-redux";
 
 const ShopInfo = ({ isOwner }) => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchShopData = async () => {
@@ -29,10 +32,14 @@ const ShopInfo = ({ isOwner }) => {
     }, [id]);
 
     const logoutHandler = async () => {
-        axios.get(`${server}/shop/logout`, {
-            withCredentials: true,
-        });
-        window.location.reload();
+        try {
+            await axios.get(`${server}/shop/logout`, { withCredentials: true });
+            dispatch({ type: "SELLER_LOGOUT_SUCCESS" });
+            toast.success("Logged out successfully!");
+            navigate("/shop-login");
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Logout failed");
+        }
     };
 
     const totalReviews = data?.reviews?.length || 0;
@@ -136,6 +143,24 @@ const ShopInfo = ({ isOwner }) => {
                         <span>{data?.address}</span>
                     </motion.div>
                 </motion.div>
+
+                {/* Logout Button (Only for Owner) */}
+                {isOwner && (
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                        className="mt-8"
+                    >
+                        <button
+                            onClick={logoutHandler}
+                            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-red-500 to-red-600 text-white py-3 rounded-lg font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                        >
+                            <AiOutlineLogout size={20} />
+                            Log Out
+                        </button>
+                    </motion.div>
+                )}
             </motion.div>
         </div>
     );

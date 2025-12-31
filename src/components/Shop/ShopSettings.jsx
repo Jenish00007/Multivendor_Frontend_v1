@@ -79,7 +79,7 @@ const ShopSettings = () => {
             await axios.get(`${server}/shop/logout`, { withCredentials: true });
             dispatch({ type: "SELLER_LOGOUT_SUCCESS" });
             toast.success("Logged out successfully!");
-            navigate("/");
+            navigate("/shop-login");
         } catch (error) {
             toast.error(error.response?.data?.message || "Logout failed");
         }

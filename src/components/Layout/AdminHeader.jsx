@@ -21,8 +21,7 @@ const AdminHeader = ({ setOpenSidebar, openSidebar }) => {
         withCredentials: true,
       });
       toast.success("Logout Successfully");
-      navigate("/");
-      window.location.reload(true);
+      navigate("/admin-login");
     } catch (error) {
       console.log(error.response.data.message);
     }

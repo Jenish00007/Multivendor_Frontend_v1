@@ -106,7 +106,6 @@ const Header = ({ activeHeading }) => {
         toast.success(res.data.message);
         localStorage.clear();
         navigate("/login");
-        window.location.reload();
       })
       .catch((error) => {
         console.log(error.response?.data?.message);

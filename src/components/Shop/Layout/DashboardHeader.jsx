@@ -1,20 +1,35 @@
 import React, { useState } from "react";
 import { AiOutlineGift, AiOutlineBell } from "react-icons/ai";
 import { MdOutlineLocalOffer, MdOutlineDashboard } from "react-icons/md";
-import { FiPackage, FiShoppingBag, FiSettings } from "react-icons/fi";
-import { useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { FiPackage, FiShoppingBag, FiSettings, FiLogOut } from "react-icons/fi";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BiMessageSquareDetail } from "react-icons/bi";
-import { backend_url } from "../../../server";
+import { backend_url, server } from "../../../server";
 import { RxHamburgerMenu } from "react-icons/rx";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const DashboardHeader = ({ setOpenSidebar, openSidebar }) => {
     const { seller } = useSelector((state) => state.seller);
     const { appName, logo } = useSelector((state) => state.appSettings);
     const location = useLocation();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     
     const isActive = (path) => {
         return location.pathname === path;
+    };
+
+    const logoutHandler = async () => {
+        try {
+            await axios.get(`${server}/shop/logout`, { withCredentials: true });
+            dispatch({ type: "SELLER_LOGOUT_SUCCESS" });
+            toast.success("Logged out successfully!");
+            navigate("/shop-login");
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Logout failed");
+        }
     };
 
     const navItems = [
@@ -78,6 +93,14 @@ const DashboardHeader = ({ setOpenSidebar, openSidebar }) => {
                             <AiOutlineBell
                                 color="#555"
                                 size={24}
+                                className="cursor-pointer hover:text-blue-600 transition-colors duration-300"
+                            />
+                        </div>
+                        <div className="p-2 hover:bg-blue-50 rounded-lg transition-colors duration-300 cursor-pointer" onClick={logoutHandler}>
+                            <FiLogOut
+                                color="#555"
+                                size={24}
+                                title="Logout"
                                 className="cursor-pointer hover:text-blue-600 transition-colors duration-300"
                             />
                         </div>
