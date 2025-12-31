@@ -7,6 +7,7 @@ import { getAllProducts, deleteProduct } from "../../redux/actions/product";
 import { BsCurrencyRupee } from "react-icons/bs";
 import { toast } from "react-toastify";
 import Loader from "../Layout/Loader";
+import AdminAddProductModel from "./components/AdminAddProductModel";
 
 const AllProduct = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,11 @@ const AllProduct = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [startDate, setStartDate] = useState("");
+  const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
+  const [closeAddProductModal, setCloseAddProductModal] = useState(() => () => {
+    setIsAddProductModalOpen(false);
+  });
+
 
   useEffect(() => {
     dispatch(getAllProducts());
@@ -164,11 +170,10 @@ const AllProduct = () => {
       cellClassName: 'custom-cell',
       renderCell: (params) => (
         <div className="flex items-center">
-          <div className={`px-3 py-1.5 rounded-lg font-semibold text-sm shadow-sm ${
-            params.value > 0 
-              ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border border-green-200' 
-              : 'bg-gradient-to-r from-red-100 to-pink-100 text-red-700 border border-red-200'
-          }`}>
+          <div className={`px-3 py-1.5 rounded-lg font-semibold text-sm shadow-sm ${params.value > 0
+            ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 border border-green-200'
+            : 'bg-gradient-to-r from-red-100 to-pink-100 text-red-700 border border-red-200'
+            }`}>
             {params.value > 0 ? `${params.value} units` : 'Out of Stock'}
           </div>
         </div>
@@ -214,7 +219,7 @@ const AllProduct = () => {
       renderCell: (params) => {
         return (
           <div className="flex items-center justify-start gap-2 w-full">
-            <button 
+            <button
               className="group flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
               onClick={() => openModal(params.row)}
               title="Preview Product"
@@ -296,41 +301,56 @@ const AllProduct = () => {
       </div>
 
       {/* Search and Filter UI */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 mb-2 sm:mb-4 p-0 m-0">
-        <div className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 p-0 m-0">
-          <div className="relative flex-1 sm:flex-none p-0 m-0">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-2 sm:mb-4">
+
+        {/* LEFT SIDE: Search + Date */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="Search by name, ID, category, subcategory..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full sm:w-[300px] pl-10 pr-2 sm:pr-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300 text-sm sm:text-base"
+              className="w-full sm:w-[300px] pl-10 pr-2 sm:pr-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300"
             />
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-              <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+              <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
             </span>
           </div>
-          <div className="relative w-full sm:w-auto p-0 m-0">
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="w-full sm:w-auto px-2 sm:px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all duration-300 text-sm sm:text-base"
-            />
-          </div>
+
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200"
+          />
         </div>
-        {(searchTerm || startDate) && (
+
+        {/* RIGHT SIDE: Actions */}
+        <div className="flex items-center gap-3 sm:ml-auto w-full sm:w-auto">
+          {(searchTerm || startDate) && (
+            <button
+              onClick={() => {
+                setSearchTerm("");
+                setStartDate("");
+              }}
+              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+            >
+              Clear filters
+            </button>
+          )}
+
           <button
-            onClick={() => {
-              setSearchTerm("");
-              setStartDate("");
-            }}
-            className="text-blue-600 hover:text-blue-800 text-xs sm:text-sm font-medium"
-          >
-            Clear filters
+            onClick={() => setIsAddProductModalOpen(true)}
+            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold py-2 px-8 rounded-xl w-full sm:w-auto me-3">
+            Create Product
           </button>
-        )}
+        </div>
       </div>
+
 
       {/* Main Content */}
       <div className="w-full relative overflow-hidden p-0 m-0">
@@ -339,9 +359,9 @@ const AllProduct = () => {
             <Loader />
           </div>
         ) : filteredProducts.length === 0 ? (
-          <div className="w-full flex items-center justify-center bg-white rounded-xl shadow-lg p-0 m-0" style={{height:'120px'}}>
+          <div className="w-full flex items-center justify-center bg-white rounded-xl shadow-lg p-0 m-0" style={{ height: '120px' }}>
             <div className="text-center">
-              <svg className="mx-auto text-gray-400" width="48" height="48" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              <svg className="mx-auto text-gray-400" width="48" height="48" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
               <p className="mt-4 text-gray-600">
                 {searchTerm || startDate ? "No products match your filters" : "No products found"}
               </p>
@@ -475,11 +495,10 @@ const AllProduct = () => {
                       </div>
                       <div className="flex items-center justify-between py-1 sm:py-2 border-b border-gray-200">
                         <span className="text-gray-600 font-medium text-xs sm:text-base">Stock:</span>
-                        <div className={`px-2 sm:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl font-semibold shadow-sm ${
-                          (selectedProduct.stock || 0) > 0 
-                            ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700' 
-                            : 'bg-gradient-to-r from-red-100 to-pink-100 text-red-700'
-                        }`}>
+                        <div className={`px-2 sm:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl font-semibold shadow-sm ${(selectedProduct.stock || 0) > 0
+                          ? 'bg-gradient-to-r from-green-100 to-emerald-100 text-green-700'
+                          : 'bg-gradient-to-r from-red-100 to-pink-100 text-red-700'
+                          }`}>
                           {(selectedProduct.stock || 0) > 0 ? `${selectedProduct.stock} units` : 'Out of Stock'}
                         </div>
                       </div>
@@ -502,10 +521,10 @@ const AllProduct = () => {
                       <div className="space-y-2 sm:space-y-3">
                         <h5 className="text-base sm:text-lg font-bold text-gray-900">Tags</h5>
                         <div className="flex flex-wrap gap-1 sm:gap-2">
-                          {(typeof selectedProduct.tags === 'string' 
+                          {(typeof selectedProduct.tags === 'string'
                             ? selectedProduct.tags.split(',').map(tag => tag.trim())
-                            : Array.isArray(selectedProduct.tags) 
-                              ? selectedProduct.tags 
+                            : Array.isArray(selectedProduct.tags)
+                              ? selectedProduct.tags
                               : []
                           ).map((tag, index) => (
                             <span
@@ -535,6 +554,12 @@ const AllProduct = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {isAddProductModalOpen && (
+        <AdminAddProductModel isOpen={isAddProductModalOpen} onClose={closeAddProductModal}>
+          {/* Add your form fields or content here */}
+        </AdminAddProductModel>
       )}
     </div>
   );

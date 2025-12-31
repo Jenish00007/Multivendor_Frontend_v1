@@ -42,6 +42,18 @@ export const orderReducer = createReducer(initialState, {
     state.adminOrderLoading = false;
     state.error = action.payload;
   },
+  // admin dashboard statistics
+  adminDashboardStatsRequest: (state) => {
+    state.dashboardStatsLoading = true;
+  },
+  adminDashboardStatsSuccess: (state, action) => {
+    state.dashboardStatsLoading = false;
+    state.dashboardStats = action.payload;
+  },
+  adminDashboardStatsFailed: (state, action) => {
+    state.dashboardStatsLoading = false;
+    state.error = action.payload;
+  },
   clearErrors: (state) => {
     state.error = null;
   },

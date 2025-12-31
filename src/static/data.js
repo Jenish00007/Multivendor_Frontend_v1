@@ -13,7 +13,7 @@ export const navItems = [
     url: "/products",
   },
   {
-    title: "Events",
+    title: "Offers",
     url: "/events",
   },
   {
@@ -361,32 +361,27 @@ export const footerProductLinks = [
     name: "About us",
     link: "/about",
   },
-  {
-    name: "Reviews",
-  },
 ];
 
 export const footercompanyLinks = [
  
-  {
-    name: "Events",
-  },
 ];
 
 export const footerSupportLinks = [
   {
     name: "FAQ",
-  },
-  {
-    name: "Reviews",
+    link: "/faq",
   },
   {
     name: "Contact Us",
+    link: "/contact",
   },
   {
     name: "Shipping",
+    link: "/shipping",
   },
   {
-    name: "Live chat",
+    name: "Cancellation & Refund",
+    link: "/cancellation-refund",
   },
 ];

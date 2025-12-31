@@ -22,6 +22,12 @@ import {
   TrackOrderPage,
   UserInbox,
   Payment,
+  ContactUsPage,
+  AboutUsPage,
+  PrivacyPolicyPage,
+  ShippingPolicyPage,
+  TermsOfServicePage,
+  CancellationRefundPolicyPage,
 } from "./routes/Routes";
 import {
   ShopDashboardPage,
@@ -111,6 +117,12 @@ const App = () => {
         <Route path="/best-selling" element={<BestSellingPage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/faq" element={<FAQPage />} />
+        <Route path="/contact" element={<ContactUsPage />} />
+        <Route path="/about" element={<AboutUsPage />} />
+        <Route path="/privacy" element={<PrivacyPolicyPage />} />
+        <Route path="/shipping" element={<ShippingPolicyPage />} />
+        <Route path="/terms" element={<TermsOfServicePage />} />
+        <Route path="/cancellation-refund" element={<CancellationRefundPolicyPage />} />
         <Route
           path="/checkout"
           element={

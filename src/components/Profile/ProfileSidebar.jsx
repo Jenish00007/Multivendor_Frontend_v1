@@ -61,13 +61,13 @@ const ProfileSidebar = ({ active, setActive }) => {
         <span className={`pl-3 800px:block hidden`}>Refunds</span>
       </div>
 
-      <div
+      {/* <div
         className={`flex items-center cursor-pointer w-full px-4 py-3 rounded-lg transition-all duration-200 mb-1 ${active === 4 ? 'bg-gradient-to-r from-purple-50 to-purple-100 shadow text-purple-700 font-semibold' : 'hover:bg-gray-50'}`}
         onClick={() => setActive(4) || navigate("/inbox")}
       >
         <AiOutlineMessage size={22} color={active === 4 ? "#7c3aed" : "#555"} />
         <span className={`pl-3 800px:block hidden`}>Inbox</span>
-      </div>
+      </div> */}
 
       <div
         className={`flex items-center cursor-pointer w-full px-4 py-3 rounded-lg transition-all duration-200 mb-1 ${active === 5 ? 'bg-gradient-to-r from-yellow-50 to-yellow-100 shadow text-yellow-700 font-semibold' : 'hover:bg-gray-50'}`}

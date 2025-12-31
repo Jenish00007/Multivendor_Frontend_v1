@@ -26,15 +26,15 @@ const DashboardMessages = () => {
   const [open, setOpen] = useState(false);
   const scrollRef = useRef(null);
 
-  useEffect(() => {
-    socketId.on("getMessage", (data) => {
-      setArrivalMessage({
-        sender: data.senderId,
-        text: data.text,
-        createdAt: Date.now(),
-      });
-    });
-  }, []);
+  // useEffect(() => {
+  //   socketId.on("getMessage", (data) => {
+  //     setArrivalMessage({
+  //       sender: data.senderId,
+  //       text: data.text,
+  //       createdAt: Date.now(),
+  //     });
+  //   });
+  // }, []);
 
   useEffect(() => {
     arrivalMessage &&
@@ -60,15 +60,15 @@ const DashboardMessages = () => {
     getConversation();
   }, [seller, messages]);
 
-  useEffect(() => {
-    if (seller) {
-      const userId = seller?._id;
-      socketId.emit("addUser", userId);
-      socketId.on("getUsers", (data) => {
-        setOnlineUsers(data);
-      });
-    }
-  }, [seller]);
+  // useEffect(() => {
+  //   if (seller) {
+  //     const userId = seller?._id;
+  //     socketId.emit("addUser", userId);
+  //     socketId.on("getUsers", (data) => {
+  //       setOnlineUsers(data);
+  //     });
+  //   }
+  // }, [seller]);
 
   const onlineCheck = (chat) => {
     const chatMembers = chat.members.find((member) => member !== seller?._id);
@@ -284,9 +284,8 @@ const MessageList = ({
 
   return (
     <div
-      className={`w-full flex p-3 px-3 ${
-        active === index ? "bg-[#00000010]" : "bg-transparent"
-      }  cursor-pointer`}
+      className={`w-full flex p-3 px-3 ${active === index ? "bg-[#00000010]" : "bg-transparent"
+        }  cursor-pointer`}
       onClick={(e) =>
         setActive(index) ||
         handleClick(data._id) ||
@@ -364,9 +363,8 @@ const SellerInbox = ({
           messages.map((item, index) => {
             return (
               <div
-                className={`flex w-full my-2 ${
-                  item.sender === sellerId ? "justify-end" : "justify-start"
-                }`}
+                className={`flex w-full my-2 ${item.sender === sellerId ? "justify-end" : "justify-start"
+                  }`}
                 ref={scrollRef}
               >
                 {item.sender !== sellerId && (
@@ -386,9 +384,8 @@ const SellerInbox = ({
                 {item.text !== "" && (
                   <div>
                     <div
-                      className={`w-max p-2 rounded ${
-                        item.sender === sellerId ? "bg-[#000]" : "bg-[#38c776]"
-                      } text-[#fff] h-min`}
+                      className={`w-max p-2 rounded ${item.sender === sellerId ? "bg-[#000]" : "bg-[#38c776]"
+                        } text-[#fff] h-min`}
                     >
                       <p>{item.text}</p>
                     </div>

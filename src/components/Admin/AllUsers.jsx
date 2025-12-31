@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getAllUsers, deleteUser } from "../../redux/actions/user";
 import { DataGrid } from "@material-ui/data-grid";
-import { AiOutlineDelete, AiOutlineUser, AiOutlineMail, AiOutlinePhone, AiOutlineEye } from "react-icons/ai";
+import { AiOutlineDelete, AiOutlineUser, AiOutlineMail, AiOutlinePhone, AiOutlineEye, AiOutlineDownload } from "react-icons/ai";
 import { Button } from "@material-ui/core";
 import styles from "../../styles/styles";
 import { RxCross1 } from "react-icons/rx";
@@ -27,6 +27,7 @@ const AllUsers = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [startDate, setStartDate] = useState("");
   const [rows, setRows] = useState([]);
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     dispatch(getAllUsers());
@@ -38,6 +39,7 @@ const AllUsers = () => {
         .filter(item => item && item._id)
         .map(item => ({
           id: item._id,
+          userId: item.userId || '', // Standardized user ID (USR-XXXXXX)
           name: item.name || 'N/A',
           email: item.email || 'N/A',
           phoneNumber: item.phoneNumber || 'N/A',
@@ -53,7 +55,8 @@ const AllUsers = () => {
     const userName = String(user.name || "").toLowerCase();
     const userEmail = String(user.email || "").toLowerCase();
     const userPhone = String(user.phoneNumber || "").toLowerCase();
-    const userId = String(user.id || "").toLowerCase();
+    const userId = String(user.id || "").toLowerCase(); // MongoDB ObjectId
+    const standardUserId = String(user.userId || "").toLowerCase(); // Standardized user ID (USR-XXXXXX)
     const userRole = String(user.role || "").toLowerCase();
     const search = searchTerm.toLowerCase();
 
@@ -61,6 +64,7 @@ const AllUsers = () => {
                          userEmail.includes(search) || 
                          userPhone.includes(search) || 
                          userId.includes(search) ||
+                         standardUserId.includes(search) ||
                          userRole.includes(search);
 
     const userDate = new Date(user.createdAt);
@@ -96,6 +100,55 @@ const AllUsers = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedUser(null);
+  };
+
+  const handleDownloadExcel = async () => {
+    try {
+      setDownloading(true);
+      const token = localStorage.getItem('token');
+      
+      const response = await axios.get(`${server}/user/admin-export-users`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: 'blob', // Important for file download
+      });
+
+      // Create a blob from the response
+      const blob = new Blob([response.data], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+
+      // Create a temporary URL and trigger download
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      
+      // Get filename from Content-Disposition header or use default
+      const contentDisposition = response.headers['content-disposition'];
+      let filename = 'users_export.xlsx';
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="?(.+)"?/i);
+        if (filenameMatch) {
+          filename = filenameMatch[1];
+        }
+      }
+      
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      
+      // Cleanup
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      
+      toast.success("Users data downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading Excel file:", error);
+      toast.error(error.response?.data?.message || "Failed to download users data");
+    } finally {
+      setDownloading(false);
+    }
   };
 
   const columns = [
@@ -292,7 +345,7 @@ const AllUsers = () => {
           <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
-              placeholder="Search users..."
+              placeholder="Search by User ID (USR-XXXXXX), Name, Email, Phone..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full sm:w-[300px] pl-10 sm:pl-12 pr-3 sm:pr-6 py-2 sm:py-3.5 rounded-xl border-2 border-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all duration-300 bg-white/80 backdrop-blur-sm shadow-lg text-sm sm:text-base"
@@ -310,6 +363,14 @@ const AllUsers = () => {
           <button className="w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3.5 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-xl hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base">
             <BsFilter size={16} />
             <span className="font-semibold">Filter</span>
+          </button>
+          <button 
+            onClick={handleDownloadExcel}
+            disabled={downloading}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+          >
+            <AiOutlineDownload size={16} className={downloading ? "animate-spin" : ""} />
+            <span className="font-semibold">{downloading ? "Downloading..." : "Download Excel"}</span>
           </button>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlinePlusCircle, AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
-import { FiGift, FiCalendar, FiDollarSign, FiPackage, FiTag } from "react-icons/fi";
+import { FiGift, FiCalendar, FiPackage, FiTag } from "react-icons/fi";
+import { BsCurrencyRupee } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { createevent } from "../../redux/actions/event";
 import { useNavigate } from "react-router-dom";
@@ -231,7 +232,7 @@ const CreateEvent = () => {
                                 {/* Original Price */}
                                 <div className="xl:col-span-1">
                                     <label className="flex items-center text-sm font-semibold text-gray-700 mb-3">
-                                        <FiDollarSign className="mr-2 text-green-500" />
+                                        <BsCurrencyRupee className="mr-2 text-green-500" />
                                         Original Price
                                     </label>
                                     <div className="relative">
@@ -249,7 +250,7 @@ const CreateEvent = () => {
                                 {/* Discount Price */}
                                 <div className="xl:col-span-1">
                                     <label className="flex items-center text-sm font-semibold text-gray-700 mb-3">
-                                        <FiDollarSign className="mr-2 text-orange-500" />
+                                        <BsCurrencyRupee className="mr-2 text-orange-500" />
                                         Discount Price <span className="text-red-500 ml-1">*</span>
                                     </label>
                                     <div className="relative">

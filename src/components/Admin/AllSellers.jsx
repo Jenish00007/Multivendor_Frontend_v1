@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { BsFilter } from "react-icons/bs";
 import AddVendor from "./AddVendor";
+import EditSeller from "./EditSeller";
 
 const AllSellers = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ const AllSellers = () => {
   const { sellers = [], isLoading = true } = useSelector((state) => state.seller || {});
   const [open, setOpen] = useState(false);
   const [openAddVendor, setOpenAddVendor] = useState(false);
+  const [openEditSeller, setOpenEditSeller] = useState(false);
+  const [selectedSeller, setSelectedSeller] = useState(null);
   const [userId, setUserId] = useState("");
   const [rows, setRows] = useState([]);
   const [stats, setStats] = useState({});
@@ -37,6 +40,7 @@ const AllSellers = () => {
         .filter(item => item && item._id)
         .map(item => ({
           id: item._id,
+          shopId: item.shopId || '', // Standardized shop ID (SHP-XXXXXX)
           name: item.name || 'N/A',
           email: item.email || 'N/A',
           phoneNumber: item.phoneNumber || 'N/A',
@@ -86,13 +90,15 @@ const AllSellers = () => {
     const sellerName = String(seller.name || "").toLowerCase();
     const sellerEmail = String(seller.email || "").toLowerCase();
     const sellerPhone = String(seller.phoneNumber || "").toLowerCase();
-    const sellerId = String(seller.id || "").toLowerCase();
+    const sellerId = String(seller.id || "").toLowerCase(); // MongoDB ObjectId
+    const standardShopId = String(seller.shopId || "").toLowerCase(); // Standardized shop ID (SHP-XXXXXX)
     const search = searchTerm.toLowerCase();
 
     const matchesSearch = sellerName.includes(search) || 
                          sellerEmail.includes(search) || 
                          sellerPhone.includes(search) || 
-                         sellerId.includes(search);
+                         sellerId.includes(search) ||
+                         standardShopId.includes(search);
 
     const sellerDate = new Date(seller.createdAt);
     const start = startDate ? new Date(startDate) : null;
@@ -205,8 +211,8 @@ const AllSellers = () => {
     {
       field: "actions",
       headerName: "Actions",
-      minWidth: 150,
-      flex: 0.8,
+      minWidth: 200,
+      flex: 1,
       renderCell: (params) => {
         return (
           <div className="flex items-center justify-start gap-2 w-full">
@@ -216,6 +222,19 @@ const AllSellers = () => {
               title="Preview Shop"
             >
               <AiOutlineEye size={18} className="group-hover:scale-110 transition-transform duration-200" />
+            </button>
+            <button
+              onClick={() => {
+                const seller = sellers.find(s => s._id === params.row.id);
+                setSelectedSeller(seller);
+                setOpenEditSeller(true);
+              }}
+              className="group flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
+              title="Edit Seller"
+            >
+              <svg className="w-4 h-4 group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
             </button>
             <button
               className="group flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-r from-red-500 to-pink-500 text-white hover:from-red-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
@@ -310,12 +329,21 @@ const AllSellers = () => {
             </div>
           </div>
         </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setOpenAddVendor(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-lg hover:from-blue-600 hover:to-indigo-600 transition-all duration-200 shadow-lg hover:shadow-xl"
+          >
+            <AiOutlinePlus size={20} />
+            <span className="font-medium">Add Seller</span>
+          </button>
+        </div>
         {/* Search and Filter Section */}
         <div className="w-full sm:w-auto mt-3 sm:mt-0 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 p-0 m-0">
           <div className="relative w-full sm:w-72 p-0 m-0">
             <input
               type="text"
-              placeholder="Search by Shop Name, Email, Phone, or Shop ID..."
+              placeholder="Search by Shop ID (SHP-XXXXXX), Name, Email, Phone..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="px-3 sm:px-4 py-2 pl-9 sm:pl-10 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full shadow-sm text-sm sm:text-base"
@@ -483,6 +511,19 @@ const AllSellers = () => {
           </div>
         </div>
       </div>
+      
+      {/* Add Vendor Modal */}
+      {openAddVendor && (
+        <AddVendor setOpen={setOpenAddVendor} />
+      )}
+      
+      {/* Edit Seller Modal */}
+      {openEditSeller && selectedSeller && (
+        <EditSeller 
+          setOpen={setOpenEditSeller} 
+          seller={selectedSeller}
+        />
+      )}
     </div>
   );
 };

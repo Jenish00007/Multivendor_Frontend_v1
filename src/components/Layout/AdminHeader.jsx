@@ -1,15 +1,32 @@
 import React from "react";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CiMoneyBill } from "react-icons/ci";
 import { GrWorkshop } from "react-icons/gr";
-import { backend_url } from "../../server";
+import { backend_url, server } from "../../server";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { FiLogOut } from "react-icons/fi";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const AdminHeader = ({ setOpenSidebar, openSidebar }) => {
   const { user } = useSelector((state) => state.user);
   const { appName, logo } = useSelector((state) => state.appSettings);
+  const navigate = useNavigate();
+
+  const logoutHandler = async () => {
+    try {
+      await axios.get(`${server}/user/logout`, {
+        withCredentials: true,
+      });
+      toast.success("Logout Successfully");
+      navigate("/");
+      window.location.reload(true);
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
+  };
 
   return (
     <div className="w-full h-[80px] bg-white shadow sticky top-0 left-0 z-30 flex items-center justify-between px-4">
@@ -55,6 +72,9 @@ const AdminHeader = ({ setOpenSidebar, openSidebar }) => {
               className="mx-5 cursor-pointer"
             />
           </Link>
+          <div className="cursor-pointer mx-5" onClick={logoutHandler}>
+            <FiLogOut color="#555" size={30} title="Logout" />
+          </div>
           <img
             src={user?.avatar || "https://avatar.iran.liara.run/public/boy"}
             alt=""

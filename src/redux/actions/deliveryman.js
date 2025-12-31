@@ -8,7 +8,11 @@ export const getAllDeliveryMen = () => async (dispatch) => {
       type: "getAllDeliveryMenRequest",
     });
 
+    const token = localStorage.getItem('token');
     const { data } = await axios.get(`${server}/deliveryman/all`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       withCredentials: true,
     });
 
@@ -31,10 +35,14 @@ export const approveDeliveryMan = (id) => async (dispatch) => {
       type: "approveDeliveryManRequest",
     });
 
+    const token = localStorage.getItem('token');
     const { data } = await axios.put(
       `${server}/deliveryman/approve/${id}`,
       {},
       {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         withCredentials: true,
       }
     );
@@ -60,9 +68,13 @@ export const rejectDeliveryMan = (id) => async (dispatch) => {
       type: "rejectDeliveryManRequest",
     });
 
+    const token = localStorage.getItem('token');
     const { data } = await axios.delete(
       `${server}/deliveryman/reject/${id}`,
       {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         withCredentials: true,
       }
     );
@@ -88,12 +100,14 @@ export const editDeliveryMan = (id, formData) => async (dispatch) => {
       type: "editDeliveryManRequest",
     });
 
+    const token = localStorage.getItem('token');
     const { data } = await axios.put(
       `${server}/deliveryman/edit/${id}`,
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+          // Don't set Content-Type - let browser set it with boundary for FormData
         },
         withCredentials: true,
       }
@@ -120,9 +134,13 @@ export const deleteDeliveryMan = (id) => async (dispatch) => {
       type: "deleteDeliveryManRequest",
     });
 
+    const token = localStorage.getItem('token');
     const { data } = await axios.delete(
       `${server}/deliveryman/delete/${id}`,
       {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         withCredentials: true,
       }
     );

@@ -53,21 +53,61 @@ const AdminDeliveryMenPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate required fields
+    if (!formData.name || !formData.email || !formData.password || !formData.phoneNumber || 
+        !formData.address || !formData.vehicleType || !formData.vehicleNumber || 
+        !formData.licenseNumber) {
+      toast.error("Please fill all required fields");
+      return;
+    }
+
+    // Validate file
+    if (!formData.idProof || !(formData.idProof instanceof File)) {
+      toast.error("Please upload an ID proof file");
+      return;
+    }
+
     const formDataToSend = new FormData();
-    Object.keys(formData).forEach((key) => {
-      formDataToSend.append(key, formData[key]);
-    });
+    
+    // Append text fields
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("password", formData.password);
+    formDataToSend.append("phoneNumber", formData.phoneNumber);
+    formDataToSend.append("address", formData.address);
+    formDataToSend.append("vehicleType", formData.vehicleType);
+    formDataToSend.append("vehicleNumber", formData.vehicleNumber);
+    formDataToSend.append("licenseNumber", formData.licenseNumber);
+    
+    // Append file (must be last or in correct order)
+    formDataToSend.append("idProof", formData.idProof);
 
     try {
-      const response = await fetch(`${server}/deliveryman/register`, {
-        method: "POST",
-        body: formDataToSend,
-        credentials: "include",
-      });
-      const data = await response.json();
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        toast.error("Please login as admin to add delivery men");
+        return;
+      }
 
-      if (data.success) {
-        toast.success("Delivery man registered successfully!");
+      console.log("Submitting delivery man registration...");
+      const response = await axios.post(
+        `${server}/deliveryman/admin-register`,
+        formDataToSend,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            // Don't set Content-Type - let browser set it with boundary for FormData
+          },
+          withCredentials: true,
+        }
+      );
+
+      console.log("Registration response:", response.data);
+
+      if (response.data.success) {
+        toast.success(response.data.message || "Delivery man registered successfully!");
         setShowAddForm(false);
         setFormData({
           name: "",
@@ -83,10 +123,14 @@ const AdminDeliveryMenPage = () => {
         });
         dispatch(getAllDeliveryMen());
       } else {
-        toast.error(data.message || "Error registering delivery man");
+        toast.error(response.data.message || "Error registering delivery man");
       }
     } catch (error) {
-      toast.error("Error registering delivery man");
+      console.error("Error registering delivery man:", error);
+      const errorMessage = error.response?.data?.message || 
+                          error.message || 
+                          "Error registering delivery man. Please check all fields and try again.";
+      toast.error(errorMessage);
     }
   };
 
@@ -116,13 +160,15 @@ const AdminDeliveryMenPage = () => {
     });
 
     try {
+      const token = localStorage.getItem('token');
       console.log('Sending edit request for delivery man:', selectedDeliveryMan._id);
       const response = await axios.put(
         `${server}/deliveryman/edit/${selectedDeliveryMan._id}`,
         formDataToSend,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+            // Don't set Content-Type - let browser set it with boundary for FormData
           },
           withCredentials: true,
         }
@@ -147,9 +193,13 @@ const AdminDeliveryMenPage = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this delivery man?")) {
       try {
+        const token = localStorage.getItem('token');
         const response = await axios.delete(
           `${server}/deliveryman/delete/${id}`,
           {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
             withCredentials: true,
           }
         );
@@ -168,14 +218,19 @@ const AdminDeliveryMenPage = () => {
 
   const handleApprove = async (id) => {
     try {
-      const response = await fetch(`${server}/deliveryman/approve/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      const data = await response.json();
+      const token = localStorage.getItem('token');
+      const response = await axios.put(
+        `${server}/deliveryman/approve/${id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      const data = response.data;
 
       if (data.success) {
         toast.success("Delivery man approved successfully!");
@@ -191,9 +246,13 @@ const AdminDeliveryMenPage = () => {
   const handleReject = async (id) => {
     if (window.confirm("Are you sure you want to reject this delivery man?")) {
       try {
+        const token = localStorage.getItem('token');
         const response = await axios.delete(
           `${server}/deliveryman/reject/${id}`,
           {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
             withCredentials: true,
           }
         );
@@ -212,9 +271,13 @@ const AdminDeliveryMenPage = () => {
 
   const handlePreview = async (id) => {
     try {
+      const token = localStorage.getItem('token');
       const response = await axios.get(
         `${server}/admin/delivery-man/${id}`,
         {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           withCredentials: true,
         }
       );
@@ -380,6 +443,13 @@ const AdminDeliveryMenPage = () => {
                             title="Edit Delivery Man"
                           >
                             <FaEdit size={16} className="group-hover:scale-110 transition-transform duration-200" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(deliveryMan._id)}
+                            className="group flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-r from-red-500 to-pink-500 text-white hover:from-red-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-110"
+                            title="Delete Delivery Man"
+                          >
+                            <FaTrash size={16} className="group-hover:scale-110 transition-transform duration-200" />
                           </button>
                           {!deliveryMan.isApproved && (
                             <>

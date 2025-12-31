@@ -1,0 +1,52 @@
+/* Custom scrollbar styling for horizontal product sections */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+/* Smooth scrolling for horizontal containers */
+.horizontal-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* For iOS smooth scrolling */
+}
+
+/* Custom scrollbar for webkit browsers (optional) */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Product card container sizing for horizontal scroll */
+.product-card-container {
+  min-width: 288px; /* w-72 */
+  max-width: 384px; /* w-96 */
+}
+
+@media (min-width: 768px) {
+  .product-card-container {
+    min-width: 320px; /* md:w-80 */
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-card-container {
+    min-width: 384px; /* lg:w-96 */
+  }
+}

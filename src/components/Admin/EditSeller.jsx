@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { server } from "../../server";
 import { getAllSellers } from "../../redux/actions/sellers";
-import { AiOutlineShop, AiOutlineMail, AiOutlinePhone, AiOutlineUser, AiOutlineHome, AiOutlineNumber } from "react-icons/ai";
+import { AiOutlineShop, AiOutlineMail, AiOutlinePhone, AiOutlineUser, AiOutlineHome, AiOutlineNumber, AiOutlineEdit } from "react-icons/ai";
 import { FiUpload } from "react-icons/fi";
 
-const AddVendor = ({ setOpen }) => {
+const EditSeller = ({ setOpen, seller }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: "",
@@ -16,10 +16,28 @@ const AddVendor = ({ setOpen }) => {
     phoneNumber: "",
     address: "",
     zipCode: "",
+    description: "",
   });
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
+  const [fetching, setFetching] = useState(true);
+
+  useEffect(() => {
+    if (seller) {
+      setFormData({
+        name: seller.name || "",
+        email: seller.email || "",
+        password: "",
+        phoneNumber: seller.phoneNumber || "",
+        address: seller.address || "",
+        zipCode: seller.zipCode || "",
+        description: seller.description || "",
+      });
+      setPreviewImage(seller.avatar || null);
+      setFetching(false);
+    }
+  }, [seller]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -41,52 +59,57 @@ const AddVendor = ({ setOpen }) => {
       const formDataToSend = new FormData();
       formDataToSend.append("name", formData.name);
       formDataToSend.append("email", formData.email);
-      formDataToSend.append("password", formData.password);
+      if (formData.password) {
+        formDataToSend.append("password", formData.password);
+      }
       formDataToSend.append("phoneNumber", formData.phoneNumber);
       formDataToSend.append("address", formData.address);
       formDataToSend.append("zipCode", formData.zipCode);
+      if (formData.description) {
+        formDataToSend.append("description", formData.description);
+      }
       if (avatar) {
         formDataToSend.append("shopAvatar", avatar);
       }
 
       const token = localStorage.getItem('token');
-      const response = await axios.post(`${server}/admin/seller/create`, formDataToSend, {
+      const response = await axios.put(`${server}/admin/seller/update/${seller._id}`, formDataToSend, {
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      toast.success("Vendor created successfully!");
+      toast.success("Seller updated successfully!");
       dispatch(getAllSellers());
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        phoneNumber: "",
-        address: "",
-        zipCode: "",
-      });
-      setAvatar(null);
-      setPreviewImage(null);
       setOpen(false);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Error creating vendor");
+      toast.error(error.response?.data?.message || "Error updating seller");
     } finally {
       setLoading(false);
     }
   };
+
+  if (fetching) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="bg-white rounded-xl p-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading seller data...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="w-full max-w-2xl bg-white rounded-xl shadow-2xl p-6 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6 sticky top-0 bg-white pb-4 border-b">
           <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-            <div className="p-2 bg-blue-50 rounded-lg">
-              <AiOutlineShop className="text-blue-600" size={24} />
+            <div className="p-2 bg-green-50 rounded-lg">
+              <AiOutlineEdit className="text-green-600" size={24} />
             </div>
-            Add New Vendor
+            Edit Seller
           </h2>
           <button
             onClick={() => setOpen(false)}
@@ -138,7 +161,7 @@ const AddVendor = ({ setOpen }) => {
 
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
-                Password
+                Password (leave blank to keep current)
               </label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -146,11 +169,10 @@ const AddVendor = ({ setOpen }) => {
                 </div>
                 <input
                   type="password"
-                  required
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   className="pl-10 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  placeholder="Enter password"
+                  placeholder="Enter new password (optional)"
                 />
               </div>
             </div>
@@ -174,12 +196,12 @@ const AddVendor = ({ setOpen }) => {
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-2 md:col-span-2">
               <label className="block text-sm font-medium text-gray-700">
                 Address
               </label>
               <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <div className="absolute inset-y-0 left-0 pl-3 pt-3 flex items-start pointer-events-none">
                   <AiOutlineHome className="text-gray-400 group-focus-within:text-blue-500 transition-colors duration-200" size={18} />
                 </div>
                 <input
@@ -211,6 +233,19 @@ const AddVendor = ({ setOpen }) => {
                 />
               </div>
             </div>
+
+            <div className="space-y-2 md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Description
+              </label>
+              <textarea
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                className="w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 p-3"
+                placeholder="Enter shop description (optional)"
+                rows={3}
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
@@ -229,7 +264,7 @@ const AddVendor = ({ setOpen }) => {
                     <button
                       type="button"
                       onClick={() => {
-                        setPreviewImage(null);
+                        setPreviewImage(seller?.avatar || null);
                         setAvatar(null);
                       }}
                       className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors duration-200"
@@ -242,12 +277,12 @@ const AddVendor = ({ setOpen }) => {
                     <FiUpload className="mx-auto h-12 w-12 text-gray-400" />
                     <div className="flex text-sm text-gray-600">
                       <label
-                        htmlFor="file-upload"
+                        htmlFor="file-upload-edit"
                         className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
                       >
                         <span>Upload a file</span>
                         <input
-                          id="file-upload"
+                          id="file-upload-edit"
                           name="shopAvatar"
                           type="file"
                           accept="image/*"
@@ -275,15 +310,15 @@ const AddVendor = ({ setOpen }) => {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2"
+              className="px-6 py-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 flex items-center gap-2"
             >
               {loading ? (
                 <>
                   <div className="w-5 h-5 border-t-2 border-b-2 border-white rounded-full animate-spin"></div>
-                  Creating...
+                  Updating...
                 </>
               ) : (
-                "Create Vendor"
+                "Update Seller"
               )}
             </button>
           </div>
@@ -293,4 +328,5 @@ const AddVendor = ({ setOpen }) => {
   );
 };
 
-export default AddVendor; 
+export default EditSeller;
+

@@ -3,18 +3,20 @@ import styles from "../../styles/styles";
 import { AiOutlineArrowRight, AiOutlineMoneyCollect, AiOutlineShoppingCart, AiOutlineLineChart, AiOutlineEye, AiOutlineClose, AiOutlineMail, AiOutlinePhone, AiOutlineEnvironment } from "react-icons/ai";
 import { MdOutlineStorefront, MdOutlineTrendingUp, MdOutlinePeopleAlt } from "react-icons/md";
 import { BsGraphUpArrow, BsCurrencyRupee, BsFilter } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DataGrid } from "@material-ui/data-grid";
 import { Button } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrdersOfAdmin } from "../../redux/actions/order";
 import Loader from "../Layout/Loader";
 import { getAllSellers } from "../../redux/actions/sellers";
+import { getAdminDashboardStats } from "../../redux/actions/admin";
 import { FiSearch } from "react-icons/fi";
 import AdminSideBar from "./Layout/AdminSideBar";
 import OrderPreviewModal from "./OrderPreviewModal";
 
 const AdminDashboardMain = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +24,7 @@ const AdminDashboardMain = () => {
   const [selectedOrderDate, setSelectedOrderDate] = useState("");
   const [selectedOrderDateISO, setSelectedOrderDateISO] = useState("");
 
-  const { adminOrders, adminOrderLoading } = useSelector(
+  const { adminOrders, adminOrderLoading, dashboardStats, dashboardStatsLoading } = useSelector(
     (state) => state.order
   );
   const { sellers } = useSelector((state) => state.seller);
@@ -30,26 +32,18 @@ const AdminDashboardMain = () => {
   useEffect(() => {
     dispatch(getAllOrdersOfAdmin());
     dispatch(getAllSellers());
-  }, []);
+    dispatch(getAdminDashboardStats());
+  }, [dispatch]);
 
-  const adminEarning =
-    adminOrders &&
-    adminOrders.reduce((acc, item) => acc + item.totalPrice * 0.1, 0);
-
-  const adminBalance = adminEarning?.toFixed(2);
-
-  // Calculate total items count from all orders
-  const totalItemsCount = adminOrders?.reduce((acc, order) => {
-    return acc + order?.cart?.reduce((cartAcc, item) => cartAcc + item.qty, 0);
-  }, 0) || 0;
-   // Calculate total products count from all sellers
-   const totalProductsCount = sellers?.reduce((acc, seller) => {
-    return acc + (seller?.products?.length || 0);
-  }, 0) || 0;
-
-
-  // Get unique customers count
-  const uniqueCustomers = adminOrders ? new Set(adminOrders.map(order => order.user?._id)).size : 0;
+  // Use statistics from backend if available, otherwise calculate from local data
+  const totalItems = dashboardStats?.totalItems || (adminOrders?.reduce((acc, order) => {
+    return acc + (order?.cart?.reduce((cartAcc, item) => cartAcc + (item.quantity || item.qty || 0), 0) || 0);
+  }, 0) || 0);
+  
+  const totalOrders = dashboardStats?.totalOrders || (adminOrders?.length || 0);
+  const totalStores = dashboardStats?.totalStores || (sellers?.length || 0);
+  const totalUsers = dashboardStats?.totalUsers || (adminOrders ? new Set(adminOrders.map(order => order.user?._id)).size : 0);
+  const totalEarnings = dashboardStats?.totalEarnings || (adminOrders && adminOrders.filter(order => order.status === "Delivered").reduce((acc, item) => acc + item.totalPrice * 0.1, 0) || 0);
 
   // Get unique order dates from the latest orders (as displayed)
   const uniqueOrderDates = Array.from(new Set((adminOrders || []).map(order => order.createdAt)));
@@ -222,12 +216,15 @@ const AdminDashboardMain = () => {
       });
     });
 
+  // Use order status counts from backend if available, otherwise calculate from local data
+  const orderStatusCounts = dashboardStats?.orderStatusCounts || {};
+  
   const orderStatusSummary = [
     {
       key: "unassigned",
       label: "Unassigned Orders",
       icon: "📅",
-      count: adminOrders?.filter(order => order.status === "Unassigned").length || 0,
+      count: orderStatusCounts.unassigned !== undefined ? orderStatusCounts.unassigned : (adminOrders?.filter(order => order.status === "Unassigned").length || 0),
       color: "text-blue-600",
       bgGradient: "from-blue-50 to-blue-100",
       hoverGradient: "hover:from-blue-100 hover:to-blue-200"
@@ -236,7 +233,7 @@ const AdminDashboardMain = () => {
       key: "accepted",
       label: "Accepted By Delivery Man",
       icon: "🧑‍✈️",
-      count: adminOrders?.filter(order => order.status === "Accepted").length || 0,
+      count: orderStatusCounts.accepted !== undefined ? orderStatusCounts.accepted : (adminOrders?.filter(order => order.status === "Accepted").length || 0),
       color: "text-teal-600",
       bgGradient: "from-teal-50 to-teal-100",
       hoverGradient: "hover:from-teal-100 hover:to-teal-200"
@@ -245,7 +242,7 @@ const AdminDashboardMain = () => {
       key: "packaging",
       label: "Packaging",
       icon: "📦",
-      count: adminOrders?.filter(order => order.status === "Packaging").length || 0,
+      count: orderStatusCounts.packaging !== undefined ? orderStatusCounts.packaging : (adminOrders?.filter(order => order.status === "Packaging").length || 0),
       color: "text-orange-600",
       bgGradient: "from-orange-50 to-orange-100",
       hoverGradient: "hover:from-orange-100 hover:to-orange-200"
@@ -254,7 +251,7 @@ const AdminDashboardMain = () => {
       key: "outForDelivery",
       label: "Out For Delivery",
       icon: "🚚",
-      count: adminOrders?.filter(order => order.status === "Out For Delivery").length || 0,
+      count: orderStatusCounts.outForDelivery !== undefined ? orderStatusCounts.outForDelivery : (adminOrders?.filter(order => order.status === "Out For Delivery").length || 0),
       color: "text-green-600",
       bgGradient: "from-green-50 to-green-100",
       hoverGradient: "hover:from-green-100 hover:to-green-200"
@@ -263,7 +260,7 @@ const AdminDashboardMain = () => {
       key: "delivered",
       label: "Delivered",
       icon: "✅",
-      count: adminOrders?.filter(order => order.status === "Delivered").length || 0,
+      count: orderStatusCounts.delivered !== undefined ? orderStatusCounts.delivered : (adminOrders?.filter(order => order.status === "Delivered").length || 0),
       color: "text-green-700",
       bgGradient: "from-emerald-50 to-emerald-100",
       hoverGradient: "hover:from-emerald-100 hover:to-emerald-200"
@@ -272,7 +269,7 @@ const AdminDashboardMain = () => {
       key: "canceled",
       label: "Canceled",
       icon: "❌",
-      count: adminOrders?.filter(order => order.status === "Canceled").length || 0,
+      count: orderStatusCounts.canceled !== undefined ? orderStatusCounts.canceled : (adminOrders?.filter(order => order.status === "Canceled" || order.status === "Cancelled").length || 0),
       color: "text-red-600",
       bgGradient: "from-red-50 to-red-100",
       hoverGradient: "hover:from-red-100 hover:to-red-200"
@@ -281,7 +278,7 @@ const AdminDashboardMain = () => {
       key: "refunded",
       label: "Refunded",
       icon: "💸",
-      count: adminOrders?.filter(order => order.status === "Refunded").length || 0,
+      count: orderStatusCounts.refunded !== undefined ? orderStatusCounts.refunded : (adminOrders?.filter(order => order.status === "Refunded").length || 0),
       color: "text-pink-600",
       bgGradient: "from-pink-50 to-pink-100",
       hoverGradient: "hover:from-pink-100 hover:to-pink-200"
@@ -290,7 +287,7 @@ const AdminDashboardMain = () => {
       key: "paymentFailed",
       label: "Payment Failed",
       icon: "💳",
-      count: adminOrders?.filter(order => order.status === "Payment Failed").length || 0,
+      count: orderStatusCounts.paymentFailed !== undefined ? orderStatusCounts.paymentFailed : (adminOrders?.filter(order => order.status === "Payment Failed").length || 0),
       color: "text-yellow-600",
       bgGradient: "from-yellow-50 to-yellow-100",
       hoverGradient: "hover:from-yellow-100 hover:to-yellow-200"
@@ -358,45 +355,57 @@ const AdminDashboardMain = () => {
 
           {/* Enhanced Summary Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
-            <div className="group bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-blue-100/50">
+            <Link 
+              to="/admin-products"
+              className="group bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-blue-100/50 cursor-pointer"
+            >
               <div className="p-4 bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl mb-4 group-hover:from-blue-200 group-hover:to-blue-300 transition-all duration-300">
                 <span className="text-4xl">🛒</span>
               </div>
               <span className="text-base font-semibold text-gray-600 mb-2">Items</span>
-              <span className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-2">{totalItemsCount}</span>
+              <span className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-2">{totalItems}</span>
               <span className="text-sm text-gray-400">Total Items Sold</span>
-            </div>
+            </Link>
 
-            <div className="group bg-gradient-to-br from-white to-purple-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-purple-100/50">
+            <Link 
+              to="/admin-orders"
+              className="group bg-gradient-to-br from-white to-purple-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-purple-100/50 cursor-pointer"
+            >
               <div className="p-4 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl mb-4 group-hover:from-purple-200 group-hover:to-purple-300 transition-all duration-300">
                 <span className="text-4xl">🛍️</span>
               </div>
               <span className="text-base font-semibold text-gray-600 mb-2">Orders</span>
               <span className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-2">
-                {adminOrders && adminOrders.length}
+                {totalOrders}
               </span>
               <span className="text-sm text-gray-400">Total Orders</span>
-            </div>
+            </Link>
 
-            <div className="group bg-gradient-to-br from-white to-green-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-green-100/50">
+            <Link 
+              to="/admin-sellers"
+              className="group bg-gradient-to-br from-white to-green-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-green-100/50 cursor-pointer"
+            >
               <div className="p-4 bg-gradient-to-br from-green-100 to-green-200 rounded-2xl mb-4 group-hover:from-green-200 group-hover:to-green-300 transition-all duration-300">
                 <span className="text-4xl">🏪</span>
               </div>
               <span className="text-base font-semibold text-gray-600 mb-2">Grocery Stores</span>
               <span className="text-4xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent mb-2">
-                {sellers && sellers.length}
+                {totalStores}
               </span>
               <span className="text-sm text-gray-400">Total Stores</span>
-            </div>
+            </Link>
 
-            <div className="group bg-gradient-to-br from-white to-orange-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-orange-100/50">
+            <Link 
+              to="/admin-users"
+              className="group bg-gradient-to-br from-white to-orange-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-orange-100/50 cursor-pointer"
+            >
               <div className="p-4 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl mb-4 group-hover:from-orange-200 group-hover:to-orange-300 transition-all duration-300">
                 <span className="text-4xl">👥</span>
               </div>
               <span className="text-base font-semibold text-gray-600 mb-2">Customers</span>
-              <span className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent mb-2">{uniqueCustomers}</span>
-              <span className="text-sm text-gray-400">Total Customers</span>
-            </div>
+              <span className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent mb-2">{totalUsers}</span>
+              <span className="text-sm text-gray-400">Total Users</span>
+            </Link>
 
             <div className="group bg-gradient-to-br from-white to-emerald-50 rounded-2xl shadow-lg hover:shadow-2xl p-6 flex flex-col items-center transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-emerald-100/50">
               <div className="p-4 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl mb-4 group-hover:from-emerald-200 group-hover:to-emerald-300 transition-all duration-300">
@@ -404,9 +413,9 @@ const AdminDashboardMain = () => {
               </div>
               <span className="text-base font-semibold text-gray-600 mb-2">Total Earnings</span>
               <span className="text-4xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-800 bg-clip-text text-transparent mb-2">
-                {formatIndianCurrency(adminBalance)}
+                {formatIndianCurrency(totalEarnings)}
               </span>
-              <span className="text-sm text-gray-400">0 Newly added</span>
+              <span className="text-sm text-gray-400">Admin Commission (10%)</span>
             </div>
           </div>
 

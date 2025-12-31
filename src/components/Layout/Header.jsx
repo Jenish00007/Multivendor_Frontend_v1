@@ -6,10 +6,14 @@ import {
   AiOutlineHeart,
   AiOutlineSearch,
   AiOutlineShoppingCart,
+  AiOutlineLogout,
+  AiOutlineUser,
 } from "react-icons/ai";
 import { IoIosArrowDown } from "react-icons/io";
 import { BiMenuAltLeft } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import DropDown from "./DropDown";
 import Navbar from "./Navbar";
 import { useSelector } from "react-redux";
@@ -20,6 +24,7 @@ import { RxCross1 } from "react-icons/rx";
 import axios from "axios";
 
 const Header = ({ activeHeading }) => {
+  const navigate = useNavigate();
   const { isSeller } = useSelector((state) => state.seller);
   const { cart } = useSelector((state) => state.cart);
   const { wishlist } = useSelector((state) => state.wishlist);
@@ -33,6 +38,7 @@ const Header = ({ activeHeading }) => {
   const [openCart, setOpenCart] = useState(false);
   const [openWishlist, setOpenWishlist] = useState(false);
   const [open, setOpen] = useState(false); // mobile menu
+  const [profileDropdown, setProfileDropdown] = useState(false); // profile dropdown menu
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -78,6 +84,36 @@ const Header = ({ activeHeading }) => {
       setActive(false);
     }
   });
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileDropdown && !event.target.closest('.profile-dropdown-container')) {
+        setProfileDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [profileDropdown]);
+
+  // Logout handler
+  const handleLogout = () => {
+    axios
+      .get(`${server}/user/logout`, { withCredentials: true })
+      .then((res) => {
+        toast.success(res.data.message);
+        localStorage.clear();
+        navigate("/login");
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error.response?.data?.message);
+        toast.error("Logout failed");
+      });
+    setProfileDropdown(false);
+  };
 
   return (
     <>
@@ -176,20 +212,56 @@ const Header = ({ activeHeading }) => {
                 </div>
               </div>
 
-              {/* User Profile */}
-              <div className="relative">
+              {/* User Profile with Dropdown */}
+              <div className="relative profile-dropdown-container">
                 {isAuthenticated ? (
-                  <Link to="/profile" className="group">
-                    <img
-                      src={user.avatar ? `${backend_url}/${user.avatar}` : "https://avatar.iran.liara.run/public"}
-                      className="w-10 h-10 rounded-full border-2 border-gray-200 group-hover:border-blue-500 transition-all duration-300 group-hover:scale-105 object-cover"
-                      alt="Profile"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = "https://avatar.iran.liara.run/public";
-                      }}
-                    />
-                  </Link>
+                  <>
+                    <div 
+                      className="group cursor-pointer"
+                      onClick={() => setProfileDropdown(!profileDropdown)}
+                    >
+                      <img
+                        src={user.avatar ? `${backend_url}/${user.avatar}` : "https://avatar.iran.liara.run/public"}
+                        className="w-10 h-10 rounded-full border-2 border-gray-200 group-hover:border-blue-500 transition-all duration-300 group-hover:scale-105 object-cover"
+                        alt="Profile"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "https://avatar.iran.liara.run/public";
+                        }}
+                      />
+                    </div>
+                    {/* Profile Dropdown Menu */}
+                    {profileDropdown && (
+                      <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 overflow-hidden">
+                        <div className="py-2">
+                          {/* User Info */}
+                          <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-purple-50">
+                            <p className="text-sm font-semibold text-gray-900 truncate">{user.name}</p>
+                            <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                          </div>
+                          
+                          {/* Profile Link */}
+                          <Link
+                            to="/profile"
+                            onClick={() => setProfileDropdown(false)}
+                            className="flex items-center px-4 py-3 hover:bg-gray-50 transition-colors duration-200"
+                          >
+                            <AiOutlineUser size={20} className="text-gray-600 mr-3" />
+                            <span className="text-sm text-gray-700 font-medium">My Profile</span>
+                          </Link>
+                          
+                          {/* Logout Button */}
+                          <button
+                            onClick={handleLogout}
+                            className="w-full flex items-center px-4 py-3 hover:bg-red-50 transition-colors duration-200 text-left border-t border-gray-100"
+                          >
+                            <AiOutlineLogout size={20} className="text-red-600 mr-3" />
+                            <span className="text-sm text-red-600 font-medium">Logout</span>
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <Link to="/login" className="group">
                     <div className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-300">

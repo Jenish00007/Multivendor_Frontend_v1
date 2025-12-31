@@ -10,6 +10,7 @@ import Loader from "../components/Layout/Loader";
 import OrderPreviewModal from "../components/Admin/OrderPreviewModal";
 import { Link } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
+import { HiChevronDown } from "react-icons/hi";
 
 const AdminDashboardOrders = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,8 @@ const AdminDashboardOrders = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [startDate, setStartDate] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [isStatusDropdownOpen, setIsStatusDropdownOpen] = useState(false);
 
   const { adminOrders, adminOrderLoading } = useSelector(
     (state) => state.order
@@ -48,14 +51,31 @@ const AdminDashboardOrders = () => {
     return formatter.format(amount);
   };
 
-  // Filter orders based on search term and date range
+  // Order status options
+  const statusOptions = [
+    { value: "all", label: "All Orders" },
+    { value: "Processing", label: "Processing" },
+    { value: "Transferred to delivery partner", label: "Transferred to Delivery" },
+    { value: "Out for delivery", label: "Out for Delivery" },
+    { value: "Delivered", label: "Delivered" },
+    { value: "Cancelled", label: "Cancelled" },
+    { value: "Cancelled by deliveryman", label: "Cancelled by Deliveryman" },
+    { value: "Cancelled by user", label: "Cancelled by User" },
+    { value: "Refund Success", label: "Refunded" },
+  ];
+
+  // Filter orders based on search term, date range, and status
   const filteredOrders = (adminOrders || []).filter((order) => {
     const customerName = order.user?.name?.toLowerCase() || "";
     const orderId = order._id?.toLowerCase() || "";
+    const standardOrderId = (order.orderId || "").toLowerCase(); // Standardized order ID (ORD-XXXXXX)
     const status = order.status?.toLowerCase() || "";
     const search = searchTerm.toLowerCase();
 
-    const matchesSearch = customerName.includes(search) || orderId.includes(search) || status.includes(search);
+    const matchesSearch = customerName.includes(search) || 
+                         orderId.includes(search) || 
+                         standardOrderId.includes(search) ||
+                         status.includes(search);
 
     const orderDate = new Date(order.createdAt);
     const start = startDate ? new Date(startDate) : null;
@@ -63,7 +83,10 @@ const AdminDashboardOrders = () => {
     // Only filter by start date, or show all if no start date
     const matchesDate = (!start || orderDate >= start);
 
-    return matchesSearch && matchesDate;
+    // Filter by status
+    const matchesStatus = selectedStatus === "all" || order.status === selectedStatus;
+
+    return matchesSearch && matchesDate && matchesStatus;
   });
 
   return (
@@ -105,7 +128,7 @@ const AdminDashboardOrders = () => {
                     <div className="relative w-full sm:w-72">
                       <input
                         type="text"
-                        placeholder="Search by Order ID, Customer Name, or Status..."
+                        placeholder="Search by Order ID (ORD-XXXXXX), Customer Name, or Status..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="px-5 py-3 pl-10 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full shadow-sm"
@@ -113,6 +136,54 @@ const AdminDashboardOrders = () => {
                       <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                     </div>
                     <div className="flex gap-4 w-full sm:w-auto">
+                      {/* Status Filter Dropdown */}
+                      <div className="relative w-full sm:w-auto">
+                        <button
+                          type="button"
+                          onClick={() => setIsStatusDropdownOpen(!isStatusDropdownOpen)}
+                          className="px-5 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full sm:w-64 bg-white shadow-sm hover:shadow-md transition-shadow duration-200 flex items-center justify-between"
+                        >
+                          <span className="text-gray-700 font-medium">
+                            {statusOptions.find(opt => opt.value === selectedStatus)?.label || "All Orders"}
+                          </span>
+                          <HiChevronDown 
+                            className={`text-gray-500 transition-transform duration-200 ${isStatusDropdownOpen ? 'transform rotate-180' : ''}`} 
+                            size={20} 
+                          />
+                        </button>
+                        {isStatusDropdownOpen && (
+                          <>
+                            <div 
+                              className="fixed inset-0 z-10" 
+                              onClick={() => setIsStatusDropdownOpen(false)}
+                            ></div>
+                            <div className="absolute z-20 mt-2 w-full sm:w-64 bg-white rounded-xl shadow-xl border border-gray-200 max-h-80 overflow-y-auto">
+                              {statusOptions.map((option) => (
+                                <button
+                                  key={option.value}
+                                  type="button"
+                                  onClick={() => {
+                                    setSelectedStatus(option.value);
+                                    setIsStatusDropdownOpen(false);
+                                  }}
+                                  className={`w-full text-left px-5 py-3 hover:bg-indigo-50 transition-colors duration-150 ${
+                                    selectedStatus === option.value
+                                      ? 'bg-indigo-100 text-indigo-700 font-semibold'
+                                      : 'text-gray-700'
+                                  } ${option.value !== statusOptions[0].value ? 'border-t border-gray-100' : ''}`}
+                                >
+                                  <div className="flex items-center justify-between">
+                                    <span>{option.label}</span>
+                                    {selectedStatus === option.value && (
+                                      <span className="text-indigo-600">✓</span>
+                                    )}
+                                  </div>
+                                </button>
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
                       <div className="relative w-full sm:w-auto">
                         <input
                           type="date"

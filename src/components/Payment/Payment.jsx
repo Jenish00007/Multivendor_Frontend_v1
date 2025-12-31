@@ -105,7 +105,7 @@ const Payment = () => {
         cart: orderData?.cart,
         shippingAddress: orderData?.shippingAddress,
         user: user && user,
-        totalPrice: orderData?.totalPrice,
+        totalPrice: orderData?.subTotalPrice,
     };
 
     const handleRazorpayPayment = async () => {
@@ -113,7 +113,7 @@ const Payment = () => {
             setLoading(true);
             
             const paymentData = {
-                amount: orderData?.totalPrice,
+                amount: orderData?.subTotalPrice,
                 email: user?.email,
                 name: user?.name,
                 contact: user?.phoneNumber
@@ -157,7 +157,14 @@ const Payment = () => {
             setLoading(true);
             
             const orderPayload = {
-                cart: orderData?.cart,
+                cart: orderData?.cart.map(item => ({
+                    _id: item._id,
+                    shopId: item.shopId,
+                    qty: item.qty || 1,
+                    price: item.discountPrice,
+                    name: item.name,
+                    images: item.images
+                })),
                 shippingAddress: orderData?.shippingAddress,
                 user: user && user,
                 totalPrice: orderData?.totalPrice,
@@ -325,7 +332,7 @@ const Payment = () => {
                                             Processing...
                                         </div>
                                     ) : (
-                                        `Pay ₹${orderData?.totalPrice}`
+                                        `Pay ₹${orderData?.subTotalPrice}`
                                     )}
                                 </button>
                             </div>
@@ -347,7 +354,7 @@ const Payment = () => {
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-gray-600">Shipping</span>
-                                    <span className="font-medium">₹{orderData?.shipping}</span>
+                                    <span className="font-medium">free</span>
                                 </div>
                                 {orderData?.discountPrice > 0 && (
                                     <div className="flex justify-between text-green-600">
@@ -358,7 +365,7 @@ const Payment = () => {
                                 <div className="border-t pt-4">
                                     <div className="flex justify-between text-lg font-semibold">
                                         <span>Total</span>
-                                        <span>₹{orderData?.totalPrice}</span>
+                                        <span>₹{orderData?.subTotalPrice}</span>
                                     </div>
                                 </div>
                             </div>

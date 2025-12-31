@@ -18,6 +18,49 @@ const OrderPreviewModal = ({ isOpen, onClose, order }) => {
   // Calculate total items if cart exists
   const totalItems = order.cart ? order.cart.reduce((acc, item) => acc + (item.quantity || 0), 0) : (order.itemsQty || 0);
 
+  // Helper function to format shipping address
+  const formatShippingAddress = (shippingAddress) => {
+    if (!shippingAddress) return 'No address provided';
+    
+    // Handle new format (from mobile apps)
+    if (shippingAddress.address || shippingAddress.locality) {
+      const lines = [];
+      if (shippingAddress.name) lines.push(shippingAddress.name);
+      if (shippingAddress.phone) lines.push(`Phone: ${shippingAddress.phone}`);
+      if (shippingAddress.address) lines.push(shippingAddress.address);
+      if (shippingAddress.locality) lines.push(shippingAddress.locality);
+      const cityState = [];
+      if (shippingAddress.city) cityState.push(shippingAddress.city);
+      if (shippingAddress.state) cityState.push(shippingAddress.state);
+      if (cityState.length > 0) lines.push(cityState.join(', '));
+      if (shippingAddress.pincode) lines.push(`Pincode: ${shippingAddress.pincode}`);
+      if (shippingAddress.addressType) lines.push(`[${shippingAddress.addressType}]`);
+      return lines.filter(Boolean).join('\n');
+    }
+    
+    // Handle old format (from web frontend)
+    if (shippingAddress.address1 || shippingAddress.address2) {
+      const lines = [];
+      if (shippingAddress.address1) lines.push(shippingAddress.address1);
+      if (shippingAddress.address2) lines.push(shippingAddress.address2);
+      const cityState = [];
+      if (shippingAddress.city) cityState.push(shippingAddress.city);
+      if (shippingAddress.state) cityState.push(shippingAddress.state);
+      if (cityState.length > 0) lines.push(cityState.join(', '));
+      if (shippingAddress.zipCode) lines.push(`Zip: ${shippingAddress.zipCode}`);
+      if (shippingAddress.country) lines.push(shippingAddress.country);
+      return lines.filter(Boolean).join('\n');
+    }
+    
+    // Handle string format (if address is stored as a string)
+    if (typeof shippingAddress === 'string') {
+      return shippingAddress;
+    }
+    
+    // Fallback: try to display any address-like object
+    return JSON.stringify(shippingAddress);
+  };
+
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto backdrop-blur-sm">
       <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
@@ -107,10 +150,8 @@ const OrderPreviewModal = ({ isOpen, onClose, order }) => {
 
                 <h5 className="text-xl font-bold text-gray-900">Shipping Address</h5>
                 <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                  <p className="text-gray-600 leading-relaxed">
-                    {order.shippingAddress?.address1}, {order.shippingAddress?.address2}<br />
-                    {order.shippingAddress?.city}, {order.shippingAddress?.state}<br />
-                    {order.shippingAddress?.zipCode}, {order.shippingAddress?.country}
+                  <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+                    {formatShippingAddress(order.shippingAddress)}
                   </p>
                 </div>
               </div>

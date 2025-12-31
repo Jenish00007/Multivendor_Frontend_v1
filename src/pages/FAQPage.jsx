@@ -30,7 +30,7 @@ const Faq = () => {
     const faqData = [
         {
             question: "What is your return policy?",
-            answer: "If you're not satisfied with your purchase, we accept returns within 30 days of delivery. To initiate a return, please email us at support@myecommercestore.com with your order number and a brief explanation of why you're returning the item."
+            answer: "If you're not satisfied with your purchase, we accept returns within 30 days of delivery. To initiate a return, please email us at qauds.info@gmail.com with your order number and a brief explanation of why you're returning the item."
         },
         {
             question: "How do I track my order?",
@@ -38,7 +38,7 @@ const Faq = () => {
         },
         {
             question: "How do I contact customer support?",
-            answer: "You can contact our customer support team by emailing us at support@myecommercestore.com, or by calling us at (555) 123-4567 between the hours of 9am and 5pm EST, Monday through Friday."
+            answer: "You can contact our customer support team by emailing us at qauds.info@gmail.com, or by calling us at (555) 123-4567 between the hours of 9am and 5pm EST, Monday through Friday."
         },
         {
             question: "Can I change or cancel my order?",

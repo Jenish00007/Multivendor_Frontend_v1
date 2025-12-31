@@ -27,6 +27,30 @@ const CreateProduct = () => {
   const [images, setImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]); // Assume array of product objects {_id, name, image}
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [searchByName, setSearchByName] = useState("");
+  const [productSearchData, setProductSearchData] = useState([]);
+  const [offset, setOffset] = useState(1);
+  const [limit] = useState(10);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+
+
+
+  const addProduct = (prod) => {
+    if (!selectedProducts.some(p => p._id === prod._id)) { // Avoid duplicates
+      setSelectedProducts([...selectedProducts, prod]);
+    }
+    setSearchQuery(''); // Optional: Clear search
+    setSearchResults([]); // Hide results after add
+  };
+
+  const removeProduct = (index) => {
+    setSelectedProducts(selectedProducts.filter((_, i) => i !== index));
+  };
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -130,6 +154,99 @@ const CreateProduct = () => {
     }
   };
 
+
+  const handleScroll = (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
+
+    if (scrollTop + clientHeight >= scrollHeight - 20 && hasMore && !loading) {
+      const nextPage = offset + 1;
+      setOffset(nextPage);
+
+      fetchProducts({
+        name: searchByName,
+        page: nextPage,
+        append: true,
+      });
+    }
+  };
+
+
+  const handleToggleSearchByName = async (value) => {
+    setSearchByName(value);
+    setOffset(1);
+    setHasMore(true);
+
+    if (!value.trim()) {
+      setProductSearchData([]);
+      return;
+    }
+
+    fetchProducts({ name: value, page: 1, append: false });
+  };
+
+
+  const fetchProducts = async ({ name, page, append = false }) => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+
+    try {
+      const response = await axios.get(`${server}/product/items/search`, {
+        params: {
+          name,
+          offset: page,
+          limit,
+        },
+      });
+
+      const products = response.data.products || [];
+
+      setProductSearchData((prev) =>
+        append ? [...prev, ...products] : products
+      );
+
+      if (products.length < limit) {
+        setHasMore(false); // no more data
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // save selected products function 
+  const handleSaveProducts = async () => {
+    if (selectedProducts.length === 0) return;
+
+    setIsSubmitting(true);
+
+    try {
+      // extract only product IDs
+      const productIds = selectedProducts.map((product) => product._id);
+
+      const response = await axios.post(
+        `${server}/product/save-products/in-shop`,
+        { productIds }, // ✅ correct field name
+        {
+          withCredentials: true, // 🔥 required if auth uses cookies
+        }
+      );
+
+      console.log('After successful saved products :', response.data);
+
+      toast.success("Products saved successfully!");
+      setSelectedProducts([]);
+
+    } catch (err) {
+      console.error(err);
+      toast.error("Error saving products");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 py-3 px-2 sm:px-4">
       <div className="w-full md:max-w-5xl mx-auto">
@@ -143,7 +260,136 @@ const CreateProduct = () => {
           </h1>
         </div>
 
-        {/* Form */}
+        {/* New Section: Search and Select Products */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md border border-white/20 p-3 sm:p-4 md:p-6 mb-6">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4">
+            Search and Add Products
+          </h2>
+
+          {/* Search Box with Toggle on the Right */}
+          <div className="relative mb-6">
+            <input
+              type="text"
+              placeholder="Search products"
+              value={searchByName}
+              onChange={(e) => handleToggleSearchByName(e.target.value)}
+              className="w-full px-4 py-3 pr-20 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-base"
+            />
+
+          </div>
+
+          {/* Search Results (for selection) */}
+          {productSearchData.length > 0 && (
+            <div className="mb-6">
+              <p className="text-sm font-medium text-gray-700 mb-2">
+                Search Results:
+              </p>
+
+              <div
+                className="max-h-48 overflow-y-auto p-2 border border-gray-200 rounded-xl bg-gray-50"
+                onScroll={handleScroll}
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {productSearchData.map((prod) => (
+                    <div
+                      key={prod._id}
+                      className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm hover:shadow-md transition cursor-pointer"
+                      onClick={() => addProduct(prod)}
+                    >
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={prod.images?.[0] || "https://via.placeholder.com/40"}
+                          alt={prod.name || "Product Image"}
+                          className="w-10 h-10 object-cover rounded"
+                        />
+                        <span className="text-sm font-medium text-gray-800">
+                          {prod.name}
+                        </span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation(); // 🔥 prevents double click
+                          addProduct(prod);
+                        }}
+                        className="text-blue-600 hover:text-blue-800 text-sm font-semibold"
+                      >
+                        Add
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Loading indicator */}
+                {loading && (
+                  <p className="text-center text-sm text-gray-500 mt-3">
+                    Loading...
+                  </p>
+                )}
+
+                {/* End of list */}
+                {!hasMore && productSearchData.length > 0 && !loading && (
+                  <p className="text-center text-xs text-gray-400 mt-3">
+                    No more products
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+
+          {/* Selected Products List - Only visible when products are selected */}
+          {selectedProducts.length > 0 && (
+            <div>
+              <p className="text-sm font-medium text-gray-700 mb-3">
+                Selected Products ({selectedProducts.length})
+              </p>
+              <div className="grid grid-cols-3 gap-4 overflow-y-auto max-h-72 p-3 border border-gray-200 rounded-xl bg-gray-50">
+                {selectedProducts.map((prod, i) => (
+                  <div
+                    key={i}
+                    className="relative bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+                  >
+                    <img
+                      src={prod.images[0] || 'https://via.placeholder.com/150'}
+                      alt={prod.name || 'Product Image'}
+                      className="w-full h-28 object-cover"
+                    />
+                    <div className="p-2">
+                      <p className="text-xs text-center text-gray-800 font-medium truncate">
+                        {prod.name}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeProduct(i)}
+                      className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center shadow-lg transition"
+                      aria-label="Remove product"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Save product button  only visible when products are selected */}
+          {selectedProducts.length > 0 && (
+            <div className="mt-4">
+              <button
+                type="button"
+                onClick={handleSaveProducts}
+                className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow"
+              >
+                Save Selected Products
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Existing Form */}
         <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md border border-white/20 p-3 sm:p-4 md:p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Name, Category, Subcategory */}

@@ -23,7 +23,7 @@ const DashboardHero = () => {
         dispatch(getAllProductsShop(seller._id));
     }, [dispatch]);
 
-    const availableBalance = seller?.availableBalance.toFixed(2);
+    const availableBalance = seller?.availableBalance?.toFixed(2) || 0;
 
     // Function to format currency in Indian format
     const formatIndianCurrency = (amount) => {
@@ -93,14 +93,14 @@ const DashboardHero = () => {
                             </div>
                             <div className="text-gray-600 text-lg mt-2 font-medium">
                                 Here's what's happening with your store today
-                        </div>
+                            </div>
                             <div className="text-sm text-gray-500 mt-1">
                                 {new Date().toLocaleDateString('en-GB', {
-                                weekday: 'long', 
-                                year: 'numeric', 
-                                month: 'long', 
-                                day: 'numeric' 
-                            })}
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                })}
                             </div>
                         </div>
                     </div>
@@ -159,7 +159,7 @@ const DashboardHero = () => {
                         </div>
                         <div className="p-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-lg">
                             <BsCurrencyRupee className="text-white" size={24} />
-                    </div>
+                        </div>
                     </div>
                 </div>
 
@@ -250,10 +250,10 @@ const DashboardHero = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                    ${order.status === 'Delivered' ? 'bg-green-100 text-green-800' : 
-                                                    order.status === 'Processing' ? 'bg-yellow-100 text-yellow-800' : 
-                                                    order.status === 'Cancelled' ? 'bg-red-100 text-red-800' : 
-                                                    'bg-blue-100 text-blue-800'}`}>
+                                                    ${order.status === 'Delivered' ? 'bg-green-100 text-green-800' :
+                                                        order.status === 'Processing' ? 'bg-yellow-100 text-yellow-800' :
+                                                            order.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
+                                                                'bg-blue-100 text-blue-800'}`}>
                                                     {order.status}
                                                 </span>
                                             </td>
@@ -302,20 +302,20 @@ const DashboardHero = () => {
                                         </div>
                                         Order Details
                                     </h3>
-                            <button
-                                onClick={closeModal}
+                                    <button
+                                        onClick={closeModal}
                                         className="text-white/80 hover:text-white focus:outline-none transition-all duration-200 p-2 hover:bg-white/20 rounded-xl"
-                            >
-                                <AiOutlineClose size={24} />
-                            </button>
+                                    >
+                                        <AiOutlineClose size={24} />
+                                    </button>
                                 </div>
-                        </div>
+                            </div>
 
                             <div className="bg-white px-6 py-6">
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                     {/* Order Summary */}
                                     <div className="space-y-6">
-                                    <div className="space-y-3">
+                                        <div className="space-y-3">
                                             <h4 className="text-3xl font-bold text-gray-900 leading-tight">Order #{selectedOrder._id?.slice(-6)}</h4>
                                             <div className="inline-block px-4 py-2 bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 rounded-xl font-semibold text-sm shadow-sm">
                                                 {selectedOrder.status}
@@ -365,11 +365,11 @@ const DashboardHero = () => {
                                             <div className="flex items-center justify-between py-2 border-b border-gray-200">
                                                 <span className="text-gray-600 font-medium">Email:</span>
                                                 <span className="text-gray-800 font-semibold">{selectedOrder.user?.email}</span>
-                                </div>
+                                            </div>
                                             <div className="flex items-center justify-between py-2">
                                                 <span className="text-gray-600 font-medium">Phone:</span>
                                                 <span className="text-gray-800 font-semibold">{selectedOrder.user?.phoneNumber}</span>
-                                        </div>
+                                            </div>
                                         </div>
 
                                         <h5 className="text-xl font-bold text-gray-900">Shipping Address</h5>
@@ -390,7 +390,7 @@ const DashboardHero = () => {
                                         <div className="flex items-center text-gray-700 mb-4 text-sm">
                                             <span className="mr-6 font-medium">Total Unique Products: <span className="font-bold">{selectedOrder.cart.length}</span></span>
                                             <span className="font-medium">Total Quantity: <span className="font-bold">{selectedOrder.cart.reduce((acc, item) => acc + (item.quantity || 0), 0)}</span></span>
-                            </div>
+                                        </div>
                                         <div className="divide-y rounded-xl border border-gray-100 bg-gradient-to-br from-gray-50 to-blue-50 w-full">
                                             {selectedOrder.cart.map((item, idx) => (
                                                 <div key={idx} className="flex items-center gap-4 p-4 w-full">
@@ -402,21 +402,21 @@ const DashboardHero = () => {
                                                     <div className="flex-1">
                                                         <div className="font-semibold text-gray-800">{item.name}</div>
                                                         <div className="text-sm text-gray-500">Qty: {item.quantity}</div>
-                                                </div>
+                                                    </div>
                                                     <div className="flex flex-col items-end min-w-[120px]">
                                                         <span className="text-gray-700 text-sm">Unit Price:</span>
                                                         <span className="font-semibold text-gray-800">{formatIndianCurrency(item.price)}</span>
-                                                        </div>
+                                                    </div>
                                                     <div className="flex flex-col items-end min-w-[120px]">
                                                         <span className="text-gray-700 text-sm">Subtotal:</span>
                                                         <span className="font-semibold text-gray-800">{formatIndianCurrency(item.price * item.quantity)}</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))}
+                                            ))}
                                         </div>
                                     </div>
                                 )}
-                                </div>
+                            </div>
 
                             <div className="bg-gradient-to-r from-gray-50 to-blue-50 px-6 py-4 flex justify-end">
                                 <button

@@ -1,10 +1,4 @@
 import React from "react";
-import {
-    AiFillFacebook,
-    AiFillInstagram,
-    AiFillYoutube,
-    AiOutlineTwitter,
-} from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
@@ -50,22 +44,6 @@ const Footer = () => {
                             delivered to your door with care and convenience.
                         </p>
                         
-                        {/* Social Media Icons */}
-                        <div className="flex justify-center sm:justify-start gap-4">
-                            {[
-                                { Icon: AiFillFacebook, color: "hover:text-blue-500", bg: "hover:bg-blue-500/20" },
-                                { Icon: AiOutlineTwitter, color: "hover:text-sky-400", bg: "hover:bg-sky-400/20" },
-                                { Icon: AiFillInstagram, color: "hover:text-pink-500", bg: "hover:bg-pink-500/20" },
-                                { Icon: AiFillYoutube, color: "hover:text-red-500", bg: "hover:bg-red-500/20" }
-                            ].map(({ Icon, color, bg }, index) => (
-                                <div
-                                    key={index}
-                                    className={`p-3 rounded-full bg-white/5 border border-white/10 cursor-pointer transition-all duration-300 transform hover:scale-110 hover:-translate-y-1 ${bg} ${color} backdrop-blur-sm`}
-                                >
-                                    <Icon size={20} />
-                                </div>
-                            ))}
-                        </div>
                     </div>
 
                     {/* Company Links */}
@@ -153,6 +131,12 @@ const Footer = () => {
                                     className="hover:text-white transition-colors duration-300 hover:underline underline-offset-4"
                                 >
                                     Privacy Policy
+                                </Link>
+                                <Link 
+                                    to="/cancellation-refund" 
+                                    className="hover:text-white transition-colors duration-300 hover:underline underline-offset-4"
+                                >
+                                    Cancellation & Refund
                                 </Link>
                             </div>
                         </div>
