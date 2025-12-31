@@ -137,6 +137,24 @@ const ShopSettings = () => {
 
                     {/* Form */}
                     <form onSubmit={updateHandler} className="space-y-6">
+                        {/* Shop ID */}
+                        <div className="relative">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Shop ID
+                            </label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <FiHash className="text-gray-400" />
+                                </div>
+                                <input
+                                    type="text"
+                                    value={seller.shopId || "#" + seller._id?.slice(-6)}
+                                    readOnly
+                                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-gray-50 text-gray-500 cursor-not-allowed"
+                                />
+                            </div>
+                        </div>
+
                         {/* Shop Name */}
                         <div className="relative">
                             <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">

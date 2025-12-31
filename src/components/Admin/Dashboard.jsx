@@ -156,7 +156,7 @@ const Dashboard = () => {
                   {latestOrders.map((order) => (
                     <tr key={order._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        #{order._id.slice(-6)}
+                        {order.orderId || "#" + order._id.slice(-6)}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {order.user?.name || 'N/A'}

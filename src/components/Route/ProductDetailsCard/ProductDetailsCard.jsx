@@ -104,6 +104,9 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                                                     <h3 className={`${styles.shop_name}`}>
                                                         {data.shop.name}
                                                     </h3>
+                                                    <p className="text-[12px] text-[#000000a6]">
+                                                        {data?.shop?.shopId || "#" + data?.shop?._id?.slice(-6)}
+                                                    </p>
                                                     <h5 className="pb-3 text-[15px]">
                                                         (4.5) Ratings
                                                     </h5>

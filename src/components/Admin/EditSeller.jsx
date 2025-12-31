@@ -123,6 +123,23 @@ const EditSeller = ({ setOpen, seller }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-700">
+                Shop ID
+              </label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <AiOutlineNumber className="text-gray-400 group-focus-within:text-blue-500 transition-colors duration-200" size={18} />
+                </div>
+                <input
+                  type="text"
+                  value={seller.shopId || "#" + seller._id?.slice(-6)}
+                  readOnly
+                  className="pl-10 w-full rounded-lg border border-gray-300 bg-gray-50 text-gray-500 cursor-not-allowed"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
                 Shop Name
               </label>
               <div className="relative group">

@@ -364,6 +364,9 @@ const ProductDetails = ({ data }) => {
                     <h3 className="text-sm font-medium text-gray-900">
                       {data?.shop?.name}
                     </h3>
+                    <p className="text-xs text-gray-500">
+                      ID: {data?.shop?.shopId || "#" + data?.shop?._id?.slice(-6)}
+                    </p>
                     <div className="flex items-center mt-1">
                       <Ratings rating={data?.shop?.ratings} />
                       <span className="ml-2 text-sm text-gray-500">
@@ -457,6 +460,7 @@ const ProductDetailsInfo = ({
                 <div className="pl-2 ">
                   <div className="w-full flex items-center">
                     <h1 className="font-[500] mr-3">{item.user.name}</h1>
+                    <span className="text-[12px] text-gray-500 mr-3">{item.user.userId || "#" + item.user._id?.slice(-6)}</span>
                     <Ratings rating={data?.ratings} />
                   </div>
                   <p>{item.comment}</p>

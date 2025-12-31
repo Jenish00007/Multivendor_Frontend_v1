@@ -150,6 +150,22 @@ const AllWithdraw = () => {
       ),
     },
     {
+      field: "shopId",
+      headerName: "Shop ID",
+      minWidth: 150,
+      flex: 0.7,
+      renderCell: (params) => (
+        <div className="flex items-center">
+          <div className="bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700 px-3 py-1.5 rounded-lg font-semibold text-sm shadow-sm border border-blue-200">
+            <div className="flex items-center">
+              <BsShop className="mr-1" size={14} />
+              <span>{params.value.startsWith("SHP-") ? params.value : "#" + params.value.slice(-6)}</span>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
       field: "shopName",
       headerName: "Shop Name",
       minWidth: 150,

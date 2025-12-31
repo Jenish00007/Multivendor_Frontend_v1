@@ -39,12 +39,14 @@ const AllOrders = () => {
     ? orders.filter((order) => {
         const customerName = order.user?.name?.toLowerCase() || "";
         const orderId = order._id?.toLowerCase() || "";
+        const customOrderId = order.orderId?.toLowerCase() || "";
         const status = order.status?.toLowerCase() || "";
         const search = searchTerm.toLowerCase();
 
         const matchesSearch =
           customerName.includes(search) ||
           orderId.includes(search) ||
+          customOrderId.includes(search) ||
           status.includes(search);
 
         const orderDate = new Date(order.createdAt);
@@ -62,6 +64,7 @@ const AllOrders = () => {
   const row = filteredOrders.map((item) => {
     return {
       id: item._id || "",
+      orderId: item.orderId || "#" + item._id?.slice(-6),
       status: item.status || "N/A",
       itemsQty: Array.isArray(item.cart) ? item.cart.length : 0,
       total: item.totalPrice ? `₹${item.totalPrice}` : "N/A",
@@ -70,7 +73,7 @@ const AllOrders = () => {
   });
 
   const columns = [
-    { field: "id", headerName: "Order ID", width: 200 },
+    { field: "orderId", headerName: "Order ID", width: 200 },
     { field: "status", headerName: "Status", width: 130 },
     { field: "itemsQty", headerName: "Items Qty", width: 130 },
     { field: "total", headerName: "Total", width: 130 },

@@ -86,6 +86,7 @@ const AllOrders = () => {
         const { _id, ...itemWithoutId } = item;
         row.push({
             id: _id || '',
+            orderId: item.orderId,
             customerName: item.user?.name || "N/A",
             status: item.status || 'N/A',
             itemsQty: Array.isArray(item.cart) ? item.cart.length : 0,
@@ -112,7 +113,7 @@ const AllOrders = () => {
                         <AiOutlineShoppingCart className="text-indigo-600" size={20} />
                     </div>
                     <div className="flex flex-col justify-center min-w-[100px]">
-                        <span className="font-semibold text-gray-800 truncate leading-tight">#{params.value.slice(-6)}</span>
+                        <span className="font-semibold text-gray-800 truncate leading-tight">{params.row.orderId || "#" + params.value.slice(-6)}</span>
                         <span className="text-xs text-gray-500 leading-tight mt-0.5 font-medium">Order ID</span>
                     </div>
                 </div>
@@ -130,7 +131,7 @@ const AllOrders = () => {
                     </div>
                     <div className="flex flex-col justify-center min-w-[120px]">
                         <span className="font-semibold text-gray-800 truncate leading-tight">{params.value}</span>
-                        <span className="text-xs text-gray-500 leading-tight mt-0.5 font-medium">Customer</span>
+                        <span className="text-xs text-gray-500 leading-tight mt-0.5 font-medium">{params.row.userId}</span>
                     </div>
                 </div>
             ),

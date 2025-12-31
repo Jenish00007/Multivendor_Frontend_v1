@@ -67,6 +67,9 @@ const ShopInfo = ({ isOwner }) => {
                     <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
                 </div>
                 <h2 className="text-2xl font-bold text-gray-800 text-center">{data?.name}</h2>
+                <p className="text-sm text-gray-500 text-center mt-1">
+                    Shop ID: {data?.shopId || "#" + data?._id?.slice(-6)}
+                </p>
             </motion.div>
 
             {/* Shop Info */}

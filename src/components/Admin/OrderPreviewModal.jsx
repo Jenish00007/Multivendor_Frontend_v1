@@ -92,7 +92,7 @@ const OrderPreviewModal = ({ isOpen, onClose, order }) => {
               {/* Order Summary */}
               <div className="space-y-6">
                 <div className="space-y-3">
-                  <h4 className="text-3xl font-bold text-gray-900 leading-tight">Order #{order._id?.slice(-6) || order.id?.slice(-6)}</h4>
+                  <h4 className="text-3xl font-bold text-gray-900 leading-tight">Order {order.orderId || "#" + (order._id?.slice(-6) || order.id?.slice(-6))}</h4>
                   <div className="inline-block px-4 py-2 bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 rounded-xl font-semibold text-sm shadow-sm">
                     {order.status}
                   </div>
@@ -134,6 +134,10 @@ const OrderPreviewModal = ({ isOpen, onClose, order }) => {
               <div className="space-y-6">
                 <h5 className="text-xl font-bold text-gray-900">Customer Information</h5>
                 <div className="space-y-4 bg-gradient-to-br from-gray-50 to-blue-50 p-6 rounded-2xl shadow-inner">
+                  <div className="flex items-center justify-between py-2 border-b border-gray-200">
+                    <span className="text-gray-600 font-medium">User ID:</span>
+                    <span className="text-gray-800 font-semibold">{order.user?.userId || "#" + (order.user?._id?.slice(-6) || "")}</span>
+                  </div>
                   <div className="flex items-center justify-between py-2 border-b border-gray-200">
                     <span className="text-gray-600 font-medium">Name:</span>
                     <span className="text-gray-800 font-semibold">{order.user?.name}</span>

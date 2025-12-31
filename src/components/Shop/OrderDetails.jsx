@@ -78,7 +78,7 @@ const OrderDetails = () => {
 
       <div className="w-full flex items-center justify-between pt-6">
         <h5 className="text-[#00000084]">
-          order ID: <span>#{data?._id?.slice(0, 8)}</span>
+          order ID: <span>{data?.orderId || "#" + data?._id?.slice(-6)}</span>
         </h5>
         <h5 className="text-[#000000084]">
           Placed On: <span>{data?.createdAt?.slice(0, 10)}</span>
@@ -127,6 +127,7 @@ const OrderDetails = () => {
           <h4 className=" text-[20px]">{data?.shippingAddress.city}</h4>
 
           <h4 className=" text-[20px]">{data?.user?.phoneNumber}</h4>
+          <h4 className=" text-[20px]">User ID: {data?.user?.userId || "#" + data?.user?._id?.slice(-6)}</h4>
         </div>
 
         <div className="w-full 800px:w-[40%]">

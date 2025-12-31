@@ -146,6 +146,17 @@ const ProfileContent = ({ active }) => {
 
                         <div className='w-full px-5'>
                             <form onSubmit={handleSubmit} aria-required={true}>
+                                {/* User ID (Read-only) */}
+                                <div className="w-full pb-3">
+                                    <label className="block pb-2">User ID</label>
+                                    <input
+                                        type="text"
+                                        className={`${styles.input} !w-[95%] mb-4 800px:mb-0 bg-gray-100 cursor-not-allowed text-gray-500`}
+                                        readOnly
+                                        value={user?.userId || "#" + user?._id?.slice(-6)}
+                                    />
+                                </div>
+
                                 <div className='w-full 800px:flex block pb-3'>
 
                                     <div className=' w-[100%] 800px:w-[50%]'>

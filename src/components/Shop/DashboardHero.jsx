@@ -243,10 +243,13 @@ const DashboardHero = () => {
                                     {recentOrders.map((order) => (
                                         <tr key={order._id} className="hover:bg-gray-50">
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                #{order._id.slice(-6)}
+                                                {order.orderId || "#" + order._id.slice(-6)}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {order.user?.name || 'N/A'}
+                                                <div className="flex flex-col">
+                                                    <span className="font-medium text-gray-900">{order.user?.name || 'N/A'}</span>
+                                                    <span className="text-xs text-gray-400">{order.user?.userId || "#" + (order.user?._id?.slice(-6) || "")}</span>
+                                                </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
@@ -316,7 +319,7 @@ const DashboardHero = () => {
                                     {/* Order Summary */}
                                     <div className="space-y-6">
                                         <div className="space-y-3">
-                                            <h4 className="text-3xl font-bold text-gray-900 leading-tight">Order #{selectedOrder._id?.slice(-6)}</h4>
+                                            <h4 className="text-3xl font-bold text-gray-900 leading-tight">Order {selectedOrder.orderId || "#" + selectedOrder._id?.slice(-6)}</h4>
                                             <div className="inline-block px-4 py-2 bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 rounded-xl font-semibold text-sm shadow-sm">
                                                 {selectedOrder.status}
                                             </div>

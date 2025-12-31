@@ -163,7 +163,7 @@ const AllUsers = () => {
             <AiOutlineUser className="text-indigo-600" size={20} />
           </div>
           <div className="flex flex-col justify-center min-w-[100px]">
-            <span className="font-semibold text-gray-800 truncate leading-tight">#{params.value.slice(-6)}</span>
+            <span className="font-semibold text-gray-800 truncate leading-tight">{params.row.userId || "#" + params.value.slice(-6)}</span>
             <span className="text-xs text-gray-500 leading-tight mt-0.5 font-medium">User ID</span>
           </div>
         </div>

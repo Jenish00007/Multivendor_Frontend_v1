@@ -218,7 +218,7 @@ const AdminDashboardOrders = () => {
                                 <div className="p-2.5 bg-gradient-to-br from-gray-100 to-blue-100 rounded-xl flex-shrink-0 shadow-sm">
                                   <AiOutlineShoppingCart className="text-gray-600" size={20} />
                                 </div>
-                                <span className="font-medium text-gray-800">#{order._id.slice(-6)}</span>
+                                <span className="font-medium text-gray-800">{order.orderId || "#" + order._id.slice(-6)}</span>
                               </div>
                             </td>
                             <td className="px-6 py-4">

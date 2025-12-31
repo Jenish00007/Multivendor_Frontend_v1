@@ -74,6 +74,7 @@ const RecentOrders = () => {
         orders.forEach((item) => {
             row.push({
                 id: item._id,
+                orderId: item.orderId,
                 customerName: item?.user?.name || "N/A",
                 total: formatIndianCurrency(item?.totalPrice),
                 status: item?.status,
@@ -88,11 +89,13 @@ const RecentOrders = () => {
     // Enhanced filtering logic
     const filteredLatestOrders = row.filter(orderRow => {
         const orderId = ("#" + orderRow.id.slice(-6)).toLowerCase();
+        const customOrderId = (orderRow.orderId || "").toLowerCase();
         const customerName = String(orderRow.customerName || '').toLowerCase();
         const status = String(orderRow.status || '').toLowerCase();
         const search = searchTerm.toLowerCase();
         
         const matchesSearch = orderId.includes(search) || 
+                             customOrderId.includes(search) ||
                              customerName.includes(search) || 
                              status.includes(search);
 
@@ -233,7 +236,7 @@ const RecentOrders = () => {
                                                                 <div className="p-2.5 bg-gradient-to-br from-gray-100 to-blue-100 rounded-xl flex-shrink-0 shadow-sm">
                                                                     <AiOutlineShoppingCart className="text-gray-600" size={20} />
                                                                 </div>
-                                                                <span className="font-medium text-gray-800">#{orderRow.id.slice(-6)}</span>
+                                                                <span className="font-medium text-gray-800">{orderRow.orderId || "#" + orderRow.id.slice(-6)}</span>
                                                             </div>
                                                         </td>
                                                         <td className="px-6 py-4">
@@ -322,7 +325,7 @@ const RecentOrders = () => {
                                     <div className="space-y-3">
                                         <div className="flex justify-between items-center">
                                             <span className="text-gray-600">Order ID:</span>
-                                            <span className="font-medium bg-gradient-to-r from-indigo-100 to-purple-100 px-3 py-1 rounded-lg">#{selectedOrder._id.slice(-6)}</span>
+                                            <span className="font-medium bg-gradient-to-r from-indigo-100 to-purple-100 px-3 py-1 rounded-lg">{selectedOrder.orderId || "#" + selectedOrder._id.slice(-6)}</span>
                                         </div>
                                         <div className="flex justify-between items-center">
                                             <span className="text-gray-600">Total Amount:</span>

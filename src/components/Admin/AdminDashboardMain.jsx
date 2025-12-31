@@ -80,7 +80,7 @@ const AdminDashboardMain = () => {
             <AiOutlineShoppingCart className="text-blue-600" size={20} />
           </div>
           <div className="flex flex-col justify-center min-w-[100px]">
-            <span className="font-semibold text-gray-800 truncate leading-tight group-hover:text-blue-600 transition-colors duration-200">#{params.value.slice(-6)}</span>
+            <span className="font-semibold text-gray-800 truncate leading-tight group-hover:text-blue-600 transition-colors duration-200">{params.row.orderId || "#" + params.value.slice(-6)}</span>
             <span className="text-xs text-gray-500 leading-tight mt-1">Order ID</span>
           </div>
         </div>
@@ -205,6 +205,7 @@ const AdminDashboardMain = () => {
     adminOrders.forEach((item) => {
       row.push({
         id: item._id,
+        orderId: item.orderId,
         customerName: item?.user?.name || "N/A",
         total: formatIndianCurrency(item?.totalPrice),
         status: item?.status,
@@ -296,7 +297,9 @@ const AdminDashboardMain = () => {
 
   // Filter latest orders by order ID and selected date (formatted as '7 Jun 2025')
   const filteredLatestOrders = row.filter(orderRow => {
-    const matchesOrderId = ("#" + orderRow.id.slice(-6)).toLowerCase().includes(latestOrderSearch.toLowerCase());
+    const orderId = (orderRow.orderId || "#" + orderRow.id.slice(-6)).toLowerCase();
+    const customOrderId = (orderRow.orderId || "").toLowerCase();
+    const matchesOrderId = orderId.includes(latestOrderSearch.toLowerCase()) || customOrderId.includes(latestOrderSearch.toLowerCase());
     let matchesDate = true;
     if (selectedOrderDateISO) {
       const pickedDate = new Date(selectedOrderDateISO);
@@ -516,7 +519,7 @@ const AdminDashboardMain = () => {
                               <div className="p-2.5 bg-gradient-to-br from-gray-100 to-blue-100 rounded-xl flex-shrink-0 shadow-sm">
                                 <AiOutlineShoppingCart className="text-gray-600" size={20} />
                               </div>
-                              <span className="font-medium text-gray-800">#{orderRow.id.slice(-6)}</span>
+                              <span className="font-medium text-gray-800">{orderRow.orderId || "#" + orderRow.id.slice(-6)}</span>
                             </div>
                           </td>
                           <td className="px-6 py-4">
