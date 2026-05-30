@@ -28,7 +28,10 @@ const AllOrders = () => {
 
   const formatTime = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString("en-IN", {
+    return date.toLocaleString("en-IN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
@@ -38,16 +41,20 @@ const AllOrders = () => {
   const filteredOrders = orders.length > 0
     ? orders.filter((order) => {
         const customerName = order.user?.name?.toLowerCase() || "";
+        const customerId = order.user?.userId?.toLowerCase() || "";
         const orderId = order._id?.toLowerCase() || "";
         const customOrderId = order.orderId?.toLowerCase() || "";
         const status = order.status?.toLowerCase() || "";
+        const location = order.userLocation?.deliveryAddress?.toLowerCase() || "";
         const search = searchTerm.toLowerCase();
 
         const matchesSearch =
           customerName.includes(search) ||
+          customerId.includes(search) ||
           orderId.includes(search) ||
           customOrderId.includes(search) ||
-          status.includes(search);
+          status.includes(search) ||
+          location.includes(search);
 
         const orderDate = new Date(order.createdAt);
         const start = startDate ? new Date(startDate) : null;
@@ -65,15 +72,21 @@ const AllOrders = () => {
     return {
       id: item._id || "",
       orderId: item.orderId || "#" + item._id?.slice(-6),
+      customerId: item.user?.userId || "#" + item.user?._id?.slice(-6),
+      customerName: item.user?.name || "N/A",
       status: item.status || "N/A",
       itemsQty: Array.isArray(item.cart) ? item.cart.length : 0,
       total: item.totalPrice ? `₹${item.totalPrice}` : "N/A",
+      location: item.userLocation?.deliveryAddress || "N/A",
       createdAt: item.createdAt,
     };
   });
 
   const columns = [
-    { field: "orderId", headerName: "Order ID", width: 200 },
+    { field: "orderId", headerName: "Order ID", width: 150 },
+    { field: "customerId", headerName: "Customer ID", width: 150 },
+    { field: "customerName", headerName: "Customer Name", width: 150 },
+    { field: "location", headerName: "Location", width: 250 },
     { field: "status", headerName: "Status", width: 130 },
     { field: "itemsQty", headerName: "Items Qty", width: 130 },
     { field: "total", headerName: "Total", width: 130 },

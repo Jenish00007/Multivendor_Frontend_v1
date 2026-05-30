@@ -106,6 +106,25 @@ const AdminDashboardMain = () => {
       ),
     },
     {
+      field: "shopName",
+      headerName: "Shop Name",
+      minWidth: 180,
+      flex: 0.8,
+      headerClassName: 'custom-header',
+      cellClassName: 'custom-cell',
+      renderCell: (params) => (
+        <div className="flex items-center gap-4 w-full group cursor-pointer" onClick={() => navigate(`/shop/preview/${params.row.shopId}`)}>
+          <div className="p-3 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl flex-shrink-0 group-hover:from-purple-100 group-hover:to-purple-200 transition-all duration-300 shadow-sm">
+            <MdOutlineStorefront className="text-purple-600" size={20} />
+          </div>
+          <div className="flex flex-col justify-center min-w-[120px]">
+            <span className="font-semibold text-gray-800 truncate leading-tight group-hover:text-purple-600 transition-colors duration-200">{params.value}</span>
+            <span className="text-xs text-gray-500 leading-tight mt-1">Shop</span>
+          </div>
+        </div>
+      ),
+    },
+    {
       field: "status",
       headerName: "Status",
       minWidth: 160,
@@ -205,8 +224,10 @@ const AdminDashboardMain = () => {
     adminOrders.forEach((item) => {
       row.push({
         id: item._id,
-        orderId: item.orderId,
+        orderId: item.orderId || "#" + item._id?.slice(-6),
         customerName: item?.user?.name || "N/A",
+        shopName: item?.cart?.[0]?.shopName || item?.shop?.name || "N/A",
+        shopId: item?.shop?._id || item?.cart?.[0]?.shopId || "",
         total: formatIndianCurrency(item?.totalPrice),
         status: item?.status,
         createdAt: new Date(item?.createdAt).toLocaleDateString('en-GB', {

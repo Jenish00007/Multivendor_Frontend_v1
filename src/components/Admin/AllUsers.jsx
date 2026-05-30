@@ -227,8 +227,8 @@ const AllUsers = () => {
     },
     {
       field: "createdAt",
-      headerName: "Created Date",
-      minWidth: 180,
+      headerName: "Joined Date",
+      minWidth: 150,
       flex: 1,
       renderCell: (params) => (
         <div className="flex items-center gap-3 w-full">
@@ -237,10 +237,13 @@ const AllUsers = () => {
           </div>
           <div className="flex flex-col justify-center min-w-[120px]">
             <span className="font-semibold text-gray-800 truncate leading-tight">
-              {new Date(params.row.createdAt).toLocaleDateString('en-GB', {
+              {new Date(params.row.createdAt).toLocaleString('en-IN', {
                 day: 'numeric',
                 month: 'short',
-                year: 'numeric'
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
               })}
             </span>
             <span className="text-xs text-gray-500 leading-tight mt-0.5 font-medium">Registration Date</span>

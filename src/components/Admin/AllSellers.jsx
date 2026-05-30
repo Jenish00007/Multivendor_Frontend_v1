@@ -145,7 +145,12 @@ const AllSellers = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
           </div>
           <div className="flex flex-col justify-center min-w-[120px]">
-            <span className="font-semibold text-gray-800 hover:text-indigo-600 transition-colors duration-200 cursor-pointer truncate leading-tight">{params.row.name}</span>
+            <span 
+              onClick={() => handlePreview(params.row.id)}
+              className="font-semibold text-gray-800 hover:text-indigo-600 transition-colors duration-200 cursor-pointer truncate leading-tight"
+            >
+              {params.row.name}
+            </span>
             <span className="text-xs text-gray-500 leading-tight mt-0.5 font-medium">Shop Name</span>
           </div>
         </div>
@@ -187,7 +192,7 @@ const AllSellers = () => {
     },
     {
       field: "createdAt",
-      headerName: "Created Date",
+      headerName: "Joined Date",
       minWidth: 180,
       flex: 1,
       renderCell: (params) => (
@@ -197,10 +202,13 @@ const AllSellers = () => {
           </div>
           <div className="flex flex-col justify-center min-w-[120px]">
             <span className="font-semibold text-gray-800 truncate leading-tight">
-              {new Date(params.row.createdAt).toLocaleDateString('en-GB', {
+              {new Date(params.row.createdAt).toLocaleString('en-IN', {
                 day: 'numeric',
                 month: 'short',
-                year: 'numeric'
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
               })}
             </span>
             <span className="text-xs text-gray-500 leading-tight mt-0.5 font-medium">Registration Date</span>
