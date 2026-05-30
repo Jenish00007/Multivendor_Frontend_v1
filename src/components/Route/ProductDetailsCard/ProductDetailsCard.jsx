@@ -113,14 +113,14 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                                                 </div>
                                             </Link>
                                         </div>
-                                        <div
+                                        {/* <div
                                             className={`${styles.button} bg-[#000] mt-4 rounded-[4px] h-11`}
                                             onClick={handleMessageSubmit}
                                         >
                                             <span className="text-[#fff] flex items-center">
                                                 Send Message <AiOutlineMessage className="ml-1" />
                                             </span>
-                                        </div>
+                                        </div> */}
                                         <h5 className="text-[16px] text-[red] mt-5">({data.total_sell}) Sold out</h5>
 
 

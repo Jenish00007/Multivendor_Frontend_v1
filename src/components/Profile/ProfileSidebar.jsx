@@ -14,9 +14,11 @@ import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const ProfileSidebar = ({ active, setActive }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.user);
 
@@ -27,6 +29,7 @@ const ProfileSidebar = ({ active, setActive }) => {
         toast.success(res.data.message);
         
         localStorage.clear();
+        dispatch({ type: "LOGOUT_SUCCESS" });
         navigate("/login");
       })
       .catch((error) => {

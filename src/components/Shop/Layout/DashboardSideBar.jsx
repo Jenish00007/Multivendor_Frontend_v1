@@ -24,7 +24,7 @@ const DashboardSideBar = ({ openSidebar }) => {
         { id: 6, title: "All Events", icon: <MdOutlineLocalOffer size={22} />, path: "/dashboard-events" },
         { id: 7, title: "All Coupons", icon: <AiOutlineGift size={22} />, path: "/dashboard-coupouns" },
         { id: 8, title: "Refunds", icon: <HiOutlineReceiptRefund size={22} />, path: "/dashboard-refunds" },
-        { id: 9, title: "Messages", icon: <BiMessageSquareDetail size={22} />, path: "/dashboard-messages" },
+        // { id: 9, title: "Messages", icon: <BiMessageSquareDetail size={22} />, path: "/dashboard-messages" },
         { id: 10, title: "Withdraw", icon: <CiMoneyBill size={22} />, path: "/dashboard-withdraw-money" },
         { id: 11, title: "Settings", icon: <CiSettings size={22} />, path: "/settings" },
     ];

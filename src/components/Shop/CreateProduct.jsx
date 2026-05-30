@@ -224,12 +224,16 @@ const CreateProduct = () => {
     try {
       // extract only product IDs
       const productIds = selectedProducts.map((product) => product._id);
+      const token = localStorage.getItem('token');
 
       const response = await axios.post(
         `${server}/product/save-products/in-shop`,
         { productIds }, // ✅ correct field name
         {
           withCredentials: true, // 🔥 required if auth uses cookies
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
       );
 

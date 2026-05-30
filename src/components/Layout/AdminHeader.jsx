@@ -1,6 +1,7 @@
 import React from "react";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { CiMoneyBill } from "react-icons/ci";
 import { GrWorkshop } from "react-icons/gr";
@@ -11,6 +12,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const AdminHeader = ({ setOpenSidebar, openSidebar }) => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { appName, logo } = useSelector((state) => state.appSettings);
   const navigate = useNavigate();
@@ -21,6 +23,7 @@ const AdminHeader = ({ setOpenSidebar, openSidebar }) => {
         withCredentials: true,
       });
       toast.success("Logout Successfully");
+      dispatch({ type: "LOGOUT_SUCCESS" });
       navigate("/admin-login");
     } catch (error) {
       console.log(error.response.data.message);

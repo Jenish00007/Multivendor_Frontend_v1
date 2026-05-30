@@ -31,6 +31,18 @@ export const sellerReducer = createReducer(initialState, {
     state.error = action.payload;
   },
 
+  // Seller Logout
+  SELLER_LOGOUT_SUCCESS: (state) => {
+    state.isLoading = false;
+    state.isSeller = false;
+    state.seller = null;
+    state.error = null;
+  },
+  SELLER_LOGOUT_FAIL: (state, action) => {
+    state.isLoading = false;
+    state.error = action.payload;
+  },
+
   clearErrors: (state) => {
     state.error = null;
   },

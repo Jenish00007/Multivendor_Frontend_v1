@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import DropDown from "./DropDown";
 import Navbar from "./Navbar";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { backend_url, server } from "../../server";
 import Cart from "../cart/Cart";
 import Wishlist from "../Wishlist/Wishlist";
@@ -24,6 +24,7 @@ import { RxCross1 } from "react-icons/rx";
 import axios from "axios";
 
 const Header = ({ activeHeading }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isSeller } = useSelector((state) => state.seller);
   const { cart } = useSelector((state) => state.cart);
@@ -105,6 +106,7 @@ const Header = ({ activeHeading }) => {
       .then((res) => {
         toast.success(res.data.message);
         localStorage.clear();
+        dispatch({ type: "LOGOUT_SUCCESS" });
         navigate("/login");
       })
       .catch((error) => {
@@ -182,10 +184,10 @@ const Header = ({ activeHeading }) => {
             {/* User Actions - Desktop */}
             <div className="flex items-center space-x-6">
               {/* Wishlist */}
-              <div
-                className="relative cursor-pointer group"
-                onClick={() => setOpenWishlist(true)}
-              >
+            <div
+              className="relative cursor-pointer group"
+              onClick={() => setOpenWishlist(true)}
+            >
                 <div className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-300">
                   <AiOutlineHeart size={28} className="text-gray-600 group-hover:text-red-500 transition-colors duration-300" />
                   {wishlist && wishlist.length > 0 && (

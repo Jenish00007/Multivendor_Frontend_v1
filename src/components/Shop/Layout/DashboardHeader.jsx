@@ -38,7 +38,7 @@ const DashboardHeader = ({ setOpenSidebar, openSidebar }) => {
         { path: "/dashboard-events", icon: <MdOutlineLocalOffer size={24} />, label: "Events" },
         { path: "/dashboard-products", icon: <FiShoppingBag size={24} />, label: "Products" },
         { path: "/dashboard-orders", icon: <FiPackage size={24} />, label: "Orders" },
-        { path: "/dashboard-messages", icon: <BiMessageSquareDetail size={24} />, label: "Messages" },
+        // { path: "/dashboard-messages", icon: <BiMessageSquareDetail size={24} />, label: "Messages" },
     ];
     
     return (
